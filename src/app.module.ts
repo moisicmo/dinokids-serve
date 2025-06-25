@@ -1,0 +1,50 @@
+import { Module } from '@nestjs/common';
+import { PrismaModule } from './prisma/prisma.module';
+import { PrismaService } from './prisma/prisma.service';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './guard/auth.guard';
+import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
+import { StaffModule } from './modules/staff/staff.module';
+import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
+import { BranchModule } from './modules/branch/branch.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { StudentModule } from './modules/student/student.module';
+import { TeacherModule } from './modules/teacher/teacher.module';
+import { TutorModule } from './modules/tutor/tutor.module';
+import { RoomModule } from './modules/room/room.module';
+import { SpecialtyModule } from './modules/specialty/specialty.module';
+import { AssignmentRoomModule } from './modules/assignment-room/assignment-room.module';
+import { ScheduleModule } from './modules/schedule/schedule.module';
+import { BookingModule } from './modules/booking/booking.module';
+import { InscriptionModule } from './modules/inscription/inscription.module';
+
+@Module({
+  imports: [
+    PrismaModule,
+    AuthModule,
+    BranchModule,
+    PermissionModule,
+    RoleModule,
+    StaffModule,
+    StudentModule,
+    TeacherModule,
+    TutorModule,
+    RoomModule,
+    SpecialtyModule,
+    ScheduleModule,
+    AssignmentRoomModule,
+    BookingModule,
+    InscriptionModule,
+    CloudinaryModule,
+  ],
+  providers: [
+    PrismaService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
+  exports: [PrismaService],
+})
+export class AppModule {}
