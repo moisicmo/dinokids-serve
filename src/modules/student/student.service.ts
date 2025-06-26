@@ -3,7 +3,8 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, UserEntity } from '@/common'; @Injectable()
+import { PaginationDto, UserEntity } from '@/common'; import { StudentEntity } from './entities/student.entity';
+@Injectable()
 
 export class StudentService {
 
@@ -48,27 +49,21 @@ export class StudentService {
 
   async findAll(paginationDto: PaginationDto) {
     const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.user.count({
+    const totalPages = await this.prisma.student.count({
       where: {
-        student: {
-          // isNot: null,
-          active: true,
-        },
+        active: true,
       },
     });
     const lastPage = Math.ceil(totalPages / limit);
 
     return {
-      data: await this.prisma.user.findMany({
+      data: await this.prisma.student.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: {
-          student: {
-            // isNot: null,
-            active: true,
-          },
+          active: true,
         },
-        select: UserEntity,
+        select: StudentEntity,
       }),
       meta: { total: totalPages, page, lastPage },
     };

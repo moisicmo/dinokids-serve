@@ -3,14 +3,15 @@ import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, UserEntity } from '@/common'; @Injectable()
+import { PaginationDto, UserEntity } from '@/common'; import { TutorEntity } from './entities/tutor.entity';
+@Injectable()
 
 export class TutorService {
 
   constructor(private readonly prisma: PrismaService) { }
 
   async create(createTutorDto: CreateTutorDto) {
-    const {  city, zone, address, ...userDto } = createTutorDto;
+    const { city, zone, address, ...userDto } = createTutorDto;
 
     const userExists = await this.prisma.user.findUnique({
       where: { numberDocument: userDto.numberDocument },
@@ -42,27 +43,21 @@ export class TutorService {
 
   async findAll(paginationDto: PaginationDto) {
     const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.user.count({
+    const totalPages = await this.prisma.tutor.count({
       where: {
-        tutor: {
-          // isNot: null,÷
-          active: true,
-        },
+        active: true,
       },
     });
     const lastPage = Math.ceil(totalPages / limit);
 
     return {
-      data: await this.prisma.user.findMany({
+      data: await this.prisma.tutor.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: {
-          tutor: {
-            // isNot: null,
-            active: true,
-          },
+          active: true,
         },
-        select: UserEntity,
+        select: TutorEntity,
       }),
       meta: { total: totalPages, page, lastPage },
     };
@@ -88,7 +83,7 @@ export class TutorService {
 
   async update(id: string, updateTutorDto: UpdateTutorDto) {
     await this.findOne(id);
-    const {  city, zone, address, ...userDto } = updateTutorDto;
+    const { city, zone, address, ...userDto } = updateTutorDto;
 
     return this.prisma.user.update({
       where: {

@@ -1,5 +1,8 @@
+import { UserEntity } from "@/common";
+import { TutorEntity } from "@/modules/tutor/entities/tutor.entity";
 
 export const StudentEntity = {
+  userId: true,
   code: true,
   birthdate: true,
   gender: true,
@@ -8,19 +11,11 @@ export const StudentEntity = {
   educationLevel: true,
   tutors: {
     select: {
-      user: {
-        select: {
-          numberDocument: true,
-          typeDocument: true,
-          name: true,
-          lastName: true,
-          email: true,
-          phone: true,
-        }
-      },
-      city: true,
-      zone: true,
-      address: true,
-    }
+      ...TutorEntity,
+      students: false,
+    },
   },
+  user: {
+    select: UserEntity,
+  }
 };

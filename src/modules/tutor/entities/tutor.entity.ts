@@ -1,10 +1,13 @@
+import { UserEntity } from "@/common";
+
 export const TutorEntity = {
+  userId: true,
   city: true,
   zone: true,
   address: true,
   students: {
     select: {
-      user:{
+      user: {
         select: {
           numberDocument: true,
           typeDocument: true,
@@ -21,4 +24,7 @@ export const TutorEntity = {
       educationLevel: true,
     }
   },
+  user: {
+    select: UserEntity,
+  }
 };
