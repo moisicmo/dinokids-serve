@@ -1,5 +1,7 @@
 export const BookingEntity = {
   id: true,
+  days: true,
+  dni: true,
   name: true,
-  address: true,
+  amount: true,
 };

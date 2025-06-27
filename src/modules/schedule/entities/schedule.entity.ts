@@ -1,5 +1,6 @@
 export const ScheduleEntity = {
   id: true,
-  name: true,
-  address: true,
+  days: true,
+  start: true,
+  end: true,
 };

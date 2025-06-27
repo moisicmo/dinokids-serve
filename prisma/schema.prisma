@@ -201,8 +201,8 @@ model AssignmentRoom {
   start                 DateTime
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscriptions          Inscription                                           @relation(fields: [inscriptionId], references: [id])
-  rooms                 Room                                                  @relation(fields: [roomId], references: [id]) 
+  inscription           Inscription                                           @relation(fields: [inscriptionId], references: [id])
+  room                  Room                                                  @relation(fields: [roomId], references: [id]) 
   assignmentSchedules   AssignmentSchedule[]
   @@unique([inscriptionId, roomId])
 	@@map("assignment_rooms")
@@ -230,8 +230,8 @@ model AssignmentSchedule {
   active                Boolean                                               @default(true)
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  assignmentRooms       AssignmentRoom                                        @relation(fields: [assignmentRoomId], references: [id])
-  schedules             Schedule                                              @relation(fields: [scheduleId], references: [id])
+  assignmentRoom        AssignmentRoom                                        @relation(fields: [assignmentRoomId], references: [id])
+  schedule              Schedule                                              @relation(fields: [scheduleId], references: [id])
 	@@map("assignment_schedules")
 }
 

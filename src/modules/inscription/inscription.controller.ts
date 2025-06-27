@@ -3,9 +3,10 @@ import { InscriptionService } from './inscription.service';
 import { CreateInscriptionDto } from './dto/create-inscription.dto';
 import { UpdateInscriptionDto } from './dto/update-inscription.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities } from '@/decorator';
+import { checkAbilities, CurrentUser } from '@/decorator';
 import { AbilitiesGuard } from '@/guard/abilities.guard';
 import { TypeAction, TypeSubject } from "@prisma/client";
+import { JwtPayload } from '../auth/entities/jwt-payload.interface';
 
 @UseGuards(AbilitiesGuard)
 @Controller('inscription')
@@ -14,8 +15,8 @@ export class InscriptionController {
 
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.inscription })
-  create(@Body() createInscriptionDto: CreateInscriptionDto) {
-    return this.inscriptionService.create(createInscriptionDto);
+  create( @CurrentUser() user: JwtPayload, @Body() createInscriptionDto: CreateInscriptionDto) {
+    return this.inscriptionService.create(user.id,createInscriptionDto);
   }
 
   @Get()

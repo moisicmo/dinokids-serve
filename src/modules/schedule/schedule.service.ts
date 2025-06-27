@@ -1,5 +1,4 @@
 import {  Injectable, NotFoundException } from '@nestjs/common';
-import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { ScheduleEntity } from './entities/schedule.entity';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -10,12 +9,6 @@ export class ScheduleService {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createScheduleDto: CreateScheduleDto) {
-    return await this.prisma.schedule.create({
-      data: createScheduleDto,
-      select: ScheduleEntity,
-    });
-  }
 
   async findAll(paginationDto: PaginationDto) {
     const { page = 1, limit = 10 } = paginationDto;

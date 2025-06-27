@@ -2,6 +2,7 @@ import { Strategy, ExtractJwt } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { envs } from '@/config';
+import { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -13,8 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: any) {
-    // Aquí puedes añadir lógica como validar si el usuario sigue activo
+  validate(payload: JwtPayload): JwtPayload {
     return payload;
   }
 }

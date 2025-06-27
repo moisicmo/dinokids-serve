@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { InscriptionType } from "@prisma/client";
-import { IsEnum, IsUUID } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsNumber, IsUUID, ValidateNested } from "class-validator";
+import { CreateAssignmentRoomDto } from "./create-assignment-room.dto";
 
 export class CreateInscriptionDto {
 
@@ -11,18 +12,27 @@ export class CreateInscriptionDto {
   })
   studentId: string;
 
-  @IsUUID()
+  @IsNumber()
   @ApiProperty({
-    example: 'staff123',
-    description: 'Identificador único del personal',
+    example: 100.0,
+    description: 'Precio de inscripción',
   })
-  staffId: string;
+  inscriptionPrice: number;
 
-  @IsEnum(InscriptionType)
+  @IsNumber()
   @ApiProperty({
-    example: InscriptionType.Student,
-    description: 'Tipo de inscripción',
-    enum: InscriptionType,
+    example: 100.0,
+    description: 'Precio de inscripción',
   })
-  type: InscriptionType;
+  monthPrice: number;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateAssignmentRoomDto)
+  @ApiProperty({
+    type: [CreateAssignmentRoomDto],
+    description: 'Lista de asignaciones',
+  })
+  assignmentRooms: CreateAssignmentRoomDto[];
+
 }

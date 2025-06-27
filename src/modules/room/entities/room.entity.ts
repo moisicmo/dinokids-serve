@@ -1,5 +1,6 @@
 import { UserEntity } from "@/common";
 import { BranchEntity } from "@/modules/branch/entities/branch.entity";
+import { ScheduleEntity } from "@/modules/schedule/entities/schedule.entity";
 import { SpecialtyEntity } from "@/modules/specialty/entities/specialty.entity";
 import { TeacherEntity } from "@/modules/teacher/entities/teacher.entity";
 
@@ -11,18 +12,22 @@ export const RoomEntity = {
   branch: {
     select: BranchEntity,
   },
-  specialty:{
+  specialty: {
     select: {
       ...SpecialtyEntity,
-      name:true,
+      name: true,
     }
   },
-  teacher:{
+  teacher: {
     select: {
       ...TeacherEntity,
-      user:{
+      user: {
         select: UserEntity,
       }
     }
-  }
+  },
+  schedules: {
+    select: ScheduleEntity,
+  },
+  assignmentRooms: true
 };

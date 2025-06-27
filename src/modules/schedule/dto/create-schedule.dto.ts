@@ -1,15 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { DayOfWeek } from "@prisma/client";
-import { IsArray, IsDate, IsUUID } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsDate } from "class-validator";
 
 export class CreateScheduleDto {
-
-  @IsUUID()
-  @ApiProperty({
-    example: 'sala123',
-    description: 'Identificador único de la sala',
-  })
-  roomId: string;
 
   @IsArray()
   @ApiProperty({
@@ -18,7 +12,9 @@ export class CreateScheduleDto {
   })
   days: DayOfWeek[];
 
+
   @IsDate()
+  @Type(() => Date)
   @ApiProperty({
     example: '2023-03-15T08:00:00Z',
     description: 'Hora de inicio del horario',
@@ -26,6 +22,7 @@ export class CreateScheduleDto {
   start: Date;
 
   @IsDate()
+  @Type(() => Date)
   @ApiProperty({
     example: '2023-03-15T09:00:00Z',
     description: 'Hora de fin del horario',

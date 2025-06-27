@@ -1,4 +1,4 @@
-import {  Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { RoomEntity } from './entities/room.entity';
@@ -8,14 +8,37 @@ import { PaginationDto } from '@/common';
 @Injectable()
 export class RoomService {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(createRoomDto: CreateRoomDto) {
-    return await this.prisma.room.create({
-      data: createRoomDto,
-      select: RoomEntity,
+    const { schedules, ...roomDto } = createRoomDto;
+
+    const result = await this.prisma.$transaction(async (prisma) => {
+      const room = await prisma.room.create({
+        data: roomDto,
+        select: RoomEntity,
+      });
+
+      if (schedules && schedules.length > 0) {
+        await Promise.all(
+          schedules.map(schedule =>
+            prisma.schedule.create({
+              data: {
+                roomId: room.id,
+                ...schedule,
+              },
+            })
+          )
+        );
+      }
+
+      return room;
     });
+
+    return result;
   }
+
+
 
   async findAll(paginationDto: PaginationDto) {
     const { page = 1, limit = 10 } = paginationDto;
@@ -51,14 +74,38 @@ export class RoomService {
   }
 
   async update(id: string, updateRoomDto: UpdateRoomDto) {
-    await this.findOne(id);
+    const { schedules, ...roomDto } = updateRoomDto;
 
-    return this.prisma.room.update({
+    await this.findOne(id); 
+
+    const room = await this.prisma.room.update({
       where: { id },
-      data: updateRoomDto,
+      data: roomDto,
       select: RoomEntity,
     });
+
+    if (schedules) {
+      await this.prisma.schedule.deleteMany({
+        where: { roomId: id },
+      });
+
+      if (schedules.length > 0) {
+        await Promise.all(
+          schedules.map(schedule =>
+            this.prisma.schedule.create({
+              data: {
+                roomId: room.id,
+                ...schedule,
+              },
+            })
+          )
+        );
+      }
+    }
+
+    return room;
   }
+
 
   async remove(id: string) {
     await this.findOne(id);
