@@ -7,5 +7,6 @@ import { CaslModule } from '@/casl/casl.module';
   controllers: [ScheduleController],
   providers: [ScheduleService],
   imports: [PrismaModule,CaslModule],
+  exports: [ScheduleService],
 })
 export class ScheduleModule { }

@@ -1,57 +1,98 @@
-import {  Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { BookingEntity } from './entities/booking.entity';
 import { PrismaService } from '@/prisma/prisma.service';
-import { PaginationDto } from '@/common';
+import { PaginationDto, PaginationResult } from '@/common';
+import { InscriptionService } from '../inscription/inscription.service';
+import { InscriptionSelectType } from '../inscription/entities/inscription.entity';
 
 @Injectable()
 export class BookingService {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly inscriptionService: InscriptionService,
+  ) { }
 
-  async create(createBookingDto: CreateBookingDto) {
-    return await this.prisma.booking.create({
-      data: createBookingDto,
-      select: BookingEntity,
-    });
-  }
+  async create(staffId: string, createBookingDto: CreateBookingDto) {
+    try {
+      const { assignmentRooms, ...bookingDto } = createBookingDto;
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.booking.count({
-      where: { active: true },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+      const result = await this.prisma.$transaction(async (prisma) => {
 
-    const data = await this.prisma.booking.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: { active: true },
-      select: BookingEntity,
-    });
+        // 1. Crear la reserva 
+        const booking = await prisma.booking.create({
+          data: bookingDto,
+          select: BookingEntity,
+        });
+        // 2. Crear la inscripción en modo reserva
 
-    return {
-      data,
-      meta: { total: totalPages, page, lastPage },
-    };
-  }
+        const inscription = await prisma.inscription.create({
+          data: {
+            staffId,
+            bookingId: booking.id,
+          },
+        });
 
-  async findOne(id: string) {
-    const booking = await this.prisma.booking.findUnique({
-      where: { id },
-      select: BookingEntity,
-    });
+        // 3. Validar si hay salas asignadas
+        if (assignmentRooms && assignmentRooms.length > 0) {
+          for (const assignmentRoomDto of assignmentRooms) {
+            const { assignmentSchedules, ...roomData } = assignmentRoomDto;
 
-    if (!booking) {
-      throw new NotFoundException(`Booking with id #${id} not found`);
+            // Crear la asignación de aula
+            const assignmentRoom = await prisma.assignmentRoom.create({
+              data: {
+                inscriptionId: inscription.id,
+                ...roomData,
+              },
+            });
+
+            // Crear los horarios asociados
+            if (assignmentSchedules && assignmentSchedules.length > 0) {
+              for (const scheduleDto of assignmentSchedules) {
+                await prisma.assignmentSchedule.create({
+                  data: {
+                    assignmentRoomId: assignmentRoom.id,
+                    scheduleId: scheduleDto.schedule.id,
+                    day: scheduleDto.day,
+                  },
+                });
+              }
+            }
+          }
+        }
+
+        // 7. Retornar la inscripción final
+        return inscription;
+      });
+
+      const finalInscription = await this.inscriptionService.findOne(result.id);
+
+      return {
+        ...finalInscription,
+      };
+    } catch (error) {
+      console.log(error);
+      throw new Error(`No se pudo crear la reserva: ${error.message}`);
     }
+  }
 
-    return booking;
+  async findAllByBooking(paginationDto: PaginationDto): Promise<PaginationResult<InscriptionSelectType>> {
+    try {
+      const inscriptionsByBooking = await this.inscriptionService.findAll(paginationDto, {
+        booking: { isNot: null },
+      });
+
+      return inscriptionsByBooking;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Error retrieving inscriptions');
+    }
   }
 
   async update(id: string, updateBookingDto: UpdateBookingDto) {
-    await this.findOne(id);
+    await this.inscriptionService.findOne(id);
 
     return this.prisma.booking.update({
       where: { id },
@@ -61,7 +102,7 @@ export class BookingService {
   }
 
   async remove(id: string) {
-    await this.findOne(id);
+    await this.inscriptionService.findOne(id);
 
     return this.prisma.booking.update({
       where: { id },

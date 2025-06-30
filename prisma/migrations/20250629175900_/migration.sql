@@ -2,7 +2,7 @@
 CREATE TYPE "TypeDocument" AS ENUM ('DNI', 'RUC', 'PASAPORTE');
 
 -- CreateEnum
-CREATE TYPE "InscriptionType" AS ENUM ('Student', 'Bookings');
+CREATE TYPE "InscriptionType" AS ENUM ('STUDENTS', 'BOOKINGS');
 
 -- CreateEnum
 CREATE TYPE "TypeInscriptionDebt" AS ENUM ('BOOKING', 'INSCRIPTION', 'MONTH', 'PER_SESSION');
@@ -238,20 +238,6 @@ CREATE TABLE "assignment_schedules" (
 );
 
 -- CreateTable
-CREATE TABLE "bookings" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "days" INTEGER NOT NULL,
-    "dni" VARCHAR NOT NULL,
-    "name" VARCHAR NOT NULL,
-    "amount" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
-    "active" BOOLEAN NOT NULL DEFAULT true,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "bookings_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "prices" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "inscription_id" UUID NOT NULL,
@@ -277,6 +263,20 @@ CREATE TABLE "inscriptions" (
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "inscriptions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "bookings" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "days" INTEGER NOT NULL,
+    "dni" VARCHAR NOT NULL,
+    "name" VARCHAR NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "bookings_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -398,6 +398,9 @@ CREATE UNIQUE INDEX "branch_specialties_branch_id_specialty_id_key" ON "branch_s
 
 -- CreateIndex
 CREATE UNIQUE INDEX "assignment_rooms_inscription_id_room_id_key" ON "assignment_rooms"("inscription_id", "room_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "inscriptions_booking_id_key" ON "inscriptions"("booking_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "refunds_inscription_debt_id_key" ON "refunds"("inscription_debt_id");

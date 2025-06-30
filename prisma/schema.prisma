@@ -235,18 +235,7 @@ model AssignmentSchedule {
 	@@map("assignment_schedules")
 }
 
-model Booking {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  days                  Int                                                   @db.Integer
-  dni                   String                                                @db.VarChar
-  name                  String                                                @db.VarChar
-  amount                Float                                                 @default(0.00)
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscriptions          Inscription[]
-	@@map("bookings")
-}
+
 
 model Price {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -256,14 +245,14 @@ model Price {
   active                Boolean                                               @default(true)
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscription           Inscription                                           @relation(fields: [inscriptionId], references: [id])
+  inscription           Inscription?                                           @relation(fields: [inscriptionId], references: [id])
 	@@map("prices")
 }
 
 model Inscription {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   studentId             String?               @map("student_id")              @db.Uuid
-  bookingId             String?               @map("booking_id")              @db.Uuid
+  bookingId             String?               @unique @map("booking_id")      @db.Uuid
   staffId               String                @map("staff_id")                @db.Uuid
   inscriptionType       InscriptionType?      @map("inscription_type")
   url                   String?                                               @db.VarChar
@@ -271,13 +260,25 @@ model Inscription {
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   student               Student?                                              @relation(fields: [studentId], references: [userId])
-  booking               Booking?                                              @relation(fields: [bookingId], references: [id])
+  booking               Booking?                                              @relation("booking_to_inscription", fields: [bookingId], references: [id])
   staff                 Staff                                                 @relation(fields: [staffId], references: [userId])
   prices                Price[]
   assignmentRooms       AssignmentRoom[]
   inscriptionDebts      InscriptionDebt[]
   Sessions              Session[]
 	@@map("inscriptions")
+}
+model Booking {
+  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  days                  Int                                                   @db.Integer
+  dni                   String                                                @db.VarChar
+  name                  String                                                @db.VarChar
+  amount                Float                                                 @default(0.00)
+  active                Boolean                                               @default(true)
+  createdAt             DateTime              @map("created_at")              @default(now())
+  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
+  inscription           Inscription?                                          @relation("booking_to_inscription")
+	@@map("bookings")
 }
 
 model InscriptionDebt {
@@ -350,8 +351,8 @@ enum TypeDocument {
   PASAPORTE
 }
 enum InscriptionType {
-  Student
-  Bookings
+  STUDENTS
+  BOOKINGS
 }
 enum TypeInscriptionDebt {
   BOOKING

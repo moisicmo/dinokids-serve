@@ -3,9 +3,10 @@ import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities } from '@/decorator';
+import { checkAbilities, CurrentUser } from '@/decorator';
 import { AbilitiesGuard } from '@/guard/abilities.guard';
 import { TypeAction, TypeSubject } from "@prisma/client";
+import { JwtPayload } from '../auth/entities/jwt-payload.interface';
 
 @UseGuards(AbilitiesGuard)
 @Controller('booking')
@@ -14,20 +15,14 @@ export class BookingController {
 
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.booking })
-  create(@Body() createBookingDto: CreateBookingDto) {
-    return this.bookingService.create(createBookingDto);
+  create( @CurrentUser() user: JwtPayload, @Body() createBookingDto: CreateBookingDto) {
+    return this.bookingService.create(user.id,createBookingDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.booking })
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.bookingService.findAll(paginationDto);
-  }
-
-  @Get(':id')
-  @checkAbilities({ action: TypeAction.read, subject: TypeSubject.booking })
-  findOne(@Param('id') id: string) {
-    return this.bookingService.findOne(id);
+    return this.bookingService.findAllByBooking(paginationDto);
   }
 
   @Patch(':id')

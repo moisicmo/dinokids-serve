@@ -14,10 +14,12 @@ import { TeacherModule } from './modules/teacher/teacher.module';
 import { TutorModule } from './modules/tutor/tutor.module';
 import { RoomModule } from './modules/room/room.module';
 import { SpecialtyModule } from './modules/specialty/specialty.module';
-import { AssignmentRoomModule } from './modules/assignment-room/assignment-room.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { BookingModule } from './modules/booking/booking.module';
 import { InscriptionModule } from './modules/inscription/inscription.module';
+import { PdfModule } from './common/pdf/pdf.module';
+import { GoogledriveModule } from './common/googledrive/googledrive.module';
+import { InscriptionDebtModule } from './modules/inscription-debt/inscription-debt.module';
 
 @Module({
   imports: [
@@ -33,10 +35,12 @@ import { InscriptionModule } from './modules/inscription/inscription.module';
     RoomModule,
     SpecialtyModule,
     ScheduleModule,
-    AssignmentRoomModule,
-    BookingModule,
     InscriptionModule,
+    BookingModule,
     CloudinaryModule,
+    PdfModule,
+    GoogledriveModule,
+    InscriptionDebtModule,
   ],
   providers: [
     PrismaService,

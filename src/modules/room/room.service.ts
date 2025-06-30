@@ -4,11 +4,15 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { RoomEntity } from './entities/room.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto } from '@/common';
+import { ScheduleService } from '../schedule/schedule.service';
 
 @Injectable()
 export class RoomService {
 
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly scheduleService: ScheduleService,
+  ) { }
 
   async create(createRoomDto: CreateRoomDto) {
     const { schedules, ...roomDto } = createRoomDto;
@@ -38,27 +42,52 @@ export class RoomService {
     return result;
   }
 
-
-
   async findAll(paginationDto: PaginationDto) {
     const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.room.count({
-      where: { active: true },
+
+    const total = await this.prisma.room.count({
+      where: {
+        active: true,
+        schedules: {
+          some: {
+            active: true,
+          },
+        },
+      },
     });
-    const lastPage = Math.ceil(totalPages / limit);
+
+    const lastPage = Math.ceil(total / limit);
 
     const data = await this.prisma.room.findMany({
       skip: (page - 1) * limit,
       take: limit,
-      where: { active: true },
+      where: {
+        active: true,
+        schedules: {
+          some: {
+            active: true,
+          },
+        },
+      },
       select: RoomEntity,
     });
 
+    // ✅ filtramos manualmente los schedules activos
+    const filteredData = data.map((room) => ({
+      ...room,
+      schedules: room.schedules?.filter((s) => s.active),
+    }));
+
     return {
-      data,
-      meta: { total: totalPages, page, lastPage },
+      data: filteredData,
+      meta: {
+        total,
+        page,
+        lastPage,
+      },
     };
   }
+
 
   async findOne(id: string) {
     const room = await this.prisma.room.findUnique({
@@ -74,9 +103,9 @@ export class RoomService {
   }
 
   async update(id: string, updateRoomDto: UpdateRoomDto) {
-    const { schedules, ...roomDto } = updateRoomDto;
+    const { schedules = [], ...roomDto } = updateRoomDto;
 
-    await this.findOne(id); 
+    await this.findOne(id);
 
     const room = await this.prisma.room.update({
       where: { id },
@@ -84,27 +113,59 @@ export class RoomService {
       select: RoomEntity,
     });
 
-    if (schedules) {
-      await this.prisma.schedule.deleteMany({
-        where: { roomId: id },
-      });
+    // 🔹 Buscar todos los horarios actuales de esta sala
+    const existingSchedules = await this.prisma.schedule.findMany({
+      where: { roomId: id },
+      select: { id: true },
+    });
 
-      if (schedules.length > 0) {
-        await Promise.all(
-          schedules.map(schedule =>
-            this.prisma.schedule.create({
-              data: {
-                roomId: room.id,
-                ...schedule,
-              },
-            })
-          )
-        );
-      }
-    }
+    const incomingIds = schedules
+      .filter(s => !!s.id)
+      .map(s => s.id);
+
+    // 🔹 Eliminar horarios que ya no vienen en el DTO
+    const toDelete = existingSchedules.filter(
+      s => !incomingIds.includes(s.id)
+    );
+
+    await Promise.all(
+      toDelete.map((item) =>
+        this.scheduleService.remove(item.id)
+      )
+    );
+
+    // 🔹 Procesar los nuevos horarios
+    await Promise.all(
+      schedules.map(schedule => {
+        if (schedule.id) {
+          // ✅ Update si viene con ID
+          return this.prisma.schedule.update({
+            where: { id: schedule.id },
+            data: {
+              days: schedule.days,
+              start: schedule.start,
+              end: schedule.end,
+              // active: schedule.active ?? true,
+            },
+          });
+        } else {
+          // ➕ Create si no tiene ID
+          return this.prisma.schedule.create({
+            data: {
+              roomId: room.id,
+              days: schedule.days,
+              start: schedule.start,
+              end: schedule.end,
+              // active: schedule.active ?? true,
+            },
+          });
+        }
+      })
+    );
 
     return room;
   }
+
 
 
   async remove(id: string) {

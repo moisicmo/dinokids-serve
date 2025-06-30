@@ -3,4 +3,5 @@ export const ScheduleEntity = {
   days: true,
   start: true,
   end: true,
+  active: true,
 };

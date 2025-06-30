@@ -12,7 +12,6 @@ export class CreateScheduleDto {
   })
   days: DayOfWeek[];
 
-
   @IsDate()
   @Type(() => Date)
   @ApiProperty({

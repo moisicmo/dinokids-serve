@@ -22,7 +22,12 @@ export class InscriptionController {
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.inscription })
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.inscriptionService.findAll(paginationDto);
+    return this.inscriptionService.findAllByStudent(paginationDto);
+  }
+  @Get('pdf/:id')
+  @checkAbilities({ action: TypeAction.read, subject: TypeSubject.inscription })
+  findPdf(@Param('id') id: string) {
+    return this.inscriptionService.findPdf(id);
   }
 
   @Get(':id')

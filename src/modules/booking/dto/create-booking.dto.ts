@@ -1,5 +1,7 @@
+import { CreateAssignmentRoomDto } from "@/modules/inscription/dto/create-assignment-room.dto";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
 
 export class CreateBookingDto {
 
@@ -29,6 +31,14 @@ export class CreateBookingDto {
     example: 100,
     description: 'Precio de la reserva',
   })
-  price: number;
+  amount: number;
 
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateAssignmentRoomDto)
+  @ApiProperty({
+    type: [CreateAssignmentRoomDto],
+    description: 'Lista de asignaciones',
+  })
+  assignmentRooms: CreateAssignmentRoomDto[];
 }
