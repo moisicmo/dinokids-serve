@@ -3,7 +3,7 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, UserEntity } from '@/common'; import { StudentEntity } from './entities/student.entity';
+import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { StudentSelect, StudentSelectType } from './entities/student.entity';
 @Injectable()
 
 export class StudentService {
@@ -47,7 +47,7 @@ export class StudentService {
     });
   }
 
-  async findAll(paginationDto: PaginationDto) {
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StudentSelectType>> {
     const { page = 1, limit = 10 } = paginationDto;
     const totalPages = await this.prisma.student.count({
       where: {
@@ -63,28 +63,23 @@ export class StudentService {
         where: {
           active: true,
         },
-        select: StudentEntity,
+        select: StudentSelect,
       }),
       meta: { total: totalPages, page, lastPage },
     };
   }
 
-  async findOne(id: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id,
-        student: {
-          isNot: null,
-        },
-      },
-      select: UserEntity,
+  async findOne(id: string): Promise<StudentSelectType>  {
+    const student = await this.prisma.student.findUnique({
+      where: { userId : id},
+      select: StudentSelect,
     });
 
-    if (!user) {
+    if (!student) {
       throw new NotFoundException(`Student with id #${id} not found`);
     }
 
-    return user;
+    return student;
   }
 
   async update(id: string, updateStudentDto: UpdateStudentDto) {

@@ -19,7 +19,7 @@ import { BookingModule } from './modules/booking/booking.module';
 import { InscriptionModule } from './modules/inscription/inscription.module';
 import { PdfModule } from './common/pdf/pdf.module';
 import { GoogledriveModule } from './common/googledrive/googledrive.module';
-import { InscriptionDebtModule } from './modules/inscription-debt/inscription-debt.module';
+import { DebtModule } from './modules/debt/debt.module';
 
 @Module({
   imports: [
@@ -40,7 +40,7 @@ import { InscriptionDebtModule } from './modules/inscription-debt/inscription-de
     CloudinaryModule,
     PdfModule,
     GoogledriveModule,
-    InscriptionDebtModule,
+    DebtModule,
   ],
   providers: [
     PrismaService,

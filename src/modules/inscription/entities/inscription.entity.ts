@@ -1,25 +1,20 @@
 import { BookingEntity } from "@/modules/booking/entities/booking.entity";
-import { StudentEntity } from "@/modules/student/entities/student.entity";
+import { StudentSelect } from "@/modules/student/entities/student.entity";
 import { AssignmentRoomEntity } from "./assignment-room.entity";
 import { PriceEntity } from "./price.entity";
 import { Prisma } from "@prisma/client";
 
 
-export type InscriptionExtended = InscriptionSelectType & {
+export type InscriptionExtended = InscriptionType & {
   inscriptionPrice: number;
   monthPrice: number;
 };
-
-export type InscriptionSelectType = Prisma.InscriptionGetPayload<{
-  select: typeof InscriptionSelect;
-}>;
-
 
 export const InscriptionSelect = {
   id: true,
   url: true,
   student: {
-    select: StudentEntity,
+    select: StudentSelect,
   },
   booking: {
     select: BookingEntity,
@@ -31,3 +26,8 @@ export const InscriptionSelect = {
     select: AssignmentRoomEntity
   }
 };
+
+export type InscriptionType = Prisma.InscriptionGetPayload<{
+  select: typeof InscriptionSelect
+}>;
+

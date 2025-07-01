@@ -5,7 +5,7 @@ CREATE TYPE "TypeDocument" AS ENUM ('DNI', 'RUC', 'PASAPORTE');
 CREATE TYPE "InscriptionType" AS ENUM ('STUDENTS', 'BOOKINGS');
 
 -- CreateEnum
-CREATE TYPE "TypeInscriptionDebt" AS ENUM ('BOOKING', 'INSCRIPTION', 'MONTH', 'PER_SESSION');
+CREATE TYPE "TypeDebt" AS ENUM ('BOOKING', 'INSCRIPTION', 'MONTH', 'PER_SESSION');
 
 -- CreateEnum
 CREATE TYPE "PayMethod" AS ENUM ('CASH', 'BANK', 'QR');
@@ -26,7 +26,7 @@ CREATE TYPE "AcademicStatus" AS ENUM ('ACTIVO', 'INACTIVO', 'EGRESADO', 'TITULAD
 CREATE TYPE "TypeAction" AS ENUM ('manage', 'create', 'read', 'update', 'delete');
 
 -- CreateEnum
-CREATE TYPE "TypeSubject" AS ENUM ('all', 'permission', 'role', 'staff', 'student', 'tutor', 'teacher', 'assignmentRoom', 'assignmentSchedule', 'booking', 'branch', 'room', 'specialty', 'schedule', 'session', 'inscription', 'inscriptionDebt', 'payment', 'invoice', 'refund', 'user', 'price');
+CREATE TYPE "TypeSubject" AS ENUM ('all', 'permission', 'role', 'staff', 'student', 'tutor', 'teacher', 'assignmentRoom', 'assignmentSchedule', 'booking', 'branch', 'room', 'specialty', 'schedule', 'session', 'inscription', 'debt', 'payment', 'invoice', 'refund', 'user', 'price');
 
 -- CreateTable
 CREATE TABLE "branches" (
@@ -280,24 +280,24 @@ CREATE TABLE "bookings" (
 );
 
 -- CreateTable
-CREATE TABLE "inscription_debts" (
+CREATE TABLE "debts" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "inscription_id" UUID NOT NULL,
+    "inscription_id" UUID,
     "total_amount" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
     "remaining_balance" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
-    "type" "TypeInscriptionDebt" NOT NULL DEFAULT 'MONTH',
+    "type" "TypeDebt" NOT NULL DEFAULT 'MONTH',
     "due_date" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "inscription_debts_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "debts_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "payments" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "inscription_debt_id" UUID NOT NULL,
-    "invoice_id" UUID NOT NULL,
+    "debt_id" UUID NOT NULL,
+    "invoice_id" UUID,
     "reference" VARCHAR,
     "amount" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
     "pay_method" "PayMethod" NOT NULL DEFAULT 'CASH',
@@ -323,7 +323,7 @@ CREATE TABLE "invoices" (
 -- CreateTable
 CREATE TABLE "refunds" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "inscription_debt_id" UUID NOT NULL,
+    "debt_id" UUID NOT NULL,
     "reference" VARCHAR,
     "amount" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -403,7 +403,7 @@ CREATE UNIQUE INDEX "assignment_rooms_inscription_id_room_id_key" ON "assignment
 CREATE UNIQUE INDEX "inscriptions_booking_id_key" ON "inscriptions"("booking_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "refunds_inscription_debt_id_key" ON "refunds"("inscription_debt_id");
+CREATE UNIQUE INDEX "refunds_debt_id_key" ON "refunds"("debt_id");
 
 -- CreateIndex
 CREATE INDEX "_BranchToStaff_B_index" ON "_BranchToStaff"("B");
@@ -478,19 +478,19 @@ ALTER TABLE "inscriptions" ADD CONSTRAINT "inscriptions_booking_id_fkey" FOREIGN
 ALTER TABLE "inscriptions" ADD CONSTRAINT "inscriptions_staff_id_fkey" FOREIGN KEY ("staff_id") REFERENCES "staffs"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "inscription_debts" ADD CONSTRAINT "inscription_debts_inscription_id_fkey" FOREIGN KEY ("inscription_id") REFERENCES "inscriptions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "debts" ADD CONSTRAINT "debts_inscription_id_fkey" FOREIGN KEY ("inscription_id") REFERENCES "inscriptions"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payments" ADD CONSTRAINT "payments_inscription_debt_id_fkey" FOREIGN KEY ("inscription_debt_id") REFERENCES "inscription_debts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payments" ADD CONSTRAINT "payments_debt_id_fkey" FOREIGN KEY ("debt_id") REFERENCES "debts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "payments" ADD CONSTRAINT "payments_invoice_id_fkey" FOREIGN KEY ("invoice_id") REFERENCES "invoices"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "payments" ADD CONSTRAINT "payments_invoice_id_fkey" FOREIGN KEY ("invoice_id") REFERENCES "invoices"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "invoices" ADD CONSTRAINT "invoices_staff_id_fkey" FOREIGN KEY ("staff_id") REFERENCES "staffs"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "refunds" ADD CONSTRAINT "refunds_inscription_debt_id_fkey" FOREIGN KEY ("inscription_debt_id") REFERENCES "inscription_debts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "refunds" ADD CONSTRAINT "refunds_debt_id_fkey" FOREIGN KEY ("debt_id") REFERENCES "debts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_inscription_id_fkey" FOREIGN KEY ("inscription_id") REFERENCES "inscriptions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

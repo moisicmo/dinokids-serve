@@ -5,7 +5,7 @@ import { BookingEntity } from './entities/booking.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { InscriptionService } from '../inscription/inscription.service';
-import { InscriptionSelectType } from '../inscription/entities/inscription.entity';
+import { InscriptionType } from '../inscription/entities/inscription.entity';
 
 @Injectable()
 export class BookingService {
@@ -78,7 +78,7 @@ export class BookingService {
     }
   }
 
-  async findAllByBooking(paginationDto: PaginationDto): Promise<PaginationResult<InscriptionSelectType>> {
+  async findAllByBooking(paginationDto: PaginationDto): Promise<PaginationResult<InscriptionType>> {
     try {
       const inscriptionsByBooking = await this.inscriptionService.findAll(paginationDto, {
         booking: { isNot: null },

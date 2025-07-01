@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateInscriptionDto } from './dto/create-inscription.dto';
 import { UpdateInscriptionDto } from './dto/update-inscription.dto';
-import { InscriptionExtended, InscriptionSelect, InscriptionSelectType } from './entities/inscription.entity';
+import { InscriptionExtended, InscriptionSelect, InscriptionType } from './entities/inscription.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { PdfService } from '@/common/pdf/pdf.service';
@@ -127,7 +127,7 @@ export class InscriptionService {
   async findAll(
     paginationDto: PaginationDto,
     whereCustom?: Prisma.InscriptionWhereInput,
-  ): Promise<PaginationResult<InscriptionSelectType>> {
+  ): Promise<PaginationResult<InscriptionType>> {
     try {
       const { page = 1, limit = 10 } = paginationDto;
 
@@ -185,18 +185,18 @@ export class InscriptionService {
   }
 
 
-  async findOne(id: string): Promise<InscriptionSelectType> {
-    const inscription = await this.prisma.inscription.findUnique({
-      where: { id },
-      select: InscriptionSelect,
-    });
+async findOne(id: string): Promise<InscriptionType> {
+  const inscription = await this.prisma.inscription.findUnique({
+    where: { id },
+    select: InscriptionSelect,
+  });
 
-    if (!inscription) {
-      throw new NotFoundException(`Inscription with id #${id} not found`);
-    }
-
-    return inscription;
+  if (!inscription) {
+    throw new NotFoundException(`Inscription with id #${id} not found`);
   }
+
+  return inscription;
+}
 
   async update(id: string, updateInscriptionDto: UpdateInscriptionDto) {
     const { assignmentRooms, ...inscriptionData } = updateInscriptionDto;

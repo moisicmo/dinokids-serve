@@ -188,7 +188,7 @@ model Room {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   branch                Branch                                                @relation(fields: [branchId],references: [id])
   teacher               Teacher                                               @relation(fields: [teacherId], references: [userId])
-  specialty             Specialty                                            @relation(fields: [specialtyId],references: [id])
+  specialty             Specialty                                             @relation(fields: [specialtyId],references: [id])
   schedules             Schedule[]
   assignmentRooms       AssignmentRoom[]
 	@@map("rooms")
@@ -235,8 +235,6 @@ model AssignmentSchedule {
 	@@map("assignment_schedules")
 }
 
-
-
 model Price {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   inscriptionId         String                @map("inscription_id")          @db.Uuid
@@ -245,7 +243,7 @@ model Price {
   active                Boolean                                               @default(true)
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscription           Inscription?                                           @relation(fields: [inscriptionId], references: [id])
+  inscription           Inscription?                                          @relation(fields: [inscriptionId], references: [id])
 	@@map("prices")
 }
 
@@ -264,7 +262,7 @@ model Inscription {
   staff                 Staff                                                 @relation(fields: [staffId], references: [userId])
   prices                Price[]
   assignmentRooms       AssignmentRoom[]
-  inscriptionDebts      InscriptionDebt[]
+  debts      Debts[]
   Sessions              Session[]
 	@@map("inscriptions")
 }
@@ -281,32 +279,32 @@ model Booking {
 	@@map("bookings")
 }
 
-model InscriptionDebt {
+model Debts {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  inscriptionId         String                @map("inscription_id")          @db.Uuid
+  inscriptionId         String?               @map("inscription_id")          @db.Uuid
   totalAmount           Float                 @map("total_amount")            @default(0.00)
   remainingBalance      Float                 @map("remaining_balance")       @default(0.00)
-  type                  TypeInscriptionDebt                                   @default(MONTH)
+  type                  TypeDebt                                              @default(MONTH)
   dueDate               DateTime?             @map("due_date")
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscription           Inscription                                           @relation(fields: [inscriptionId], references: [id])
+  inscription           Inscription?                                          @relation(fields: [inscriptionId], references: [id])
   payments              Payment[]
   Refund                Refund?
-	@@map("inscription_debts")
+	@@map("debts")
 }
 
 model Payment {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  inscriptionDebtId     String                @map("inscription_debt_id")     @db.Uuid
-  invoiceId             String                @map("invoice_id")              @db.Uuid
+  debtId                String                @map("debt_id")                 @db.Uuid
+  invoiceId             String?               @map("invoice_id")              @db.Uuid
   reference             String?                                               @db.VarChar
   amount                Float                                                 @default(0.00)
   payMethod             PayMethod             @map("pay_method")              @default(CASH)
   active                Boolean                                               @default(true)
   createdAt             DateTime              @map("created_at")              @default(now())
-  inscriptionDebt       InscriptionDebt                                       @relation(fields: [inscriptionDebtId], references: [id])
-  invoice               Invoice                                               @relation(fields: [invoiceId], references: [id])
+  debt                  Debts                                                 @relation(fields: [debtId], references: [id])
+  invoice               Invoice?                                              @relation(fields: [invoiceId], references: [id])
 	@@map("payments")
 }
 
@@ -325,11 +323,11 @@ model Invoice {
 
 model Refund {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  inscriptionDebtId     String                @map("inscription_debt_id")     @db.Uuid @unique
+  debtId                String                @map("debt_id")                 @db.Uuid @unique
   reference             String?                                               @db.VarChar
   amount                Float                                                 @default(0.00)
   createdAt             DateTime              @map("created_at")              @default(now())
-  InscriptionDebt       InscriptionDebt                                       @relation(fields: [inscriptionDebtId], references: [id])
+  Debts                 Debts                                                 @relation(fields: [debtId], references: [id])
 	@@map("refunds")
 }
 
@@ -354,7 +352,7 @@ enum InscriptionType {
   STUDENTS
   BOOKINGS
 }
-enum TypeInscriptionDebt {
+enum TypeDebt {
   BOOKING
   INSCRIPTION
   MONTH
@@ -413,7 +411,7 @@ enum TypeSubject {
   schedule
   session
   inscription
-  inscriptionDebt
+  debt
   payment
   invoice
   refund

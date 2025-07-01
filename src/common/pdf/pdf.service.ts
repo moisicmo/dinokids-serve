@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { InscriptionSelectType } from '@/modules/inscription/entities/inscription.entity';
+import { InscriptionType } from '@/modules/inscription/entities/inscription.entity';
 
 @Injectable()
 export class PdfService {
@@ -94,7 +94,7 @@ export class PdfService {
     };
   }
 
-  async generateInscriptionPdf(inscription: InscriptionSelectType): Promise<Buffer> {
+  async generateInscriptionPdf(inscription: InscriptionType): Promise<Buffer> {
     const logoPath = path.join(__dirname, '../../../assets/logo.png');
     const logoBase64 = fs.existsSync(logoPath)
       ? fs.readFileSync(logoPath).toString('base64')

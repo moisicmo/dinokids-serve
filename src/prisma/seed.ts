@@ -1,8 +1,8 @@
 import { AcademicStatus, EducationLevel, Gender, PrismaClient, TypeAction, TypeSubject } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { createInscriptionDebtTrigger } from './triggers/inscription-debt.trigger';
+import { createDebtTrigger } from './triggers/inscription-debt.trigger';
 import { createInscriptionTypeTrigger } from './triggers/inscription-type.trigger';
-import { createInscriptionDebtOnBookingTrigger } from './triggers/inscription-debt-booking.trigger';
+import { createDebtOnBookingTrigger } from './triggers/inscription-debt-booking.trigger';
 
 async function main() {
   const prisma = new PrismaClient();
@@ -131,9 +131,9 @@ async function main() {
     });
 
     console.log('✅ Datos de semilla insertados correctamente.');
-    await createInscriptionDebtTrigger(prisma);
+    await createDebtTrigger(prisma);
     await createInscriptionTypeTrigger(prisma);
-    await createInscriptionDebtOnBookingTrigger(prisma);
+    await createDebtOnBookingTrigger(prisma);
 
   } catch (error) {
     console.error('❌ Error al insertar datos de semilla:', error);
