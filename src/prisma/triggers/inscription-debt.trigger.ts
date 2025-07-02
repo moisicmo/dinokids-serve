@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
+// -- Crea automáticamente las deudas de inscripción y mensualidad
+// -- al activar un registro, si dichas deudas aún no existen.
+
 export async function createDebtTrigger(prisma: PrismaClient) {
   await prisma.$executeRawUnsafe(`
     CREATE OR REPLACE FUNCTION create_debts_on_price()

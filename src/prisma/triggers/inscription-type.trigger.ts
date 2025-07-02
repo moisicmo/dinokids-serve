@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
+// -- Valida que al menos student_id o booking_id no sean nulos.
+// -- Según el caso, define automáticamente el inscription_type como 'STUDENTS' o 'BOOKINGS'.
+
 export async function createInscriptionTypeTrigger(prisma: PrismaClient) {
   // Crear la función
   await prisma.$executeRawUnsafe(`

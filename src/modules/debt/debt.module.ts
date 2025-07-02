@@ -10,5 +10,6 @@ import { GoogledriveModule } from '@/common/googledrive/googledrive.module';
   controllers: [DebtController],
   providers: [DebtService],
   imports: [PrismaModule, CaslModule, PdfModule, GoogledriveModule],
+   exports: [DebtService]
 })
 export class DebtModule {}

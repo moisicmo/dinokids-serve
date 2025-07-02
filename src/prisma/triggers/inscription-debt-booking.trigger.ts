@@ -1,8 +1,10 @@
-// prisma/triggers/price-active.trigger.ts
 import { PrismaClient } from '@prisma/client';
 
+// -- Crea automáticamente una deuda, una factura y un pago asociado
+// -- cuando se registra un nuevo dato con booking_id y sin student_id.
+
 export async function createDebtOnBookingTrigger(prisma: PrismaClient) {
-  // Crear la función
+
   await prisma.$executeRawUnsafe(`
   CREATE OR REPLACE FUNCTION create_debts_on_booking()
   RETURNS TRIGGER AS $$

@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { createDebtTrigger } from './triggers/inscription-debt.trigger';
 import { createInscriptionTypeTrigger } from './triggers/inscription-type.trigger';
 import { createDebtOnBookingTrigger } from './triggers/inscription-debt-booking.trigger';
+import { createUpdateRemainingBalanceTrigger } from './triggers/payment-debt.trigger';
 
 async function main() {
   const prisma = new PrismaClient();
@@ -134,6 +135,7 @@ async function main() {
     await createDebtTrigger(prisma);
     await createInscriptionTypeTrigger(prisma);
     await createDebtOnBookingTrigger(prisma);
+    await createUpdateRemainingBalanceTrigger(prisma);
 
   } catch (error) {
     console.error('❌ Error al insertar datos de semilla:', error);

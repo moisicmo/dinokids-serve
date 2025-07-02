@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PdfService } from '@/common/pdf/pdf.service';
 import { GoogledriveService } from '@/common/googledrive/googledrive.service';
@@ -48,8 +48,22 @@ export class DebtService {
     }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} debt`;
+  async findOne(id: string): Promise<DebtType> {
+    try {
+      const debt = await this.prisma.debts.findUnique({
+        where: { id },
+        select: DebtSelect,
+      });
+
+      if (!debt) {
+        throw new NotFoundException(`Branch with id #${id} not found`);
+      }
+
+      return debt;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Error al obtener la deuda');
+    }
   }
 
   remove(id: string) {

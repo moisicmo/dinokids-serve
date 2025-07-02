@@ -20,6 +20,7 @@ import { InscriptionModule } from './modules/inscription/inscription.module';
 import { PdfModule } from './common/pdf/pdf.module';
 import { GoogledriveModule } from './common/googledrive/googledrive.module';
 import { DebtModule } from './modules/debt/debt.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { DebtModule } from './modules/debt/debt.module';
     ScheduleModule,
     InscriptionModule,
     BookingModule,
+    PaymentModule,
     CloudinaryModule,
     PdfModule,
     GoogledriveModule,
