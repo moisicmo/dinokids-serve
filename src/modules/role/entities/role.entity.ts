@@ -1,9 +1,14 @@
-import { PermissionEntity} from '@/modules/permission/entities/permission.entity';
+import { PermissionSelect} from '@/modules/permission/entities/permission.entity';
+import { Prisma } from '@prisma/client';
 
-export const RoleEntity = {
+
+export type RoleType = Prisma.RoleGetPayload<{
+  select: typeof RoleSelect;
+}>;
+export const RoleSelect = {
   id: true,
   name: true,
   permissions: {
-    select: PermissionEntity
+    select: PermissionSelect
   }
 };

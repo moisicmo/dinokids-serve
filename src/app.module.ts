@@ -17,10 +17,15 @@ import { SpecialtyModule } from './modules/specialty/specialty.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { BookingModule } from './modules/booking/booking.module';
 import { InscriptionModule } from './modules/inscription/inscription.module';
-import { PdfModule } from './common/pdf/pdf.module';
-import { GoogledriveModule } from './common/googledrive/googledrive.module';
 import { DebtModule } from './modules/debt/debt.module';
 import { PaymentModule } from './modules/payment/payment.module';
+import { InvoiceModule } from './modules/invoice/invoice.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { ReportModule } from './modules/report/report.module';
+
+import { GoogledriveModule } from './common/googledrive/googledrive.module';
+import { PdfModule } from './common/pdf/pdf.module';
+import { XlsxModule } from './common/xlsx/xlsx.module';
 
 @Module({
   imports: [
@@ -41,8 +46,12 @@ import { PaymentModule } from './modules/payment/payment.module';
     PaymentModule,
     CloudinaryModule,
     PdfModule,
+    XlsxModule,
     GoogledriveModule,
     DebtModule,
+    InvoiceModule,
+    DashboardModule,
+    ReportModule,
   ],
   providers: [
     PrismaService,

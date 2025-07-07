@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, UserEntity } from '@/common';import { StaffEntity } from './entities/staff.entity';
+import { PaginationDto, PaginationResult, UserEntity } from '@/common';import { StaffSelect, StaffType } from './entities/staff.entity';
  @Injectable()
 export class StaffService {
 
@@ -41,26 +41,49 @@ export class StaffService {
     });
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.staff.count({
-      where: {
-        active: true,
-      },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StaffType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    return {
-      data: await this.prisma.staff.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-        where: {
-          active: true,
-        },
-        select: StaffEntity,
-      }),
-      meta: { total: totalPages, page, lastPage },
-    };
+      const whereClause: any = {
+        active: true,
+      };
+
+      if (keys.trim() !== '') {
+        whereClause.OR = [
+          {
+            user: {
+              OR: [
+                { name: { contains: keys, mode: 'insensitive' } },
+                { lastName: { contains: keys, mode: 'insensitive' } },
+                { email: { contains: keys, mode: 'insensitive' } },
+                { numberDocument: { contains: keys, mode: 'insensitive' } },
+              ],
+            },
+          },
+        ];
+      }
+      const totalPages = await this.prisma.staff.count({
+        where: whereClause,
+      });
+      const lastPage = Math.ceil(totalPages / limit);
+      return {
+        data: await this.prisma.staff.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereClause,
+          orderBy: {
+            createdAt: 'asc',
+          },
+          select: StaffSelect,
+        }),
+        meta: { total: totalPages, page, lastPage },
+      };
+
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Hubo un error al pedir staff');
+    }
   }
 
   async findOne(id: string) {

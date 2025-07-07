@@ -3,8 +3,8 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { RequestInfo } from '@/decorator';
 import { PrismaService } from '@/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { RoleEntity } from '@/modules/role/entities/role.entity';
-import { BranchEntity } from '@/modules/branch/entities/branch.entity';
+import { RoleSelect } from '@/modules/role/entities/role.entity';
+import { BranchSelect } from '@/modules/branch/entities/branch.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './entities/jwt-payload.interface';
 import { CreateRefreshDto } from './dto/create-refresh.dto';
@@ -42,10 +42,10 @@ export class AuthService {
             },
           },
           role: {
-            select: RoleEntity,
+            select: RoleSelect,
           },
           branches: {
-            select: BranchEntity,
+            select: BranchSelect,
           },
         },
       });

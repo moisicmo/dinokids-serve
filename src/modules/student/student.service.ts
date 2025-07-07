@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { StudentSelect, StudentSelectType } from './entities/student.entity';
+import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { StudentSelect, StudentType } from './entities/student.entity';
 @Injectable()
 
 export class StudentService {
@@ -47,29 +47,52 @@ export class StudentService {
     });
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StudentSelectType>> {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.student.count({
-      where: {
-        active: true,
-      },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StudentType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    return {
-      data: await this.prisma.student.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-        where: {
-          active: true,
-        },
-        select: StudentSelect,
-      }),
-      meta: { total: totalPages, page, lastPage },
-    };
+      const whereClause: any = {
+        active: true,
+      };
+
+      if (keys.trim() !== '') {
+        whereClause.OR = [
+          {
+            user: {
+              OR: [
+                { name: { contains: keys, mode: 'insensitive' } },
+                { lastName: { contains: keys, mode: 'insensitive' } },
+                { email: { contains: keys, mode: 'insensitive' } },
+                { numberDocument: { contains: keys, mode: 'insensitive' } },
+              ],
+            },
+          },
+        ];
+      }
+      const totalPages = await this.prisma.student.count({
+        where: whereClause,
+      });
+      const lastPage = Math.ceil(totalPages / limit);
+      return {
+        data: await this.prisma.student.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereClause,
+          orderBy: {
+            createdAt: 'asc',
+          },
+          select: StudentSelect,
+        }),
+        meta: { total: totalPages, page, lastPage },
+      };
+
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Hubo un error al pedir estudiantes');
+    }
   }
 
-  async findOne(id: string): Promise<StudentSelectType>  {
+  async findOne(id: string): Promise<StudentType>  {
     const student = await this.prisma.student.findUnique({
       where: { userId : id},
       select: StudentSelect,

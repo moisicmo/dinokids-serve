@@ -1,26 +1,32 @@
 import { UserEntity } from "@/common";
-import { BranchEntity } from "@/modules/branch/entities/branch.entity";
+import { BranchSelect } from "@/modules/branch/entities/branch.entity";
 import { ScheduleEntity } from "@/modules/schedule/entities/schedule.entity";
-import { SpecialtyEntity } from "@/modules/specialty/entities/specialty.entity";
-import { TeacherEntity } from "@/modules/teacher/entities/teacher.entity";
+import { SpecialtySelect } from "@/modules/specialty/entities/specialty.entity";
+import { TeacherSelect } from "@/modules/teacher/entities/teacher.entity";
+import { Prisma } from "@prisma/client";
 
-export const RoomEntity = {
+export type RoomType = Prisma.RoomGetPayload<{
+  select: typeof RoomSelect;
+}>;
+
+
+export const RoomSelect = {
   id: true,
   name: true,
   capacity: true,
   rangeYears: true,
   branch: {
-    select: BranchEntity,
+    select: BranchSelect,
   },
   specialty: {
     select: {
-      ...SpecialtyEntity,
+      ...SpecialtySelect,
       name: true,
     }
   },
   teacher: {
     select: {
-      ...TeacherEntity,
+      ...TeacherSelect,
       user: {
         select: UserEntity,
       }

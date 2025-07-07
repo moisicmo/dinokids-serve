@@ -18,8 +18,8 @@ export class DebtController {
 
   @Get('student/:studentId')
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.inscription })
-  findAllByStudent(@Param('studentId') studentId: string) {
-    return this.debtService.findAllByStudent(studentId);
+  findAllByStudent(@Param('studentId') studentId: string,@Query() paginationDto: PaginationDto) {
+    return this.debtService.findAllByStudent(studentId,paginationDto);
   }
 
   @Get(':id')

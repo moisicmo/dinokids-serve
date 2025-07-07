@@ -1,11 +1,11 @@
-import { RoomEntity } from "@/modules/room/entities/room.entity";
+import { RoomSelect } from "@/modules/room/entities/room.entity";
 import { AssignmentSchedulesEntity } from "./assignment-schedule.entity";
 
 export const AssignmentRoomEntity = {
   id: true,
   room: {
     select: {
-      ...RoomEntity,
+      ...RoomSelect,
       assignmentRooms: false,
     },
   },

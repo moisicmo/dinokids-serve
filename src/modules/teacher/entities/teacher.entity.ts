@@ -1,7 +1,12 @@
 import { UserEntity } from "@/common";
-import { BranchEntity } from "@/modules/branch/entities/branch.entity";
+import { BranchSelect } from "@/modules/branch/entities/branch.entity";
+import { Prisma } from "@prisma/client";
 
-export const TeacherEntity = {
+export type TeacherType = Prisma.TeacherGetPayload<{
+  select: typeof TeacherSelect;
+}>;
+
+export const TeacherSelect = {
   userId: true,
   zone: true,
   address: true,
@@ -9,7 +14,7 @@ export const TeacherEntity = {
   academicStatus: true,
   startJob: true,
   branches: {
-    select: BranchEntity
+    select: BranchSelect
   },
   user: {
     select: UserEntity,

@@ -24,7 +24,8 @@ export const InscriptionSelect = {
   },
   assignmentRooms: {
     select: AssignmentRoomEntity
-  }
+  },
+  createdAt: true,
 };
 
 export type InscriptionType = Prisma.InscriptionGetPayload<{

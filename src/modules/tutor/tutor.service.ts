@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, UserEntity } from '@/common'; import { TutorEntity } from './entities/tutor.entity';
+import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { TutorSelect, TutorType } from './entities/tutor.entity';
 @Injectable()
 
 export class TutorService {
@@ -19,7 +19,7 @@ export class TutorService {
     });
 
     if (userExists) {
-      throw new Error('El usuario ya existe');
+      throw new ConflictException('El usuario ya existe');
     }
 
     const salt = bcrypt.genSaltSync(10);
@@ -41,27 +41,53 @@ export class TutorService {
     });
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.tutor.count({
-      where: {
-        active: true,
-      },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<TutorType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    return {
-      data: await this.prisma.tutor.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-        where: {
-          active: true,
-        },
-        select: TutorEntity,
-      }),
-      meta: { total: totalPages, page, lastPage },
-    };
+      const whereClause: any = {
+        active: true,
+      };
+
+      if (keys.trim() !== '') {
+        whereClause.OR = [
+          { city: { contains: keys, mode: 'insensitive' } },
+          {
+            user: {
+              OR: [
+                { name: { contains: keys, mode: 'insensitive' } },
+                { lastName: { contains: keys, mode: 'insensitive' } },
+                { email: { contains: keys, mode: 'insensitive' } },
+                { numberDocument: { contains: keys, mode: 'insensitive' } },
+              ],
+            },
+          },
+        ];
+      }
+      const totalPages = await this.prisma.tutor.count({
+        where: whereClause,
+      });
+      const lastPage = Math.ceil(totalPages / limit);
+      return {
+        data: await this.prisma.tutor.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereClause,
+          orderBy: {
+            createdAt: 'asc',
+          },
+          select: TutorSelect,
+        }),
+        meta: { total: totalPages, page, lastPage },
+      };
+
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Hubo un error al pedir tutores');
+    }
   }
+
+
 
   async findOne(id: string) {
     const user = await this.prisma.user.findUnique({

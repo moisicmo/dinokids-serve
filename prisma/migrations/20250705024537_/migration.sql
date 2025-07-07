@@ -311,6 +311,7 @@ CREATE TABLE "payments" (
 CREATE TABLE "invoices" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "code" VARCHAR NOT NULL,
+    "url" VARCHAR,
     "staff_id" UUID NOT NULL,
     "buyer_nit" VARCHAR NOT NULL,
     "buyer_name" VARCHAR NOT NULL,

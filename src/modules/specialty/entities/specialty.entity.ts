@@ -1,6 +1,12 @@
-import { BranchEntity } from "@/modules/branch/entities/branch.entity";
+import { BranchSelect } from "@/modules/branch/entities/branch.entity";
+import { Prisma } from "@prisma/client";
 
-export const SpecialtyEntity = {
+export type SpecialtyType = Prisma.SpecialtyGetPayload<{
+  select: typeof SpecialtySelect;
+}>;
+
+
+export const SpecialtySelect = {
   id: true,
   branchSpecialties: {
     select: {
@@ -13,7 +19,7 @@ export const SpecialtyEntity = {
         }
       },
       branch: {
-        select: BranchEntity
+        select: BranchSelect
       }
     }
   }

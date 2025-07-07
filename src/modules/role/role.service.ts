@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { PrismaService } from '@/prisma/prisma.service';
-import { PaginationDto } from '@/common';
-import { RoleEntity } from './entities/role.entity';
+import { PaginationDto, PaginationResult } from '@/common';
+import { RoleSelect, RoleType } from './entities/role.entity';
 import { PermissionService } from '@/modules/permission/permission.service';
 @Injectable()
 export class RoleService {
@@ -33,24 +33,40 @@ export class RoleService {
     }
   }
 
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<RoleType>>  {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
+      const whereClause: any = {
+        active: true,
+      };
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.role.count({
-      where: { active: true },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+      if (keys.trim() !== '') {
+        whereClause.OR = [
+          { name: { contains: keys, mode: 'insensitive' } },
+        ];
+      }
+      const totalPages = await this.prisma.role.count({
+        where: whereClause,
+      });
+      const lastPage = Math.ceil(totalPages / limit);
+      return {
+        data: await this.prisma.role.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereClause,
+          orderBy: {
+            createdAt: 'asc',
+          },
+          select: RoleSelect,
+        }),
+        meta: { total: totalPages, page, lastPage },
+      };
 
-    return {
-      data: await this.prisma.role.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-        where: { active: true },
-        select: RoleEntity,
-      }),
-      meta: { total: totalPages, page, lastPage },
-    };
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Hubo un error al pedir roles');
+    }
   }
 
   async findOne(id: string) {
@@ -74,7 +90,7 @@ export class RoleService {
       return this.prisma.role.update({
         where: { id },
         data: { name },
-        select: RoleEntity,
+        select: RoleSelect,
       });
     }
     const updatedPermissions: { id: string }[] = [];
@@ -111,7 +127,7 @@ export class RoleService {
           set: updatedPermissions,
         },
       },
-      select: RoleEntity,
+      select: RoleSelect,
     });
   }
 
@@ -125,7 +141,7 @@ export class RoleService {
       data: {
         active: false,
       },
-      select: RoleEntity,
+      select: RoleSelect,
     });
   }
 }

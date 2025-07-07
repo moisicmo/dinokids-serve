@@ -73,7 +73,7 @@ export class InscriptionService {
         return inscription;
       });
       const finalInscription = await this.findOne(result.id);
-      const pdfBuffer = await this.pdfService.generateInscriptionPdf(finalInscription);
+      const pdfBuffer = await this.pdfService.generateInscription(finalInscription);
       const { webViewLink } = await this.googledriveService.uploadFile(`ins${finalInscription.id}.pdf`, pdfBuffer, 'application/pdf', 'inscripciones');
       // ver la opcion de sustituir por el this.update
       await this.prisma.inscription.update({
@@ -124,25 +124,54 @@ export class InscriptionService {
   }
 
 
+
   async findAll(
     paginationDto: PaginationDto,
     whereCustom?: Prisma.InscriptionWhereInput,
   ): Promise<PaginationResult<InscriptionType>> {
     try {
-      const { page = 1, limit = 10 } = paginationDto;
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      const where: Prisma.InscriptionWhereInput = {
+      const whereClause: Prisma.InscriptionWhereInput = {
         active: true,
         ...whereCustom,
       };
 
-      const total = await this.prisma.inscription.count({ where });
+      if (keys.trim() !== '') {
+        whereClause.OR = [
+          // {
+          //   code: { contains: keys, mode: 'insensitive' },
+          // },
+          {
+            student: {
+              user: {
+                OR: [
+                  { name: { contains: keys, mode: 'insensitive' } },
+                  { lastName: { contains: keys, mode: 'insensitive' } },
+                  { email: { contains: keys, mode: 'insensitive' } },
+                  { numberDocument: { contains: keys, mode: 'insensitive' } },
+                ],
+              },
+            },
+          },
+          // {
+          //   room: {
+          //     name: { contains: keys, mode: 'insensitive' },
+          //   },
+          // },
+        ];
+      }
+
+      const total = await this.prisma.inscription.count({ where: whereClause });
       const lastPage = Math.ceil(total / limit);
 
       const data = await this.prisma.inscription.findMany({
         skip: (page - 1) * limit,
         take: limit,
-        where,
+        where: whereClause,
+        orderBy: {
+          createdAt: 'desc',
+        },
         select: InscriptionSelect,
       });
 
@@ -156,9 +185,10 @@ export class InscriptionService {
       };
     } catch (error) {
       console.log(error);
-      throw new InternalServerErrorException('Error retrieving inscriptions');
+      throw new InternalServerErrorException('Hubo un error al pedir inscripciones');
     }
   }
+
 
 
   async findPdf(id: string) {
@@ -185,18 +215,18 @@ export class InscriptionService {
   }
 
 
-async findOne(id: string): Promise<InscriptionType> {
-  const inscription = await this.prisma.inscription.findUnique({
-    where: { id },
-    select: InscriptionSelect,
-  });
+  async findOne(id: string): Promise<InscriptionType> {
+    const inscription = await this.prisma.inscription.findUnique({
+      where: { id },
+      select: InscriptionSelect,
+    });
 
-  if (!inscription) {
-    throw new NotFoundException(`Inscription with id #${id} not found`);
+    if (!inscription) {
+      throw new NotFoundException(`Inscription with id #${id} not found`);
+    }
+
+    return inscription;
   }
-
-  return inscription;
-}
 
   async update(id: string, updateInscriptionDto: UpdateInscriptionDto) {
     const { assignmentRooms, ...inscriptionData } = updateInscriptionDto;

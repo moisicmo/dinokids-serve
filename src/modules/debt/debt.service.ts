@@ -1,8 +1,6 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { PdfService } from '@/common/pdf/pdf.service';
-import { GoogledriveService } from '@/common/googledrive/googledrive.service';
-import { PaginationDto } from '@/common';
+import { PaginationDto, PaginationResult } from '@/common';
 import { DebtSelect, DebtType } from './entities/debt.entity';
 
 @Injectable()
@@ -10,8 +8,6 @@ export class DebtService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly pdfService: PdfService,
-    private readonly googledriveService: GoogledriveService,
   ) { }
 
   async findAll(paginationDto: PaginationDto) {
@@ -33,15 +29,29 @@ export class DebtService {
     };
   }
 
-  async findAllByStudent(studentId: string): Promise<DebtType[]> {
+  async findAllByStudent(studentId: string, paginationDto: PaginationDto): Promise<PaginationResult<DebtType>> {
     try {
+      const { page = 1, limit = 10 } = paginationDto;
+      const totalPages = await this.prisma.debts.count({
+        where: {
+          inscription: { studentId },
+        },
+      });
+      const lastPage = Math.ceil(totalPages / limit);
+
       const data = await this.prisma.debts.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
         where: {
           inscription: { studentId },
         },
         select: DebtSelect,
       });
-      return data;
+
+      return {
+        data,
+        meta: { total: totalPages, page, lastPage },
+      };
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException('Error al obtener deudas de un estudiante');

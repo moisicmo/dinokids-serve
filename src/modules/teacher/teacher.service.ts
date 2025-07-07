@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, UserEntity } from '@/common';import { TeacherEntity } from './entities/teacher.entity';
+import { PaginationDto, PaginationResult, UserEntity } from '@/common';
+import { TeacherSelect, TeacherType } from './entities/teacher.entity';
  @Injectable()
 
 export class TeacherService {
@@ -46,26 +47,49 @@ export class TeacherService {
     });
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.teacher.count({
-      where: {
-        active: true,
-      },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<TeacherType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    return {
-      data: await this.prisma.teacher.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-        where: {
-          active: true,
-        },
-        select: TeacherEntity,
-      }),
-      meta: { total: totalPages, page, lastPage },
-    };
+      const whereClause: any = {
+        active: true,
+      };
+
+      if (keys.trim() !== '') {
+        whereClause.OR = [
+          {
+            user: {
+              OR: [
+                { name: { contains: keys, mode: 'insensitive' } },
+                { lastName: { contains: keys, mode: 'insensitive' } },
+                { email: { contains: keys, mode: 'insensitive' } },
+                { numberDocument: { contains: keys, mode: 'insensitive' } },
+              ],
+            },
+          },
+        ];
+      }
+      const totalPages = await this.prisma.teacher.count({
+        where: whereClause,
+      });
+      const lastPage = Math.ceil(totalPages / limit);
+      return {
+        data: await this.prisma.teacher.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereClause,
+          orderBy: {
+            createdAt: 'asc',
+          },
+          select: TeacherSelect,
+        }),
+        meta: { total: totalPages, page, lastPage },
+      };
+
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Hubo un error al pedir profesores');
+    }
   }
 
   async findOne(id: string) {

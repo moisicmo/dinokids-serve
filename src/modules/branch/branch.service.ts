@@ -1,46 +1,62 @@
-import {  Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateBranchDto } from './dto/create-branch.dto';
 import { UpdateBranchDto } from './dto/update-branch.dto';
-import { BranchEntity } from './entities/branch.entity';
+import { BranchSelect, BranchType } from './entities/branch.entity';
 import { PrismaService } from '@/prisma/prisma.service';
-import { PaginationDto } from '@/common';
+import { PaginationDto, PaginationResult } from '@/common';
 
 @Injectable()
 export class BranchService {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(createBranchDto: CreateBranchDto) {
     return await this.prisma.branch.create({
       data: createBranchDto,
-      select: BranchEntity,
+      select: BranchSelect,
     });
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.branch.count({
-      where: { active: true },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<BranchType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    const data = await this.prisma.branch.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: { active: true },
-      select: BranchEntity,
-    });
+      const whereClause: any = {
+        active: true,
+      };
 
-    return {
-      data,
-      meta: { total: totalPages, page, lastPage },
-    };
+      if (keys.trim() !== '') {
+        whereClause.OR = [
+          { name: { contains: keys, mode: 'insensitive' } },
+        ];
+      }
+      const totalPages = await this.prisma.branch.count({
+        where: whereClause,
+      });
+      const lastPage = Math.ceil(totalPages / limit);
+      return {
+        data: await this.prisma.branch.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereClause,
+          orderBy: {
+            createdAt: 'asc',
+          },
+          select: BranchSelect,
+        }),
+        meta: { total: totalPages, page, lastPage },
+      };
+
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Hubo un error al pedir sucursales');
+    }
   }
 
   async findOne(id: string) {
     const branch = await this.prisma.branch.findUnique({
       where: { id },
-      select: BranchEntity,
+      select: BranchSelect,
     });
 
     if (!branch) {
@@ -56,7 +72,7 @@ export class BranchService {
     return this.prisma.branch.update({
       where: { id },
       data: updateBranchDto,
-      select: BranchEntity,
+      select: BranchSelect,
     });
   }
 
@@ -66,7 +82,7 @@ export class BranchService {
     return this.prisma.branch.update({
       where: { id },
       data: { active: false },
-      select: BranchEntity,
+      select: BranchSelect,
     });
   }
 }

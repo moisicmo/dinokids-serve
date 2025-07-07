@@ -1,8 +1,8 @@
 import { UserEntity } from "@/common";
-import { TutorEntity } from "@/modules/tutor/entities/tutor.entity";
+import { TutorSelect } from "@/modules/tutor/entities/tutor.entity";
 import { Prisma } from "@prisma/client";
 
-export type StudentSelectType = Prisma.StudentGetPayload<{
+export type StudentType = Prisma.StudentGetPayload<{
   select: typeof StudentSelect;
 }>;
 
@@ -16,7 +16,7 @@ export const StudentSelect = {
   educationLevel: true,
   tutors: {
     select: {
-      ...TutorEntity,
+      ...TutorSelect,
       students: false,
     },
   },

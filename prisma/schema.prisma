@@ -311,6 +311,7 @@ model Payment {
 model Invoice {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   code                  String                                                @db.VarChar
+  url                   String?                                               @db.VarChar
   staffId               String                @map("staff_id")                @db.Uuid
   buyerNit              String                @map("buyer_nit")               @db.VarChar
   buyerName             String                @map("buyer_name")              @db.VarChar

@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateSpecialtyDto } from './dto/create-specialty.dto';
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
-import { SpecialtyEntity } from './entities/specialty.entity';
+import { SpecialtySelect, SpecialtyType } from './entities/specialty.entity';
 import { PrismaService } from '@/prisma/prisma.service';
-import { PaginationDto } from '@/common';
+import { PaginationDto, PaginationResult } from '@/common';
 
 @Injectable()
 export class SpecialtyService {
@@ -14,7 +14,7 @@ export class SpecialtyService {
     const { name, numberSessions, estimatedSessionCost, branchId } = createSpecialtyDto;
     const specialty = await this.prisma.specialty.create({
       data: { name },
-      select: SpecialtyEntity,
+      select: SpecialtySelect,
     });
     await this.prisma.branchSpecialty.create({
       data: {
@@ -28,26 +28,40 @@ export class SpecialtyService {
     return specialty;
   }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.specialty.count({
-      where: { active: true },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<SpecialtyType>>  {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    const data = await this.prisma.specialty.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: {
+      const whereClause: any = {
         active: true,
-      },
-      select: SpecialtyEntity,
-    });
+      };
 
-    return {
-      data,
-      meta: { total: totalPages, page, lastPage },
-    };
+      if (keys.trim() !== '') {
+        whereClause.OR = [
+          { name: { contains: keys, mode: 'insensitive' } },
+        ];
+      }
+      const totalPages = await this.prisma.specialty.count({
+        where: whereClause,
+      });
+      const lastPage = Math.ceil(totalPages / limit);
+      return {
+        data: await this.prisma.specialty.findMany({
+          skip: (page - 1) * limit,
+          take: limit,
+          where: whereClause,
+          orderBy: {
+            createdAt: 'asc',
+          },
+          select: SpecialtySelect,
+        }),
+        meta: { total: totalPages, page, lastPage },
+      };
+
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Hubo un error al pedir especialidades');
+    }
   }
 
   async findAllBySpecialty(branchId: string, paginationDto: PaginationDto) {
@@ -66,7 +80,7 @@ export class SpecialtyService {
           some: { branchId }
         }
       },
-      select: SpecialtyEntity,
+      select: SpecialtySelect,
     });
 
     return {
@@ -79,7 +93,7 @@ export class SpecialtyService {
   async findOne(id: string) {
     const specialty = await this.prisma.specialty.findUnique({
       where: { id },
-      select: SpecialtyEntity,
+      select: SpecialtySelect,
     });
 
     if (!specialty) {
@@ -99,7 +113,7 @@ export class SpecialtyService {
     const specialty = await this.prisma.specialty.update({
       where: { id },
       data: { name },
-      select: SpecialtyEntity,
+      select: SpecialtySelect,
     });
 
     await this.prisma.branchSpecialty.update({
@@ -125,7 +139,7 @@ export class SpecialtyService {
     return this.prisma.specialty.update({
       where: { id },
       data: { active: false },
-      select: SpecialtyEntity,
+      select: SpecialtySelect,
     });
   }
 }
