@@ -27,28 +27,8 @@ import { GoogledriveModule } from './common/googledrive/googledrive.module';
 import { PdfModule } from './common/pdf/pdf.module';
 import { XlsxModule } from './common/xlsx/xlsx.module';
 import { CityModule } from './modules/city/city.module';
-import { ConfigModule } from '@nestjs/config';
-import * as joi from 'joi';
-
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      ignoreEnvFile: true, // Hace que ConfigService esté disponible en toda la app
-      validationSchema: joi.object({
-        PORT: joi.number().required(),
-        JWT_SECRET: joi.string().required(),
-        CLOUDINARY_CLOUD_NAME: joi.string().required(),
-        CLOUDINARY_API_KEY: joi.string().required(),
-        CLOUDINARY_API_SECRET: joi.string().required(),
-        GOOGLEDRIVE_CLIENT_ID: joi.string().required(),
-        GOOGLEDRIVE_CLIENT_SECRET: joi.string().required(),
-        GOOGLEDRIVE_REDIRECT_URI: joi.string().required(),
-        GOOGLEDRIVE_ACCESS_TOKEN: joi.string().required(),
-        GOOGLEDRIVE_REFRESH_TOKEN: joi.string().required(),
-      }),
-      // ignoreEnvFile: true, // Descomenta esto en producción (Railway)
-    }),
     PrismaModule,
     AuthModule,
     BranchModule,
