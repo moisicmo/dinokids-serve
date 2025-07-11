@@ -22,6 +22,9 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "prisma db seed"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "prisma": {
     "seed": "ts-node src/prisma/seed.ts"
   },
