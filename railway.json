@@ -1,7 +1,7 @@
 {
   "build": {
     "env": {
-      "DATABASE_URL": "@DATABASE_URL"
+      "DATABASE_URL": "postgresql://postgres:sxUFNZNqkaDfAiHYNmxnSmpibiDwSYGl@trolley.proxy.rlwy.net:34050/railway"
     }
   }
 }
