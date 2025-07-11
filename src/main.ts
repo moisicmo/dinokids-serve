@@ -1,18 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-
+import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { envs } from './config';
 
 async function bootstrap() {
   const logger = new Logger('Main-Gateway');
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService); // Obtiene ConfigService
+
   app.enableCors({
     origin: ['http://localhost:4300', 'https://dinokids.com', '*'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
+
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
@@ -21,29 +23,18 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  // Configuración de Swagger (opcional)
   const config = new DocumentBuilder()
     .setTitle('APIS DOCUMENTATION')
     .setDescription("Documentation API's DINOKIDS")
     .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-      },
-      'Authorization',
-    )
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  document.security = [{ Authorization: [] }];
-  SwaggerModule.setup('api/docs', app, document, {
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
-  });
+  SwaggerModule.setup('api/docs', app, document);
 
-
-  await app.listen(envs.port);
-  logger.log(`Gateway running on port ${envs.port}`);
+  await app.listen(configService.get<number>('PORT', 3000));  // Si PORT no existe, usa 3000
+  logger.log(`Gateway running on port ${configService.get<number>('PORT')}`);
 }
 void bootstrap();

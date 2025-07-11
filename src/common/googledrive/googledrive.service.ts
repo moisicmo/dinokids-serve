@@ -1,5 +1,5 @@
-import { envs } from '@/config';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config'; // 👈 Importar
 import { google } from 'googleapis';
 import { PassThrough } from 'stream';
 
@@ -11,18 +11,18 @@ function extractFileIdFromUrl(url: string): string | null {
 
 @Injectable()
 export class GoogledriveService {
-
   private driveClient;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) { // 👈 Inyectar
+
     const oauth2Client = new google.auth.OAuth2(
-      envs.googledriveClientId,
-      envs.googledriveClientSecret,
-      envs.googledriveRedirectUri,
+      this.configService.get<string>('GOOGLEDRIVE_CLIENT_ID'),
+      this.configService.get<string>('GOOGLEDRIVE_CLIENT_SECRET'),
+      this.configService.get<string>('GOOGLEDRIVE_REDIRECT_URI'),
     );
 
     oauth2Client.setCredentials({
-      refresh_token: envs.googledriveRefreshToken,
+      refresh_token: this.configService.get<string>('GOOGLEDRIVE_REFRESH_TOKEN'),
     });
 
     this.driveClient = google.drive({
