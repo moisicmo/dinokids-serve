@@ -8,6 +8,7 @@ import { BranchSelect } from '@/modules/branch/entities/branch.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './entities/jwt-payload.interface';
 import { CreateRefreshDto } from './dto/create-refresh.dto';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -66,6 +67,7 @@ export class AuthService {
         name: user.name,
         lastName: user.lastName,
         email: user.email,
+        jti: randomUUID(),
       };
 
       const token = this.signJWT(tokenPayload);
