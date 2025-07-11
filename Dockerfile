@@ -1,15 +1,28 @@
-FROM node:20-alpine
+# Etapa de build
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
-# Copiar script de entrada
-COPY entrypoint.sh ./entrypoint.sh
+RUN yarn prisma generate
+RUN yarn build
+
+# Etapa de producción
+FROM node:20-alpine AS production
+
+WORKDIR /app
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
+COPY package.json ./
+
+ENV NODE_ENV=production
 
 EXPOSE 3001
 
-ENTRYPOINT ["./entrypoint.sh"]
+CMD ["node", "dist/main"]
