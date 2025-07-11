@@ -33,7 +33,8 @@ import * as joi from 'joi';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Hace que ConfigService esté disponible en toda la app
+      isGlobal: true,
+      ignoreEnvFile: true, // Hace que ConfigService esté disponible en toda la app
       validationSchema: joi.object({
         PORT: joi.number().required(),
         JWT_SECRET: joi.string().required(),
