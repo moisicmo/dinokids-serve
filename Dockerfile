@@ -1,5 +1,5 @@
 # Etapa 1: Build
-FROM node:22-alpine AS builder
+FROM node:22-bullseye AS builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY . .
 RUN node --max-old-space-size=1024 ./node_modules/.bin/nest build
 
 # Etapa 2: Producción
-FROM node:22-alpine
+FROM node:22-bullseye
 
 WORKDIR /app
 
