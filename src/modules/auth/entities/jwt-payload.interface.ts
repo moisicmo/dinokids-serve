@@ -4,4 +4,5 @@ export interface JwtPayload {
   name: string;
   lastName: string;
   email: string | null;
+  jti: string;
 }
