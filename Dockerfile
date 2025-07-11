@@ -1,8 +1,5 @@
 FROM node:22-alpine
 
-# 1. Capturar la variable desde Railway (en build)
-ARG DATABASE_URL
-ENV DATABASE_URL=${DATABASE_URL}
 
 WORKDIR /app
 
