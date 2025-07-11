@@ -5,14 +5,14 @@ import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { PaginationDto, PaginationResult, UserEntity } from '@/common';
 import { TeacherSelect, TeacherType } from './entities/teacher.entity';
- @Injectable()
+@Injectable()
 
 export class TeacherService {
 
   constructor(private readonly prisma: PrismaService) { }
 
   async create(createTeacherDto: CreateTeacherDto) {
-    const { zone, address, major, academicStatus, startJob, brancheIds, ...userDto } = createTeacherDto;
+    const { cityId, zone, detail, major, academicStatus, startJob, brancheIds, ...userDto } = createTeacherDto;
 
     const userExists = await this.prisma.user.findUnique({
       where: { numberDocument: userDto.numberDocument },
@@ -29,10 +29,15 @@ export class TeacherService {
     return await this.prisma.user.create({
       data: {
         password: hashedPassword,
+        address: {
+          create: {
+            cityId,
+            zone,
+            detail,
+          }
+        },
         teacher: {
           create: {
-            zone,
-            address,
             major,
             academicStatus,
             startJob,
@@ -112,7 +117,7 @@ export class TeacherService {
 
   async update(id: string, updateTeacherDto: UpdateTeacherDto) {
     await this.findOne(id);
-    const { zone, address, major, academicStatus, startJob, brancheIds, ...userDto } = updateTeacherDto;
+    const { cityId, zone, detail, major, academicStatus, startJob, brancheIds, ...userDto } = updateTeacherDto;
 
     return this.prisma.user.update({
       where: {
@@ -122,12 +127,17 @@ export class TeacherService {
         },
       },
       data: {
+        address: {
+          update: {
+            cityId,
+            zone,
+            detail,
+          }
+        },
         teacher: {
           update: {
             where: { userId: id },
             data: {
-              zone,
-              address,
               major,
               academicStatus,
               startJob,

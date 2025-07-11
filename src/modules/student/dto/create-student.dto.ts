@@ -24,8 +24,8 @@ export class CreateStudentDto extends CreateUserDto {
 
   @IsString()
   @ApiProperty({
-    example: 'Escuela Primaria',
-    description: 'Nombre de la escuela del estudiante',
+    example: 'San Calixto',
+    description: 'Identificador de la escuela',
   })
   school: string;
 

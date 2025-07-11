@@ -31,9 +31,9 @@ CREATE TYPE "TypeSubject" AS ENUM ('all', 'permission', 'role', 'staff', 'studen
 -- CreateTable
 CREATE TABLE "branches" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "address_id" UUID NOT NULL,
     "name" VARCHAR NOT NULL,
-    "address" VARCHAR NOT NULL,
-    "phone" VARCHAR NOT NULL,
+    "phone" VARCHAR[],
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -44,6 +44,7 @@ CREATE TABLE "branches" (
 -- CreateTable
 CREATE TABLE "users" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "address_id" UUID,
     "number_document" TEXT NOT NULL,
     "type_document" "TypeDocument" NOT NULL DEFAULT 'DNI',
     "name" VARCHAR NOT NULL,
@@ -51,13 +52,31 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "email_validated" BOOLEAN NOT NULL DEFAULT false,
     "image" VARCHAR,
-    "phone" VARCHAR,
+    "phone" JSONB NOT NULL,
     "password" VARCHAR NOT NULL,
     "code_validation" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "addresses" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "city_id" UUID NOT NULL,
+    "zone" VARCHAR NOT NULL,
+    "detail" VARCHAR NOT NULL,
+
+    CONSTRAINT "addresses_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "cities" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "name" VARCHAR NOT NULL,
+
+    CONSTRAINT "cities_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -116,10 +135,10 @@ CREATE TABLE "roles" (
 -- CreateTable
 CREATE TABLE "students" (
     "user_id" UUID NOT NULL,
+    "school_id" UUID NOT NULL,
     "code" TEXT NOT NULL,
     "birthdate" TIMESTAMP(3) NOT NULL,
     "gender" "Gender" NOT NULL,
-    "school" VARCHAR NOT NULL,
     "grade" INTEGER NOT NULL,
     "education_level" "EducationLevel" NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,
@@ -130,11 +149,16 @@ CREATE TABLE "students" (
 );
 
 -- CreateTable
+CREATE TABLE "schools" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "name" VARCHAR NOT NULL,
+
+    CONSTRAINT "schools_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "tutors" (
     "user_id" UUID NOT NULL,
-    "city" VARCHAR NOT NULL,
-    "zone" VARCHAR NOT NULL,
-    "address" VARCHAR NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -145,8 +169,6 @@ CREATE TABLE "tutors" (
 -- CreateTable
 CREATE TABLE "teachers" (
     "user_id" UUID NOT NULL,
-    "zone" VARCHAR NOT NULL,
-    "address" VARCHAR NOT NULL,
     "major" VARCHAR NOT NULL,
     "academic_status" "AcademicStatus" NOT NULL,
     "start_job" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -187,9 +209,9 @@ CREATE TABLE "rooms" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "branch_id" UUID NOT NULL,
     "teacher_id" UUID NOT NULL,
+    "assistant_id" UUID NOT NULL,
     "specialty_id" UUID NOT NULL,
     "name" VARCHAR NOT NULL,
-    "capacity" INTEGER NOT NULL,
     "range_years" JSON NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -214,7 +236,8 @@ CREATE TABLE "assignment_rooms" (
 CREATE TABLE "schedules" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "roomId" UUID NOT NULL,
-    "days" "DayOfWeek"[],
+    "capacity" INTEGER NOT NULL,
+    "day" "DayOfWeek" NOT NULL,
     "start" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "end" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "active" BOOLEAN NOT NULL DEFAULT true,
@@ -377,6 +400,9 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "users_code_validation_key" ON "users"("code_validation");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "cities_name_key" ON "cities"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "auth_sessions_token_key" ON "auth_sessions"("token");
 
 -- CreateIndex
@@ -387,6 +413,9 @@ CREATE UNIQUE INDEX "students_user_id_key" ON "students"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "students_code_key" ON "students"("code");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "schools_name_key" ON "schools"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tutors_user_id_key" ON "tutors"("user_id");
@@ -416,6 +445,15 @@ CREATE INDEX "_BranchToTeacher_B_index" ON "_BranchToTeacher"("B");
 CREATE INDEX "_StudentToTutor_B_index" ON "_StudentToTutor"("B");
 
 -- AddForeignKey
+ALTER TABLE "branches" ADD CONSTRAINT "branches_address_id_fkey" FOREIGN KEY ("address_id") REFERENCES "addresses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "users" ADD CONSTRAINT "users_address_id_fkey" FOREIGN KEY ("address_id") REFERENCES "addresses"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "addresses" ADD CONSTRAINT "addresses_city_id_fkey" FOREIGN KEY ("city_id") REFERENCES "cities"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "auth_sessions" ADD CONSTRAINT "auth_sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -429,6 +467,9 @@ ALTER TABLE "permissions" ADD CONSTRAINT "permissions_role_id_fkey" FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE "students" ADD CONSTRAINT "students_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "students" ADD CONSTRAINT "students_school_id_fkey" FOREIGN KEY ("school_id") REFERENCES "schools"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tutors" ADD CONSTRAINT "tutors_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -447,6 +488,9 @@ ALTER TABLE "rooms" ADD CONSTRAINT "rooms_branch_id_fkey" FOREIGN KEY ("branch_i
 
 -- AddForeignKey
 ALTER TABLE "rooms" ADD CONSTRAINT "rooms_teacher_id_fkey" FOREIGN KEY ("teacher_id") REFERENCES "teachers"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "rooms" ADD CONSTRAINT "rooms_assistant_id_fkey" FOREIGN KEY ("assistant_id") REFERENCES "teachers"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "rooms" ADD CONSTRAINT "rooms_specialty_id_fkey" FOREIGN KEY ("specialty_id") REFERENCES "specialties"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

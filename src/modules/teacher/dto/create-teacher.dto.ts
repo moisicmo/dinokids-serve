@@ -3,22 +3,10 @@ import { ApiProperty } from "@nestjs/swagger";
 import { AcademicStatus } from "@prisma/client";
 import { Type } from "class-transformer";
 import { IsArray, IsDate, IsEnum, IsString } from "class-validator";
+import { IntersectionType } from '@nestjs/mapped-types';
+import { CreateAddressDto } from "@/common/dto/create-address.dto";
 
-export class CreateTeacherDto extends CreateUserDto {
-
-  @IsString()
-  @ApiProperty({
-    example: 'Zona Norte',
-    description: 'Zona del docente',
-  })
-  zone: string;
-
-  @IsString()
-  @ApiProperty({
-    example: 'Calle Falsa 123',
-    description: 'Dirección del docente',
-  })
-  address: string;
+export class CreateTeacherDto extends IntersectionType(CreateUserDto, CreateAddressDto) {
 
   @IsString()
   @ApiProperty({

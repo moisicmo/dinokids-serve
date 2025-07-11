@@ -150,7 +150,7 @@ export class RoomService {
           return this.prisma.schedule.update({
             where: { id: schedule.id },
             data: {
-              days: schedule.days,
+              day: schedule.day,
               start: schedule.start,
               end: schedule.end,
               // active: schedule.active ?? true,
@@ -161,9 +161,10 @@ export class RoomService {
           return this.prisma.schedule.create({
             data: {
               roomId: room.id,
-              days: schedule.days,
+              day: schedule.day!,
               start: schedule.start,
               end: schedule.end,
+              capacity: schedule.capacity!,
               // active: schedule.active ?? true,
             },
           });

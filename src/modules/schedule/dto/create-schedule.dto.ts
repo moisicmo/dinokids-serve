@@ -1,16 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { DayOfWeek } from "@prisma/client";
 import { Type } from "class-transformer";
-import { IsArray, IsDate } from "class-validator";
+import { IsDate, IsEnum, IsNumber } from "class-validator";
 
 export class CreateScheduleDto {
 
-  @IsArray()
+  @IsEnum(DayOfWeek)
   @ApiProperty({
-    example: [DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY],
+    example: DayOfWeek.MONDAY,
     description: 'Array de días de la semana en los que está disponible',
+    enum: DayOfWeek,
   })
-  days: DayOfWeek[];
+  day: DayOfWeek;
 
   @IsDate()
   @Type(() => Date)
@@ -27,4 +28,11 @@ export class CreateScheduleDto {
     description: 'Hora de fin del horario',
   })
   end: Date;
+
+  @IsNumber()
+  @ApiProperty({
+    example: 30,
+    description: 'Capacidad máxima',
+  })
+  capacity: number;
 }

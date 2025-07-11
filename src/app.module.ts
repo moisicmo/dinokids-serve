@@ -26,6 +26,7 @@ import { ReportModule } from './modules/report/report.module';
 import { GoogledriveModule } from './common/googledrive/googledrive.module';
 import { PdfModule } from './common/pdf/pdf.module';
 import { XlsxModule } from './common/xlsx/xlsx.module';
+import { CityModule } from './modules/city/city.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { XlsxModule } from './common/xlsx/xlsx.module';
     InvoiceModule,
     DashboardModule,
     ReportModule,
+    CityModule,
   ],
   providers: [
     PrismaService,

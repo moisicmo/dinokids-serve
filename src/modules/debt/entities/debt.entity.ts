@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 export const DebtSelect = {
   id: true,
   inscription: {
-    select:InscriptionSelect
+    select: InscriptionSelect
   },
   totalAmount: true,
   remainingBalance: true,
@@ -14,7 +14,7 @@ export const DebtSelect = {
   createdAt: true,
 };
 
-export type DebtType = Prisma.DebtsGetPayload<{ 
-  select: typeof DebtSelect 
+export type DebtType = Prisma.DebtsGetPayload<{
+  select: typeof DebtSelect
 }>;
 

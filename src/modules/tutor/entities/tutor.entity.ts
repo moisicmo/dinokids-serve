@@ -1,11 +1,9 @@
 import { UserEntity } from "@/common";
+import { AddressSelect } from "@/common/entities/address.select";
 import { Prisma } from "@prisma/client";
 
 export const TutorSelect = {
   userId: true,
-  city: true,
-  zone: true,
-  address: true,
   students: {
     select: {
       user: {
@@ -15,6 +13,9 @@ export const TutorSelect = {
           name: true,
           lastName: true,
           email: true,
+          address: {
+            select: AddressSelect,
+          },
         }
       },
       code: true,

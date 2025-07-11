@@ -1,3 +1,5 @@
+import { AddressSelect } from "./address.select";
+
 export const UserEntity = {
   id: true,
   numberDocument: true,
@@ -6,4 +8,7 @@ export const UserEntity = {
   lastName: true,
   email: true,
   phone: true,
+  address: {
+    select: AddressSelect,
+  },
 };

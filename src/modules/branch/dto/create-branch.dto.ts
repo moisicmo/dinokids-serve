@@ -1,7 +1,8 @@
+import { CreateAddressDto } from "@/common/dto/create-address.dto";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsString } from "class-validator";
 
-export class CreateBranchDto {
+export class CreateBranchDto extends CreateAddressDto {
 
   @IsString()
   @ApiProperty({
@@ -10,18 +11,14 @@ export class CreateBranchDto {
   })
   name: string;
 
-  @IsString()
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true }) 
   @ApiProperty({
-    example: 'direccion 123',
-    description: 'Dirección de la sucursal',
+    type: [String],
+    example: ['70123456', '78912345'],
+    description: 'Teléfonos de la sucursal',
   })
-  address: string;
-
-  @IsString()
-  @ApiProperty({
-    example: '123456789',
-    description: 'Número de teléfono de la sucursal',
-  })
-  phone: string;
+  phone: string[];
   
 }

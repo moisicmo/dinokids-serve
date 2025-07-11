@@ -8,8 +8,6 @@ export type TeacherType = Prisma.TeacherGetPayload<{
 
 export const TeacherSelect = {
   userId: true,
-  zone: true,
-  address: true,
   major: true,
   academicStatus: true,
   startJob: true,

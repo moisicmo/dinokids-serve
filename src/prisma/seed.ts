@@ -9,6 +9,12 @@ async function main() {
   const prisma = new PrismaClient();
 
   try {
+
+    const city = await prisma.city.create({
+      data: { name: 'La Paz' },
+    });
+
+
     const salt = bcrypt.genSaltSync(10);
     const user = await prisma.user.create({
       data: {
@@ -17,6 +23,7 @@ async function main() {
         name: 'moises',
         lastName: 'ochoa',
         email: 'moisic.mo@gmail.com',
+        phone: [],
         password: bcrypt.hashSync('Muyseguro123*', salt),
       },
     });
@@ -36,8 +43,14 @@ async function main() {
     const branch = await prisma.branch.create({
       data: {
         name: 'Casa Matríz',
-        address: 'Avenida X',
-        phone: '123456789',
+        phone: ['123456789'],
+        address: {
+          create: {
+            cityId: city.id,
+            zone: 'San Pedro',
+            detail: 'Av Algo #221',
+          }
+        }
       }
     })
 
@@ -61,11 +74,17 @@ async function main() {
         name: 'Juan',
         lastName: 'Chambi',
         email: 'juan@gmail.com',
+        phone: ['123456789'],
         password: bcrypt.hashSync('Muyseguro123*', salt),
+        address: {
+          create: {
+            cityId: city.id,
+            zone: 'San Pedro',
+            detail: 'Av Algo #221',
+          }
+        },
         teacher: {
           create: {
-            zone: 'San Pedro',
-            address: '20 de octubre',
             major: 'Licenciado',
             academicStatus: AcademicStatus.EGRESADO,
             startJob: new Date(),
@@ -81,13 +100,17 @@ async function main() {
         name: 'Maria',
         lastName: 'Cruz',
         email: 'maria@gmail.com',
+        phone: ['123456789'],
         password: bcrypt.hashSync('Muyseguro123*', salt),
-        tutor: {
+        address: {
           create: {
-            city: 'La Paz',
+            cityId: city.id,
             zone: 'San Pedro',
-            address: '20 de octubre',
-          },
+            detail: 'Av Algo #221',
+          }
+        },
+        tutor: {
+          create: {},
         },
       },
     });
@@ -100,12 +123,17 @@ async function main() {
         lastName: 'Cruz',
         email: 'sebastian@gmail.com',
         password: bcrypt.hashSync('Muyseguro123*', salt),
+        phone: [],
         student: {
           create: {
             code: 'STU21321312',
             birthdate: new Date(),
-            gender: Gender.FEMENINO,
-            school: 'San Calixto',
+            gender: Gender.MASCULINO,
+            school: {
+              create: {
+                name: 'San Calixto',
+              }
+            },
             grade: 5,
             educationLevel: EducationLevel.PRIMARIA,
             tutors: {

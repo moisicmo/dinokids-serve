@@ -11,7 +11,7 @@ export class TutorService {
   constructor(private readonly prisma: PrismaService) { }
 
   async create(createTutorDto: CreateTutorDto) {
-    const { city, zone, address, ...userDto } = createTutorDto;
+    const { cityId, zone, detail, ...userDto } = createTutorDto;
 
     const userExists = await this.prisma.user.findUnique({
       where: { numberDocument: userDto.numberDocument },
@@ -28,12 +28,15 @@ export class TutorService {
     return await this.prisma.user.create({
       data: {
         password: hashedPassword,
-        tutor: {
+        address: {
           create: {
-            city,
+            cityId,
             zone,
-            address,
-          },
+            detail,
+          }
+        },
+        tutor: {
+          create: {},
         },
         ...userDto,
       },
@@ -109,7 +112,7 @@ export class TutorService {
 
   async update(id: string, updateTutorDto: UpdateTutorDto) {
     await this.findOne(id);
-    const { city, zone, address, ...userDto } = updateTutorDto;
+    const { cityId, zone, detail, ...userDto } = updateTutorDto;
 
     return this.prisma.user.update({
       where: {
@@ -119,13 +122,18 @@ export class TutorService {
         },
       },
       data: {
+        address: {
+          update: {
+            cityId,
+            zone,
+            detail,
+          }
+        },
         tutor: {
           update: {
             where: { userId: id },
             data: {
-              city,
-              zone,
-              address,
+              
             },
           },
         },

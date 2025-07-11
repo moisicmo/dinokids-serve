@@ -13,7 +13,6 @@ export type RoomType = Prisma.RoomGetPayload<{
 export const RoomSelect = {
   id: true,
   name: true,
-  capacity: true,
   rangeYears: true,
   branch: {
     select: BranchSelect,
@@ -25,6 +24,14 @@ export const RoomSelect = {
     }
   },
   teacher: {
+    select: {
+      ...TeacherSelect,
+      user: {
+        select: UserEntity,
+      }
+    }
+  },
+  assistant: {
     select: {
       ...TeacherSelect,
       user: {

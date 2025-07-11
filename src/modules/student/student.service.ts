@@ -22,30 +22,44 @@ export class StudentService {
       throw new Error('El usuario ya existe');
     }
 
+    // Buscar o crear colegio
+    const existingSchool = await this.prisma.school.findUnique({
+      where: { name: school },
+    });
+
+    const schoolRecord = existingSchool
+      ? existingSchool
+      : await this.prisma.school.create({
+        data: { name: school },
+      });
+
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(userDto.email, salt);
 
     return await this.prisma.user.create({
       data: {
+        ...userDto,
         password: hashedPassword,
         student: {
           create: {
             code: `STU-${userDto.numberDocument}`,
             birthdate,
             gender,
-            school,
             grade,
             educationLevel,
             tutors: {
-              connect: tutorIds.map(userId => ({ userId })),
-            }
+              connect: tutorIds.map((userId) => ({ userId })),
+            },
+            school: {
+              connect: { id: schoolRecord.id },
+            },
           },
         },
-        ...userDto,
       },
       select: UserEntity,
     });
   }
+
 
   async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StudentType>> {
     try {
@@ -92,9 +106,9 @@ export class StudentService {
     }
   }
 
-  async findOne(id: string): Promise<StudentType>  {
+  async findOne(id: string): Promise<StudentType> {
     const student = await this.prisma.student.findUnique({
-      where: { userId : id},
+      where: { userId: id },
       select: StudentSelect,
     });
 
@@ -106,8 +120,30 @@ export class StudentService {
   }
 
   async update(id: string, updateStudentDto: UpdateStudentDto) {
-    await this.findOne(id);
-    const { birthdate, gender, school, grade, educationLevel, tutorIds, ...userDto } = updateStudentDto;
+    await this.findOne(id); // Verificas que el estudiante existe
+
+    const {
+      birthdate,
+      gender,
+      school,
+      grade,
+      educationLevel,
+      tutorIds,
+      ...userDto
+    } = updateStudentDto;
+    if (!school) {
+      throw new InternalServerErrorException('Es necesario el colegio');
+    }
+    // Buscar o crear colegio por nombre
+    const existingSchool = await this.prisma.school.findUnique({
+      where: { name: school },
+    });
+
+    const schoolRecord = existingSchool
+      ? existingSchool
+      : await this.prisma.school.create({
+        data: { name: school },
+      });
 
     return this.prisma.user.update({
       where: {
@@ -117,6 +153,7 @@ export class StudentService {
         },
       },
       data: {
+        ...userDto,
         student: {
           update: {
             where: { userId: id },
@@ -124,20 +161,22 @@ export class StudentService {
               code: `STU-${userDto.numberDocument}`,
               birthdate,
               gender,
-              school,
               grade,
               educationLevel,
               tutors: {
-                set: tutorIds?.map(userId => ({ userId })) ?? [],
+                set: tutorIds?.map((userId) => ({ userId })) ?? [],
+              },
+              school: {
+                connect: { id: schoolRecord.id },
               },
             },
           },
         },
-        ...userDto,
       },
       select: UserEntity,
     });
   }
+
 
   async remove(id: string) {
     await this.findOne(id);

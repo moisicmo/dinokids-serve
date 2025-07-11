@@ -11,10 +11,26 @@ export class BranchService {
   constructor(private readonly prisma: PrismaService) { }
 
   async create(createBranchDto: CreateBranchDto) {
-    return await this.prisma.branch.create({
-      data: createBranchDto,
-      select: BranchSelect,
-    });
+    try {
+      const { cityId, zone, detail, ...branchDto } = createBranchDto;
+      return await this.prisma.branch.create({
+        data: {
+          ...branchDto,
+          address: {
+            create: {
+              cityId,
+              zone,
+              detail,
+            }
+          }
+        },
+        select: BranchSelect,
+      });
+
+    } catch (error) {
+      console.log(error);
+      throw new Error(`No se pudo crear la sucursal: ${error.message}`);
+    }
   }
 
   async findAll(paginationDto: PaginationDto): Promise<PaginationResult<BranchType>> {
@@ -67,11 +83,21 @@ export class BranchService {
   }
 
   async update(id: string, updateBranchDto: UpdateBranchDto) {
+    const { cityId, zone, detail, ...branchDto } = updateBranchDto;
     await this.findOne(id);
 
     return this.prisma.branch.update({
       where: { id },
-      data: updateBranchDto,
+      data: {
+        ...branchDto,
+        address: {
+          update: {
+            cityId,
+            zone,
+            detail,
+          }
+        }
+      },
       select: BranchSelect,
     });
   }

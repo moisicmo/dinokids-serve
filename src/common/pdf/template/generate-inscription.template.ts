@@ -112,7 +112,7 @@ export function buildInscriptionTemplate(inscription: InscriptionType): Promise<
             ),
             utils.generateTable(
               'Celular',
-              `${inscription.student?.tutors![0].user.phone}`
+              `${inscription.student?.tutors?.[0]?.user?.phone?.[0] ?? 'Sin número'}`
             ),
           ],
         ],
@@ -127,11 +127,11 @@ export function buildInscriptionTemplate(inscription: InscriptionType): Promise<
           [
             utils.generateTable(
               'Dirección',
-              `${inscription.student?.tutors![0].address}`
+              `${inscription.student?.tutors![0].user.address?.detail}`
             ),
             utils.generateTable(
               'Celular de Ref.',
-              `${inscription.student?.tutors![0].user.phone}`
+              `${inscription.student?.tutors?.[0]?.user?.phone?.[0] ?? 'Sin número'}`
             ),
           ],
         ],

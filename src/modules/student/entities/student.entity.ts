@@ -1,4 +1,3 @@
-import { UserEntity } from "@/common";
 import { TutorSelect } from "@/modules/tutor/entities/tutor.entity";
 import { Prisma } from "@prisma/client";
 
@@ -21,6 +20,13 @@ export const StudentSelect = {
     },
   },
   user: {
-    select: UserEntity,
+    select: {
+      id: true,
+      numberDocument: true,
+      typeDocument: true,
+      name: true,
+      lastName: true,
+      email: true,
+    },
   },
 };
