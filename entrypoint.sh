@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e  # Sale si hay algún error
+
 echo "Esperando la base de datos..."
 sleep 5
 
