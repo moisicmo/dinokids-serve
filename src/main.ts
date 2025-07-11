@@ -9,11 +9,16 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService); // Obtiene ConfigService
 
-  app.enableCors({
-    origin: ['http://localhost:4300', 'https://dinokids.com', '*'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
+app.enableCors({
+  origin: [
+    'http://localhost:4300',
+    'https://dinokids.com',
+    'https://dinokids.vercel.app',
+  ],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+});
+
 
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
