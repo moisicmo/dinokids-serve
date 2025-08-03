@@ -22,8 +22,9 @@ export class TutorService {
       throw new ConflictException('El usuario ya existe');
     }
 
+
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(userDto.email, salt);
+    const hashedPassword = bcrypt.hashSync(userDto.email??'withoutpassword', salt);
 
     return await this.prisma.user.create({
       data: {

@@ -31,11 +31,11 @@ model Branch {
 model User {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   addressId             String?               @map("address_id")              @db.Uuid
-  numberDocument        String                @map("number_document")         @unique
+  numberDocument        String?               @map("number_document")         @unique
   typeDocument          TypeDocument          @map("type_document")           @default(DNI)
   name                  String                                                @db.VarChar
   lastName              String                @map("last_name")               @db.VarChar
-  email                 String                                                @unique
+  email                 String?                                                @unique
   emailValidated        Boolean               @map("email_validated")         @default(false)
   image                 String?                                               @db.VarChar
   phone                 Json
@@ -50,6 +50,20 @@ model User {
   authSessions          AuthSession[]
   address               Address?                                              @relation(fields: [addressId], references: [id])
 	@@map("users")
+}
+model Staff {
+  userId                String                @map("user_id")                 @id @unique @db.Uuid
+  roleId                String                @map("role_id")                 @db.Uuid
+  active                Boolean                                               @default(true)
+  superStaff            Boolean               @map("super_staff")             @default(false)
+  createdAt             DateTime              @map("created_at")              @default(now())
+  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
+  user                  User                                                  @relation(fields: [userId], references: [id])
+  role                  Role                                                  @relation(fields: [roleId], references: [id])
+  inscriptions          Inscription[]
+  Invoices              Invoice[]
+  branches              Branch[]
+	@@map("staffs")
 }
 model Address {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -79,33 +93,29 @@ model AuthSession {
   user                  User                                                  @relation(fields: [userId], references: [id])
   @@map("auth_sessions")
 }
-model Staff {
-  userId                String                @map("user_id")                 @id @unique @db.Uuid
-  roleId                String                @map("role_id")                 @db.Uuid
-  active                Boolean                                               @default(true)
-  superStaff            Boolean               @map("super_staff")             @default(false)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  user                  User                                                  @relation(fields: [userId], references: [id])
-  role                  Role                                                  @relation(fields: [roleId], references: [id])
-  inscriptions          Inscription[]
-  Invoices              Invoice[]
-  branches              Branch[]
-	@@map("staffs")
-}
+
 model Permission {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   roleId                String              @map("role_id")                   @db.Uuid
   action                TypeAction
   subject               TypeSubject
   inverted              Boolean                                               @default(false)
-  conditions            Json?                                                 @db.JsonB
   reason                String?                                               @db.Text
   active                Boolean                                               @default(true)
   createdAt             DateTime            @map("created_at")                @default(now())
   updatedAt             DateTime            @map("updated_at")                @default(now()) @updatedAt
   role                  Role                                                  @relation(fields: [roleId], references: [id])
+  conditions            Condition[]
   @@map("permissions")
+}
+model Condition {
+  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  permissionId          String              @map("permission_id")             @db.Uuid 
+  field                 String
+  operator              ConditionOperator
+  value                 String
+  permission            Permission                                            @relation(fields: [permissionId], references: [id])
+  @@map("conditions")
 }
 model Role {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -123,8 +133,8 @@ model Student {
   code                  String                                                @unique
   birthdate             DateTime
   gender                Gender
-  grade                 Int                                                   @db.Integer
-  educationLevel        EducationLevel        @map("education_level")
+  grade                 Int?                                                   @db.Integer
+  educationLevel        EducationLevel?       @map("education_level")
   active                Boolean                                               @default(true)
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
@@ -435,4 +445,18 @@ enum TypeSubject {
   refund
   user
   price
+}
+enum ConditionOperator {
+  equals                   // es igual
+  not_equals               // no es igual
+  in                       // está dentro de una lista de valores
+  not_in                   // no está dentro de una lista de valores
+  greater_than             // es mayor que
+  greater_than_or_equal    // es mayor o igual que
+  less_than                // es menor que
+  less_than_or_equal       // es menor o igual que
+  contains                 // contiene un valor (usado en cadenas de texto o arrays)
+  starts_with              // empieza con un valor (solo para strings)
+  ends_with                // termina con un valor (solo para strings)
+  exists                   // verifica si el campo existe o no (útil para valores opcionales)
 }

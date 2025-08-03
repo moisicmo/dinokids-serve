@@ -40,6 +40,53 @@ async function main() {
       ]
     });
 
+    // Crear un rol limitado (por ejemplo, rol de staff sin acceso total)
+    const staffRole = await prisma.role.create({
+      data: { name: 'limited_staff' },
+    });
+
+    // Crear un permiso para leer su propio usuario
+    await prisma.permission.create({
+      data: {
+        roleId: staffRole.id,
+        action: TypeAction.read,
+        subject: TypeSubject.permission,
+        conditions: {
+          create: [
+            {
+              field: 'id',
+              operator: 'equals',
+              value: '{{ id }}', // Se evaluará dinámicamente con el usuario logueado
+            },
+          ],
+        },
+      },
+    });
+
+    // Crear rol para gerente de sucursal
+    const branchManagerRole = await prisma.role.create({
+      data: { name: 'branch_manager' },
+    });
+
+    // Crear permiso para editar solo su propia sucursal
+    await prisma.permission.create({
+      data: {
+        roleId: branchManagerRole.id,
+        action: 'update',
+        subject: 'branch', // o TypeSubject.branch si usas enum
+        reason: 'Puede editar solo su propia sucursal',
+        conditions: {
+          create: [
+            {
+              field: 'id',
+              operator: 'in',
+              value: '{{ branchIds }}', // Se reemplazará por el ID de la sucursal asignada al usuario logueado
+            },
+          ],
+        },
+      },
+    });
+
     const branch = await prisma.branch.create({
       data: {
         name: 'Casa Matríz',

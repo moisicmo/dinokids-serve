@@ -26,8 +26,8 @@ export function buildInscriptionTemplate(inscription: InscriptionType): Promise<
           [
             {
               margin: [0, 0, 0, 0],
-              text: 'Ficha de Inscripción',
-              fontSize: 24,
+              text: 'CONTRATO PRIVADO DE PRESTACIÓN DE SERVICIOS EDUCATIVOS DEL PROGRAMA DINO CONDUCTUAL DE DINO KIDS',
+              fontSize: 12,
               alignment: 'center', // Centramos el texto
               bold: true,
             },
@@ -66,134 +66,85 @@ export function buildInscriptionTemplate(inscription: InscriptionType): Promise<
     },
     {
       text: [
-        { text: 'Primera: DINO KIDS - ', bold: true }, // Negrita solo para esta parte
-        { text: 'Desarrollo Infantil Neuro Psicológico Orientado se se compromete a lo siguiente:' }, // Texto normal
+        { text: 'PRIMERA: PARTES CONTRATANTES.- ', bold: true },
+        { text: 'El presente contrato se celebra entre DINO KIDS, centro psicopedagógico legalmente constituido en Bolivia, ubicado en Calle Batallón Colorados, Edificio Batallón Colorados, Planta Baja Oficina 4, en adelante "EL CENTRO", y el padre/madre/tutor del niño(a) identificado en la cláusula tercera, en adelante "EL REPRESENTANTE", quien suscribe el presente contrato en su calidad de responsable legal del menor.' },
       ],
-      style: 'stylePagrafer',
-      alignment: 'justify',
-    },
-    {
-      text: '1.- Brindar evaluaciones periódicas, para tratar dificultades de aprendizaje utilizando un método de capacitación 100% garantizado adecuado a cada caso.',
-      style: 'stylePagrafer',
-      alignment: 'justify',
-    },
-    {
-      text: '2.- El programa es anual, sin embargo el tiempo de duración de cada módulo es de 6 meses.',
-      style: 'stylePagrafer',
-      alignment: 'justify',
-    },
-    {
-      text: '3.- Al finalizar el programa se le otorgara un informe de avanze y/o resultados.',
       style: 'stylePagrafer',
       alignment: 'justify',
     },
     {
       text: [
-        { text: 'Segunda:', bold: true }, // Negrita solo para esta parte
-        { text: ' - Los datos del titular y del alumno son:' }, // Texto normal
+        { text: 'SEGUNDA: OBJETO DEL CONTRATO.- ', bold: true },
+        { text: 'Mediante el presente, EL CENTRO se obliga a prestar servicios especializados dentro del programa DINO CONDUCTUAL, un programa anual integral diseñado para niños y adolescentes con trastornos del neurodesarrollo, tales como AUTISMO, Trastorno por Déficit de Atención e Hiperactividad (TDAH), Trastornos del Desarrollo del Lenguaje, Síndrome de Down,  Dificultades de Aprendizaje Específicos (Dislexia, Discalculia, Dislalia, Disortografía y Disgrafía), Trastornos Conductuales, Discapacidades (Intelectual, Auditiva, Visual y Motora), Parálisis Cerebral Infantil, entre otros.' },
       ],
       style: 'stylePagrafer',
+      alignment: 'justify',
     },
     {
-      margin: [0, 20, 0, 0],
-      text: 'Datos del tutor:',
+      text: 'TERCERA: IDENTIFICACIÓN DEL BENEFICIARIO',
+      style: 'stylePagrafer',
       bold: true,
+      alignment: 'justify',
     },
     {
-      margin: [0, 10, 5, 0],
-      layout: 'noBorders',
-      table: {
-        widths: ['*', '*'],
-        body: [
-          [
-            utils.generateTable(
-              'Nombre del tutor',
-              `${inscription.student?.tutors![0].user.name} ${inscription.student?.tutors![0].user.lastName}`
-            ),
-            utils.generateTable(
-              'Celular',
-              `${inscription.student?.tutors?.[0]?.user?.phone?.[0] ?? 'Sin número'}`
-            ),
-          ],
-        ],
-      },
+      text: [
+        { text: 'Nombre del niño(a):' },
+        { text: `${inscription.student?.user.name} ${inscription.student?.user.name}` },
+      ],
+      style: 'stylePagrafer',
+      alignment: 'justify',
     },
     {
-      margin: [0, 10, 5, 0],
-      layout: 'noBorders',
-      table: {
-        widths: ['*', '*'],
-        body: [
-          [
-            utils.generateTable(
-              'Dirección',
-              `${inscription.student?.tutors![0].user.address?.detail}`
-            ),
-            utils.generateTable(
-              'Celular de Ref.',
-              `${inscription.student?.tutors?.[0]?.user?.phone?.[0] ?? 'Sin número'}`
-            ),
-          ],
-        ],
-      },
+      text: [
+        { text: 'Fecha de nacimiento:' },
+        { text: `${format(new Date(inscription.student!.birthdate), 'dd-MMMM-yyyy', { locale: es })}` },
+      ],
+      style: 'stylePagrafer',
+      alignment: 'justify',
     },
     {
-      margin: [0, 20, 0, 0],
-      text: 'Datos del estudiante:',
-      bold: true,
+      text: [
+        { text: 'Nombre del padre/madre/tutor:' },
+        { text: `${inscription.student?.tutors![0].user.name} ${inscription.student?.tutors![0].user.lastName}` },
+      ],
+      style: 'stylePagrafer',
+      alignment: 'justify',
     },
     {
-      margin: [0, 10, 5, 0],
-      layout: 'noBorders',
-      table: {
-        widths: ['*', '10%', '*', '20%'],
-        body: [
-          [
-            utils.generateTable(
-              'Nombre del estudiante',
-              `${inscription.student?.user.name} ${inscription.student?.user.name}`
-            ),
-            utils.generateTable(
-              'Edad',
-              `${utils.calculateAge(inscription.student!.birthdate)} años`,
-              true,
-            ),
-            utils.generateTable(
-              'Fecha de nacimiento',
-              `${format(
-                new Date(inscription.student!.birthdate),
-                'dd-MMMM-yyyy',
-                { locale: es }
-              )}`
-            ),
-            utils.generateTable('Sexo', `${inscription.student!.gender}`, true),
-          ],
-        ],
-      },
+      text: [
+        { text: 'Cédula de identidad:' },
+        { text: `${inscription.student?.user.numberDocument} ` },
+      ],
+      style: 'stylePagrafer',
+      alignment: 'justify',
     },
     {
-      margin: [0, 20, 0, 0],
-      text: 'Datos del programa:',
-      bold: true,
+      text: [
+        { text: 'Domicilio:' },
+        { text: `${inscription.student?.tutors[0].user?.address?.city?.name} ${inscription.student?.tutors[0].user?.address?.zone} ${inscription.student?.tutors[0].user?.address?.detail} ` },
+      ],
+      style: 'stylePagrafer',
+      alignment: 'justify',
     },
-    inscription.assignmentRooms.map(assignmentRoom => ({
-      margin: [0, 0, 5, 0], // Márgenes válidos (4 elementos)
-      layout: 'noBorders',
-      table: {
-        widths: ['*', '*', '*', '*'],
-        body: [
-          [
-            utils.generateTable('Programa', `${assignmentRoom.room.specialty.name}`), // Cambia esto según tu lógica
-            utils.generateTable(
-              'Inicio de sesión',
-              `${format(assignmentRoom?.start ?? new Date(), 'dd-MMMM-yyyy', { locale: es })}`
-            ),
-            utils.generateTable('Módulo', `1er módulo`),
-            utils.generateTable('Sesiones', `${assignmentRoom?.room.specialty.branchSpecialties[0].numberSessions}`, true),
-          ],
-        ],
-      },
-    })),
+    {
+      text: [
+        { text: 'Teléfono de contacto:' },
+        { text: `${inscription.student?.tutors?.[0]?.user?.phone?.[0] ?? 'Sin número'} ` },
+      ],
+      style: 'stylePagrafer',
+      alignment: 'justify',
+    },
+    {
+      text: [
+        { text: 'CUARTA: DURACIÓN DEL CONTRATO.- ', bold: true },
+        { text: 'El presente contrato tiene la vigencia de un (1) año, renovable automáticamente previo cumplimiento de las condiciones establecidas en este documento.' },
+      ],
+      style: 'stylePagrafer',
+      alignment: 'justify',
+    },
+
+
+
     {
       margin: [0, 20, 0, 0],
       text: [

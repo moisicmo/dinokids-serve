@@ -28,6 +28,9 @@ CREATE TYPE "TypeAction" AS ENUM ('manage', 'create', 'read', 'update', 'delete'
 -- CreateEnum
 CREATE TYPE "TypeSubject" AS ENUM ('all', 'permission', 'role', 'staff', 'student', 'tutor', 'teacher', 'assignmentRoom', 'assignmentSchedule', 'booking', 'branch', 'room', 'specialty', 'schedule', 'session', 'inscription', 'debt', 'payment', 'invoice', 'refund', 'user', 'price');
 
+-- CreateEnum
+CREATE TYPE "ConditionOperator" AS ENUM ('equals', 'not_equals', 'in', 'not_in', 'greater_than', 'greater_than_or_equal', 'less_than', 'less_than_or_equal', 'contains', 'starts_with', 'ends_with', 'exists');
+
 -- CreateTable
 CREATE TABLE "branches" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
@@ -45,11 +48,11 @@ CREATE TABLE "branches" (
 CREATE TABLE "users" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "address_id" UUID,
-    "number_document" TEXT NOT NULL,
+    "number_document" TEXT,
     "type_document" "TypeDocument" NOT NULL DEFAULT 'DNI',
     "name" VARCHAR NOT NULL,
     "last_name" VARCHAR NOT NULL,
-    "email" TEXT NOT NULL,
+    "email" TEXT,
     "email_validated" BOOLEAN NOT NULL DEFAULT false,
     "image" VARCHAR,
     "phone" JSONB NOT NULL,
@@ -59,6 +62,18 @@ CREATE TABLE "users" (
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "staffs" (
+    "user_id" UUID NOT NULL,
+    "role_id" UUID NOT NULL,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    "super_staff" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "staffs_pkey" PRIMARY KEY ("user_id")
 );
 
 -- CreateTable
@@ -94,31 +109,29 @@ CREATE TABLE "auth_sessions" (
 );
 
 -- CreateTable
-CREATE TABLE "staffs" (
-    "user_id" UUID NOT NULL,
-    "role_id" UUID NOT NULL,
-    "active" BOOLEAN NOT NULL DEFAULT true,
-    "super_staff" BOOLEAN NOT NULL DEFAULT false,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "staffs_pkey" PRIMARY KEY ("user_id")
-);
-
--- CreateTable
 CREATE TABLE "permissions" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "role_id" UUID NOT NULL,
     "action" "TypeAction" NOT NULL,
     "subject" "TypeSubject" NOT NULL,
     "inverted" BOOLEAN NOT NULL DEFAULT false,
-    "conditions" JSONB,
     "reason" TEXT,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "permissions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "conditions" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "permission_id" UUID NOT NULL,
+    "field" TEXT NOT NULL,
+    "operator" "ConditionOperator" NOT NULL,
+    "value" TEXT NOT NULL,
+
+    CONSTRAINT "conditions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -139,8 +152,8 @@ CREATE TABLE "students" (
     "code" TEXT NOT NULL,
     "birthdate" TIMESTAMP(3) NOT NULL,
     "gender" "Gender" NOT NULL,
-    "grade" INTEGER NOT NULL,
-    "education_level" "EducationLevel" NOT NULL,
+    "grade" INTEGER,
+    "education_level" "EducationLevel",
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -400,13 +413,13 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "users_code_validation_key" ON "users"("code_validation");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "staffs_user_id_key" ON "staffs"("user_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "cities_name_key" ON "cities"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "auth_sessions_token_key" ON "auth_sessions"("token");
-
--- CreateIndex
-CREATE UNIQUE INDEX "staffs_user_id_key" ON "staffs"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "students_user_id_key" ON "students"("user_id");
@@ -451,19 +464,22 @@ ALTER TABLE "branches" ADD CONSTRAINT "branches_address_id_fkey" FOREIGN KEY ("a
 ALTER TABLE "users" ADD CONSTRAINT "users_address_id_fkey" FOREIGN KEY ("address_id") REFERENCES "addresses"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "addresses" ADD CONSTRAINT "addresses_city_id_fkey" FOREIGN KEY ("city_id") REFERENCES "cities"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "auth_sessions" ADD CONSTRAINT "auth_sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "staffs" ADD CONSTRAINT "staffs_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "staffs" ADD CONSTRAINT "staffs_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "roles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "addresses" ADD CONSTRAINT "addresses_city_id_fkey" FOREIGN KEY ("city_id") REFERENCES "cities"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "auth_sessions" ADD CONSTRAINT "auth_sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "permissions" ADD CONSTRAINT "permissions_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "roles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "conditions" ADD CONSTRAINT "conditions_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "permissions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "students" ADD CONSTRAINT "students_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

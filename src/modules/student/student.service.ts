@@ -13,13 +13,15 @@ export class StudentService {
   async create(createStudentDto: CreateStudentDto) {
     const { birthdate, gender, school, grade, educationLevel, tutorIds, ...userDto } = createStudentDto;
 
-    const userExists = await this.prisma.user.findUnique({
-      where: { numberDocument: userDto.numberDocument },
-      select: UserEntity,
-    });
-
-    if (userExists) {
-      throw new Error('El usuario ya existe');
+    if(userDto.numberDocument){
+      const userExists = await this.prisma.user.findUnique({
+        where: { numberDocument: userDto.numberDocument },
+        select: UserEntity,
+      });
+  
+      if (userExists) {
+        throw new Error('El usuario ya existe');
+      }
     }
 
     // Buscar o crear colegio
@@ -34,7 +36,7 @@ export class StudentService {
       });
 
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(userDto.email, salt);
+    const hashedPassword = bcrypt.hashSync(userDto.email??'withoutpassword', salt);
 
     return await this.prisma.user.create({
       data: {

@@ -2,7 +2,7 @@ import { CreateUserDto } from "@/common/dto/create-user.dto";
 import { ApiProperty } from "@nestjs/swagger";
 import { EducationLevel, Gender } from "@prisma/client";
 import { Type } from "class-transformer";
-import { IsArray, IsDate, IsEnum, IsNumber, IsString } from "class-validator";
+import { IsArray, IsDate, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateStudentDto extends CreateUserDto {
 
@@ -22,6 +22,7 @@ export class CreateStudentDto extends CreateUserDto {
   })
   gender: Gender;
 
+  @IsOptional()
   @IsString()
   @ApiProperty({
     example: 'San Calixto',
@@ -29,6 +30,7 @@ export class CreateStudentDto extends CreateUserDto {
   })
   school: string;
 
+  @IsOptional()
   @IsNumber()
   @ApiProperty({
     example: 5,
@@ -36,6 +38,7 @@ export class CreateStudentDto extends CreateUserDto {
   })
   grade: number;
 
+  @IsOptional()
   @IsEnum(EducationLevel)
   @ApiProperty({
     example: EducationLevel.PRIMARIA,

@@ -1,7 +1,12 @@
 import { UserEntity } from "@/common";
+import { BookingEntity } from "@/modules/booking/entities/booking.entity";
 import { BranchSelect } from "@/modules/branch/entities/branch.entity";
+import { AssignmentSchedulesEntity } from "@/modules/inscription/entities/assignment-schedule.entity";
+import { InscriptionSelect } from "@/modules/inscription/entities/inscription.entity";
+import { PriceEntity } from "@/modules/inscription/entities/price.entity";
 import { ScheduleEntity } from "@/modules/schedule/entities/schedule.entity";
 import { SpecialtySelect } from "@/modules/specialty/entities/specialty.entity";
+import { StudentSelect } from "@/modules/student/entities/student.entity";
 import { TeacherSelect } from "@/modules/teacher/entities/teacher.entity";
 import { Prisma } from "@prisma/client";
 
@@ -42,5 +47,30 @@ export const RoomSelect = {
   schedules: {
     select: ScheduleEntity,
   },
-  assignmentRooms: true
+  assignmentRooms: {
+    select: {
+      id: true,
+      start: true,
+      inscription: {
+        select: {
+            id: true,
+            url: true,
+            student: {
+              select: StudentSelect,
+            },
+            booking: {
+              select: BookingEntity,
+            },
+            prices: {
+              select: PriceEntity,
+            },
+            assignmentRooms: false,
+            createdAt: true,
+        }
+      },
+      assignmentSchedules: {
+        select: AssignmentSchedulesEntity
+      }
+    }
+  }
 };

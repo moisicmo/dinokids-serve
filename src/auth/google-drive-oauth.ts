@@ -1,16 +1,25 @@
 import { google } from 'googleapis';
-import * as dotenv from 'dotenv';
+import { envs } from '../config/evns';
 
-dotenv.config(); // 👈 Carga variables desde .env
+
+// npx ts-node src/auth/google-drive-oauth.ts
+// ejecutar eso
+
+// http://localhost/?code=4/0AVMBsJgsRT-aS8Eap74MNFARPtixXruHe68CWv7Ud0PkpCi0-4JZIZh4i8trAyZZqKVwhw&scope=https://www.googleapis.com/auth/drive.file
+// respondera algo asi 
+
+// npx ts-node src/auth/google-drive-oauth.ts "4/0AVMBsJgsRT-aS8Eap74MNFARPtixXruHe68CWv7Ud0PkpCi0-4JZIZh4i8trAyZZqKVwhw"
+// ejecutar asi el code 
+// cambiar las variables .env 
 
 const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLEDRIVE_CLIENT_ID,
-  process.env.GOOGLEDRIVE_CLIENT_SECRET,
-  process.env.GOOGLEDRIVE_REDIRECT_URI,
+  envs.googledriveClientId,
+  envs.googledriveClientSecret,
+  envs.googledriveRedirectUri,
 );
 
 const scopes = ['https://www.googleapis.com/auth/drive.file'];
-
+// Luego, después de autorizar, copia el código y úsalo aquí para obtener tokens
 async function getTokens(code: string) {
   const { tokens } = await oauth2Client.getToken(code);
   console.log('Tokens obtenidos:', tokens);

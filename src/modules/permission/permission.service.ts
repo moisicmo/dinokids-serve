@@ -38,7 +38,7 @@ export class PermissionService {
       });
       const lastPage = Math.ceil(totalPages / limit);
       return {
-        data: await this.prisma.branch.findMany({
+        data: await this.prisma.permission.findMany({
           skip: (page - 1) * limit,
           take: limit,
           where: whereClause,

@@ -1,9 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { TypeDocument } from "@prisma/client";
-import { IsArray, IsEmail, IsEnum, IsString } from "class-validator";
+import { IsArray, IsEmail, IsEnum, IsOptional, IsString } from "class-validator";
 
 export class CreateUserDto {
 
+  @IsOptional()
   @IsString()
   @ApiProperty({
     example: '123456789',
@@ -33,6 +34,7 @@ export class CreateUserDto {
   })
   lastName: string;
 
+  @IsOptional()
   @IsString()
   @IsEmail()
   @ApiProperty({
@@ -41,6 +43,7 @@ export class CreateUserDto {
   })
   email: string;
 
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   @ApiPropertyOptional({

@@ -9,11 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: [
-      'http://localhost:4300',
-      'https://dinokids.com',
-      'https://dinokids.vercel.app',
-    ],
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -33,10 +29,22 @@ async function bootstrap() {
     .setTitle('APIS DOCUMENTATION')
     .setDescription("Documentation API's DINOKIDS")
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'Authorization',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  document.security = [{ Authorization: [] }];
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
 
   await app.listen(envs.port);
   logger.log(`Gateway running on port ${envs.port}`);

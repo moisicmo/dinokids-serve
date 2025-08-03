@@ -9,5 +9,7 @@ export interface RequiredRule {
   conditions?: any;
 }
 
-export const checkAbilities = (...requirements: RequiredRule[]) =>
-  SetMetadata(CHECK_ABILITY, requirements);
+export const checkAbilities = (...requirements: RequiredRule[]) => {
+  console.log('checkAbilities',requirements)
+  return SetMetadata(CHECK_ABILITY, requirements);
+};
