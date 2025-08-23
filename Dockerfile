@@ -25,4 +25,6 @@ ENV NODE_ENV=production
 
 EXPOSE 3001
 
+RUN chmod -R 755 /app
+
 CMD ["node", "dist/main"]
