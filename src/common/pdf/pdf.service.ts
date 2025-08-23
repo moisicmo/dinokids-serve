@@ -20,6 +20,7 @@ export class PdfService {
       'Poppins-Medium.ttf': path.join(fontPath, 'Poppins-Medium.ttf'),
       'Poppins-Italic.ttf': path.join(fontPath, 'Poppins-Italic.ttf'),
       'Poppins-MediumItalic.ttf': path.join(fontPath, 'Poppins-MediumItalic.ttf'),
+      'Poppins-Bold.ttf': path.join(fontPath, 'Poppins-Bold.ttf'),
     };
 
     for (const [key, filePath] of Object.entries(poppinsPaths)) {
@@ -31,9 +32,9 @@ export class PdfService {
     (pdfMake as any).fonts = {
       Poppins: {
         normal: 'Poppins-Regular.ttf',
-        bold: 'Poppins-Regular.ttf',
-        italics: 'Poppins-Regular.ttf',
-        bolditalics: 'Poppins-Regular.ttf',
+        bold: 'Poppins-Bold.ttf',
+        italics: 'Poppins-Italic.ttf',
+        bolditalics: 'Poppins-MediumItalic.ttf',
       },
     };
   }
