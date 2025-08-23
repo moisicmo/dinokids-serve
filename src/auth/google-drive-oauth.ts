@@ -1,45 +1,45 @@
+import * as http from 'http';
 import { google } from 'googleapis';
 import { envs } from '../config/evns';
-
-
-// npx ts-node src/auth/google-drive-oauth.ts
-// ejecutar eso
-
-// http://localhost/?code=4/0AVMBsJgsRT-aS8Eap74MNFARPtixXruHe68CWv7Ud0PkpCi0-4JZIZh4i8trAyZZqKVwhw&scope=https://www.googleapis.com/auth/drive.file
-// respondera algo asi 
-
-// npx ts-node src/auth/google-drive-oauth.ts "4/0AVMBsJgsRT-aS8Eap74MNFARPtixXruHe68CWv7Ud0PkpCi0-4JZIZh4i8trAyZZqKVwhw"
-// ejecutar asi el code 
-// cambiar las variables .env 
 
 const oauth2Client = new google.auth.OAuth2(
   envs.googledriveClientId,
   envs.googledriveClientSecret,
-  envs.googledriveRedirectUri,
+  'http://localhost:3000'   // 👈 cambia aquí
 );
 
 const scopes = ['https://www.googleapis.com/auth/drive.file'];
-// Luego, después de autorizar, copia el código y úsalo aquí para obtener tokens
-async function getTokens(code: string) {
-  const { tokens } = await oauth2Client.getToken(code);
-  console.log('Tokens obtenidos:', tokens);
-}
 
-(async () => {
-  const args = process.argv.slice(2);
-  
-  if (args[0]) {
+const url = oauth2Client.generateAuthUrl({
+  access_type: 'offline',
+  prompt: 'consent',
+  scope: scopes,
+});
+
+console.log('🔗 Ve a esta URL y autoriza la app:\n', url);
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+http.createServer(async (req, res) => {
+  if (!req.url) return;
+
+  const urlParams = new URL(req.url, 'http://localhost');
+  const code = urlParams.searchParams.get('code');
+
+  if (code) {
     try {
-      await getTokens(args[0]);
-      console.log('✅ Proceso terminado');
+      const { tokens } = await oauth2Client.getToken(code);
+      console.log('✅ Tokens obtenidos:', tokens);
+
+      oauth2Client.setCredentials(tokens);
+
+      res.end('Autenticación completada. Ya puedes cerrar esta ventana.');
     } catch (err) {
       console.error('❌ Error al obtener tokens:', err);
+      res.end('Error al autenticar.');
     }
   } else {
-    const url = oauth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope: scopes,
-    });
-    console.log('🔗 Ve a esta URL y autoriza la app:\n', url);
+    res.end('No se encontró code.');
   }
-})();
+}).listen(3000, () => {
+  console.log('🌍 Servidor escuchando en http://localhost:3000');
+});

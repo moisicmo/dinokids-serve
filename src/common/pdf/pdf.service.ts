@@ -7,16 +7,19 @@ import { buildInscriptionTemplate } from './template/generate-inscription.templa
 import { buildInvoiceRollTemplate } from './template/generate-invoice-roll.template';
 import { InvoiceType } from '@/modules/invoice/entities/invoice.entity';
 
+const fontPath = path.join(process.cwd(), 'dist/assets/fonts');
+
+
 @Injectable()
 export class PdfService {
 
   constructor() {
     (pdfMake as any).vfs = {};
     const poppinsPaths = {
-      'Poppins-Regular.ttf': path.join(__dirname, '../../../assets/fonts/Poppins-Regular.ttf'),
-      'Poppins-Medium.ttf': path.join(__dirname, '../../../assets/fonts/Poppins-Medium.ttf'),
-      'Poppins-Italic.ttf': path.join(__dirname, '../../../assets/fonts/Poppins-Italic.ttf'),
-      'Poppins-MediumItalic.ttf': path.join(__dirname, '../../../assets/fonts/Poppins-MediumItalic.ttf'),
+      'Poppins-Regular.ttf': path.join(fontPath, 'Poppins-Regular.ttf'),
+      'Poppins-Medium.ttf': path.join(fontPath, 'Poppins-Medium.ttf'),
+      'Poppins-Italic.ttf': path.join(fontPath, 'Poppins-Italic.ttf'),
+      'Poppins-MediumItalic.ttf': path.join(fontPath, 'Poppins-MediumItalic.ttf'),
     };
 
     for (const [key, filePath] of Object.entries(poppinsPaths)) {
@@ -46,5 +49,5 @@ export class PdfService {
     return documentDefinition;
   }
 
-  
+
 }

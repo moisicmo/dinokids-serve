@@ -9,10 +9,12 @@ import { InvoiceType } from '@/modules/invoice/entities/invoice.entity';
 import { numberToString } from '@/common';
 import { PdfUtils } from '../pdf-utils';
 
+const fontPath = path.join(process.cwd(), 'dist/assets');
+
 export function buildInvoiceRollTemplate(invoice: InvoiceType): Promise<Buffer> {
   const utils = new PdfUtils();
   // const utils = new PdfUtils();
-  const logoPath = path.join(__dirname, '../../../../assets/logo.png');
+  const logoPath = path.join(fontPath, 'logo.png');
 
   const logoBase64 = fs.existsSync(logoPath)
     ? fs.readFileSync(logoPath).toString('base64')

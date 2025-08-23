@@ -2,16 +2,16 @@ import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as pdfMake from 'pdfmake/build/pdfmake';
-import { PdfUtils } from '../pdf-utils';
 import { InscriptionType } from '@/modules/inscription/entities/inscription.entity';
 
 import { es } from 'date-fns/locale';
 import { format } from 'date-fns';
 
+const fontPath = path.join(process.cwd(), 'dist/assets');
+
 export function buildInscriptionTemplate(inscription: InscriptionType): Promise<Buffer> {
 
-  const utils = new PdfUtils();
-  const logoPath = path.join(__dirname, '../../../../assets/logo.png');
+  const logoPath = path.join(fontPath, 'logo.png');
   const logoBase64 = fs.existsSync(logoPath)
     ? fs.readFileSync(logoPath).toString('base64')
     : null;
