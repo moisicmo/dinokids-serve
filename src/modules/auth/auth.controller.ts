@@ -1,8 +1,9 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { Public, RequestInfo } from '@/decorator';
 import { CreateRefreshDto } from './dto/create-refresh.dto';
+import { ValidatePinDto } from './dto/validate-pin.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,4 +20,18 @@ export class AuthController {
   refresh(@Body() createRefreshDto: CreateRefreshDto) {
     return this.authService.refreshToken(createRefreshDto);
   }
+
+  @Public()
+  @Get('sendPin/:idUser')
+  SendPin(@Param('idUser') idUser: string){
+    return this.authService.sendPinEmail(idUser);
+  }
+
+
+  @Public()
+  @Post('validatePin')
+  validationPin(@Body() validatePinDto: ValidatePinDto) {
+    return this.authService.validationPin(validatePinDto);
+  }
+  
 }

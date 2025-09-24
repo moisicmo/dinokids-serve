@@ -6,6 +6,7 @@ import { JwtStrategy } from '@/guard/strategy/jwt.strategy';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { envs } from '@/config';
+import { GmailModule } from '@/common/gmail/gmail.module';
 
 @Module({
   controllers: [AuthController],
@@ -13,6 +14,7 @@ import { envs } from '@/config';
   imports: [
     PrismaModule,
     PassportModule,
+    GmailModule,
     JwtModule.register({
       global: true,
       secret: envs.jwtSecret,

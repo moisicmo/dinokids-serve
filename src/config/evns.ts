@@ -12,6 +12,7 @@ interface EnvVars {
   GOOGLEDRIVE_REDIRECT_URI:string;
   GOOGLEDRIVE_ACCESS_TOKEN:string;
   GOOGLEDRIVE_REFRESH_TOKEN:string;
+  GOOGLE_SENDER_EMAIL:string;
 }
 
 const envsSchema = joi
@@ -26,6 +27,7 @@ const envsSchema = joi
     GOOGLEDRIVE_REDIRECT_URI: joi.string().required(),
     GOOGLEDRIVE_ACCESS_TOKEN: joi.string().required(),
     GOOGLEDRIVE_REFRESH_TOKEN: joi.string().required(),
+    GOOGLE_SENDER_EMAIL: joi.string().required(),
   })
   .unknown(true);
 
@@ -50,4 +52,5 @@ export const envs = {
   googledriveRedirectUri: envVars.GOOGLEDRIVE_REDIRECT_URI,
   googledriveAccessToken: envVars.GOOGLEDRIVE_ACCESS_TOKEN,
   googledriveRefreshToken: envVars.GOOGLEDRIVE_REFRESH_TOKEN,
+  googleSenderEmail: envVars.GOOGLE_SENDER_EMAIL,
 };

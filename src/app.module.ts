@@ -24,6 +24,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { ReportModule } from './modules/report/report.module';
 
 import { GoogledriveModule } from './common/googledrive/googledrive.module';
+import { GmailModule } from './common/gmail/gmail.module';
 import { PdfModule } from './common/pdf/pdf.module';
 import { XlsxModule } from './common/xlsx/xlsx.module';
 import { CityModule } from './modules/city/city.module';
@@ -48,6 +49,7 @@ import { CityModule } from './modules/city/city.module';
     PdfModule,
     XlsxModule,
     GoogledriveModule,
+    GmailModule,
     DebtModule,
     InvoiceModule,
     DashboardModule,

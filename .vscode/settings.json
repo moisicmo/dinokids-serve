@@ -10,5 +10,6 @@
     "terminalCursor.foreground": "#ffff00",
     "editor.selectionBackground": "#555534"
   },
-  "gitConfigUser.selectedProfile": "moi"
+  "gitConfigUser.selectedProfile": "moi",
+  "files.exclude": {}
 }

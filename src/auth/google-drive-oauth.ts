@@ -2,13 +2,18 @@ import * as http from 'http';
 import { google } from 'googleapis';
 import { envs } from '../config/evns';
 
+// ejecutar npx ts-node src/auth/google-drive-oauth.ts
 const oauth2Client = new google.auth.OAuth2(
   envs.googledriveClientId,
   envs.googledriveClientSecret,
-  'http://localhost:3000'   // 👈 cambia aquí
+  'http://localhost:3000',
 );
 
-const scopes = ['https://www.googleapis.com/auth/drive.file'];
+const scopes = [
+  'https://www.googleapis.com/auth/drive.file',
+  'https://www.googleapis.com/auth/gmail.send',
+];
+
 
 const url = oauth2Client.generateAuthUrl({
   access_type: 'offline',
