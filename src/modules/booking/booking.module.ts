@@ -4,9 +4,12 @@ import { BookingController } from './booking.controller';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { CaslModule } from '@/casl/casl.module';
 import { InscriptionModule } from '../inscription/inscription.module';
+import { PdfModule } from '@/common/pdf/pdf.module';
+import { GoogledriveModule } from '@/common/googledrive/googledrive.module';
+import { InvoiceModule } from '../invoice/invoice.module';
 @Module({
   controllers: [BookingController],
   providers: [BookingService],
-  imports: [PrismaModule,CaslModule,InscriptionModule],
+  imports: [PrismaModule, CaslModule, InscriptionModule, PdfModule, GoogledriveModule, InvoiceModule],
 })
 export class BookingModule { }

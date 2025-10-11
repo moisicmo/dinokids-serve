@@ -6,6 +6,9 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { InscriptionService } from '../inscription/inscription.service';
 import { InscriptionType } from '../inscription/entities/inscription.entity';
+import { PdfService } from '@/common/pdf/pdf.service';
+import { GoogledriveService } from '@/common/googledrive/googledrive.service';
+import { InvoiceService } from '../invoice/invoice.service';
 
 @Injectable()
 export class BookingService {
@@ -13,6 +16,10 @@ export class BookingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly inscriptionService: InscriptionService,
+
+    private readonly invoiceService: InvoiceService,
+    private readonly pdfService: PdfService,
+    private readonly googledriveService: GoogledriveService,
   ) { }
 
   async create(staffId: string, createBookingDto: CreateBookingDto) {
@@ -69,8 +76,40 @@ export class BookingService {
 
       const finalInscription = await this.inscriptionService.findOne(result.id);
 
+
+      const invoice = await this.prisma.invoice.findFirst({
+        where: {
+          payments: {
+            some: {
+              debt: {
+                inscriptionId: finalInscription.id,
+              },
+            },
+          },
+        },
+      });
+      if (!invoice) {
+        throw new Error('No se encontró una factura asociada a la reserva.');
+      }
+
+      const finalInvoice = await this.invoiceService.findOne(invoice.id);
+
+      const pdfBuffer = await this.pdfService.generateInvoiceRoll(finalInvoice);
+      const { webViewLink } = await this.googledriveService.uploadFile(
+        `res${finalInvoice.id}.pdf`,
+        pdfBuffer,
+        'application/pdf',
+        'comprobantes'
+      );
+
+      await this.prisma.invoice.update({
+        where: { id: finalInvoice.id },
+        data: { url: webViewLink },
+      });
       return {
-        ...finalInscription,
+        finalInscription,
+        finalInvoice,
+        pdfBase64: pdfBuffer.toString('base64'),
       };
     } catch (error) {
       console.log(error);

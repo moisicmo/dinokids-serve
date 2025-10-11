@@ -17,7 +17,12 @@ export class DashboardService {
     const totalBranches = await this.prisma.branch.count({
       where: { active: true },
     });
-    const totalDebts = await this.prisma.debts.count();
+    const totalDebts = await this.prisma.debts.count({
+      where: {
+        remainingBalance: { gt: 0 },
+      },
+    });
+
     const totalPayments = await this.prisma.payment.count({
       where: { active: true },
     });
@@ -27,6 +32,12 @@ export class DashboardService {
     });
 
     const debts = await this.prisma.debts.findMany({
+      where: {
+        remainingBalance: { gt: 0 },
+      },
+      orderBy: {
+        dueDate: 'asc'
+      },
       select: DebtSelect
     });
 

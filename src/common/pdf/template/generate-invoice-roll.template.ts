@@ -66,7 +66,21 @@ export function buildInvoiceRollTemplate(invoice: InvoiceType): Promise<Buffer> 
     },
     { text: 'DETALLE', style: 'header' },
     utils.createTable(
-      [...invoice.payments.map((payment) => [`${payment.debt?.type} | ${payment.debt?.inscription?.student?.code} | ${payment.debt?.inscription?.student?.user.name}`, `${payment.amount.toFixed(2)}`, false])],
+      [
+        ...invoice.payments.map((payment) => {
+          const parts = [
+            translateDebtType(payment.debt?.type),
+            payment.debt?.inscription?.student?.code,
+            payment.debt?.inscription?.student?.user?.name ?? payment.debt?.inscription?.booking?.name,
+          ].filter(Boolean);
+
+          return [
+            parts.join(' | '),
+            `${payment.amount.toFixed(2)}`,
+            false,
+          ];
+        }),
+      ],
       'left',
       'right',
       'auto'
@@ -112,19 +126,20 @@ export function buildInvoiceRollTemplate(invoice: InvoiceType): Promise<Buffer> 
       alignment: 'center',
       margin: [0, 10, 0, 0],
     },
-    ...utils.createBalance({
-      header: ['Tipo', 'Monto acordado', 'Deuda', 'Fecha de compromiso'],
-      body: invoice.payments.map((payment) => [
-        `${payment.debt?.type || '-'}`,
-        `Bs. ${(payment.debt?.totalAmount ?? 0).toFixed(2)}`,
-        `Bs. ${(payment.debt?.remainingBalance ?? 0).toFixed(2)}`,
-        `${format(
-          new Date(payment.debt.dueDate!),
-          'dd-MMMM-yyyy',
-          { locale: es }
-        ) || '-'}`,
-      ]),
-    }),
+    ...(invoice.payments.some(p => (p.debt?.remainingBalance ?? 0) > 0)
+      ? utils.createBalance({
+        header: ['Tipo', 'Monto acordado', 'Deuda', 'Fecha de compromiso'],
+        body: invoice.payments.map((payment) => [
+          translateDebtType(payment.debt?.type),
+          `Bs. ${(payment.debt?.totalAmount ?? 0).toFixed(2)}`,
+          `Bs. ${(payment.debt?.remainingBalance ?? 0).toFixed(2)}`,
+          `${payment.debt?.dueDate
+            ? format(new Date(payment.debt.dueDate), 'dd-MMMM-yyyy', { locale: es })
+            : '-'}`,
+        ]),
+
+      })
+      : []),
   ];
 
   const docDefinition: TDocumentDefinitions = {
@@ -156,4 +171,16 @@ export function buildInvoiceRollTemplate(invoice: InvoiceType): Promise<Buffer> 
 
     pdfDoc.getStream().on('error', reject);
   });
+
+
 }
+const translateDebtType = (type?: string) => {
+  switch (type) {
+    case 'BOOKING':
+      return 'RESERVA';
+    case 'INSCRIPTION':
+      return 'INSCRIPCIÓN';
+    default:
+      return type || '-';
+  }
+};

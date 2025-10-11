@@ -48,7 +48,7 @@ export class PaymentService {
           }
         }
 
-        // Crear una sola factura
+        // Crear una factura
         const invoice = await prisma.invoice.create({
           data: {
             code: `COM-${Date.now()}`, // o algún otro generador
