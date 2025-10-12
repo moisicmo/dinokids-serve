@@ -52,4 +52,12 @@ export class CreateUserDto {
     description: 'Teléfonos (opcional)',
   })
   phone: string[];
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
+    example: '123456789',
+    description: 'Número de tarjeta',
+  })
+  numberCard: string;
 }

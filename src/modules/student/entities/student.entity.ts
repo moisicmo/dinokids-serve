@@ -27,6 +27,7 @@ export const StudentSelect = {
       name: true,
       lastName: true,
       email: true,
+      numberCard: true,
     },
   },
 };

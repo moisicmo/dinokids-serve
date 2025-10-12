@@ -8,6 +8,7 @@ export const UserEntity = {
   lastName: true,
   email: true,
   phone: true,
+  numberCard: true,
   address: {
     select: AddressSelect,
   },

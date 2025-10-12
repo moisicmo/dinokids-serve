@@ -28,6 +28,7 @@ import { GmailModule } from './common/gmail/gmail.module';
 import { PdfModule } from './common/pdf/pdf.module';
 import { XlsxModule } from './common/xlsx/xlsx.module';
 import { CityModule } from './modules/city/city.module';
+import { AttendanceModule } from './modules/attendance/attendance.module';
 @Module({
   imports: [
     PrismaModule,
@@ -55,6 +56,7 @@ import { CityModule } from './modules/city/city.module';
     DashboardModule,
     ReportModule,
     CityModule,
+    AttendanceModule,
   ],
   providers: [
     PrismaService,

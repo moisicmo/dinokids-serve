@@ -13,6 +13,7 @@ export const TutorSelect = {
           name: true,
           lastName: true,
           email: true,
+          numberCard: true,
           address: {
             select: AddressSelect,
           },

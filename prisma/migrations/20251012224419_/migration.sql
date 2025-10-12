@@ -26,10 +26,13 @@ CREATE TYPE "AcademicStatus" AS ENUM ('ACTIVO', 'INACTIVO', 'EGRESADO', 'TITULAD
 CREATE TYPE "TypeAction" AS ENUM ('manage', 'create', 'read', 'update', 'delete');
 
 -- CreateEnum
-CREATE TYPE "TypeSubject" AS ENUM ('all', 'permission', 'role', 'staff', 'student', 'tutor', 'teacher', 'assignmentRoom', 'assignmentSchedule', 'booking', 'branch', 'room', 'specialty', 'schedule', 'session', 'inscription', 'debt', 'payment', 'invoice', 'refund', 'user', 'price');
+CREATE TYPE "TypeSubject" AS ENUM ('all', 'permission', 'role', 'staff', 'student', 'tutor', 'teacher', 'assignmentRoom', 'assignmentSchedule', 'booking', 'branch', 'room', 'specialty', 'schedule', 'session', 'inscription', 'debt', 'payment', 'invoice', 'refund', 'user', 'price', 'attendance');
 
 -- CreateEnum
 CREATE TYPE "ConditionOperator" AS ENUM ('equals', 'not_equals', 'in', 'not_in', 'greater_than', 'greater_than_or_equal', 'less_than', 'less_than_or_equal', 'contains', 'starts_with', 'ends_with', 'exists');
+
+-- CreateEnum
+CREATE TYPE "AttendanceStatus" AS ENUM ('PENDING', 'PRESENT', 'ABSENT', 'LATE', 'JUSTIFIED');
 
 -- CreateTable
 CREATE TABLE "branches" (
@@ -50,6 +53,7 @@ CREATE TABLE "users" (
     "address_id" UUID,
     "number_document" TEXT,
     "type_document" "TypeDocument" NOT NULL DEFAULT 'DNI',
+    "number_card" TEXT,
     "name" VARCHAR NOT NULL,
     "last_name" VARCHAR NOT NULL,
     "email" TEXT,
@@ -371,12 +375,29 @@ CREATE TABLE "refunds" (
 -- CreateTable
 CREATE TABLE "sessions" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "inscription_id" UUID NOT NULL,
+    "assignment_schedule_id" UUID NOT NULL,
+    "date" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "status" "AttendanceStatus" NOT NULL DEFAULT 'PENDING',
+    "observation" VARCHAR,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "access_records" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "branch_id" UUID NOT NULL,
+    "user_id" UUID NOT NULL,
+    "check_in" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "check_out" TIMESTAMP(3),
+    "observation" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "access_records_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -405,6 +426,9 @@ CREATE TABLE "_StudentToTutor" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_number_document_key" ON "users"("number_document");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_number_card_key" ON "users"("number_card");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
@@ -554,7 +578,13 @@ ALTER TABLE "invoices" ADD CONSTRAINT "invoices_staff_id_fkey" FOREIGN KEY ("sta
 ALTER TABLE "refunds" ADD CONSTRAINT "refunds_debt_id_fkey" FOREIGN KEY ("debt_id") REFERENCES "debts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "sessions" ADD CONSTRAINT "sessions_inscription_id_fkey" FOREIGN KEY ("inscription_id") REFERENCES "inscriptions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "sessions" ADD CONSTRAINT "sessions_assignment_schedule_id_fkey" FOREIGN KEY ("assignment_schedule_id") REFERENCES "assignment_schedules"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "access_records" ADD CONSTRAINT "access_records_branch_id_fkey" FOREIGN KEY ("branch_id") REFERENCES "branches"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "access_records" ADD CONSTRAINT "access_records_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_BranchToStaff" ADD CONSTRAINT "_BranchToStaff_A_fkey" FOREIGN KEY ("A") REFERENCES "branches"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -25,6 +25,7 @@ model Branch {
   staffs                Staff[]
   teachers              Teacher[]
   branchSpecialties     BranchSpecialty[]
+  accessRecords         AccessRecord[]
   address               Address                                               @relation(fields: [addressId], references: [id])
 	@@map("branches")
 }
@@ -33,6 +34,7 @@ model User {
   addressId             String?               @map("address_id")              @db.Uuid
   numberDocument        String?               @map("number_document")         @unique
   typeDocument          TypeDocument          @map("type_document")           @default(DNI)
+  numberCard            String?               @map("number_card")             @unique
   name                  String                                                @db.VarChar
   lastName              String                @map("last_name")               @db.VarChar
   email                 String?                                                @unique
@@ -48,6 +50,7 @@ model User {
   teacher               Teacher?
   tutor                 Tutor?
   authSessions          AuthSession[]
+  accessRecords         AccessRecord[]
   address               Address?                                              @relation(fields: [addressId], references: [id])
 	@@map("users")
 }
@@ -259,6 +262,7 @@ model AssignmentSchedule {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   assignmentRoom        AssignmentRoom                                        @relation(fields: [assignmentRoomId], references: [id])
   schedule              Schedule                                              @relation(fields: [scheduleId], references: [id])
+  sessions              Session[]
 	@@map("assignment_schedules")
 }
 
@@ -289,8 +293,7 @@ model Inscription {
   staff                 Staff                                                 @relation(fields: [staffId], references: [userId])
   prices                Price[]
   assignmentRooms       AssignmentRoom[]
-  debts      Debts[]
-  Sessions              Session[]
+  debts                 Debts[]
 	@@map("inscriptions")
 }
 model Booking {
@@ -361,13 +364,30 @@ model Refund {
 
 model Session {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  inscriptionId         String                @map("inscription_id")          @db.Uuid
+  assignmentScheduleId  String                @map("assignment_schedule_id")  @db.Uuid
+  date                  DateTime?                                             @default(now())
+  status                AttendanceStatus                                      @default(PENDING)
+  observation           String?                                               @db.VarChar
   active                Boolean                                               @default(true)
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscriptions          Inscription                                           @relation(fields: [inscriptionId], references: [id])
-	@@map("sessions")
+  assignmentSchedule    AssignmentSchedule                                    @relation(fields: [assignmentScheduleId], references: [id])
+  @@map("sessions")
 }
+model AccessRecord {
+  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branchId              String                @map("branch_id")               @db.Uuid
+  userId                String                @map("user_id")                 @db.Uuid
+  checkIn               DateTime              @map("check_in")                @default(now())
+  checkOut              DateTime?             @map("check_out")
+  observation           String?
+  createdAt             DateTime              @map("created_at")              @default(now())
+  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
+  branch                Branch                                                @relation(fields: [branchId], references: [id])
+  user                  User                                                  @relation(fields: [userId], references: [id])
+  @@map("access_records")
+}
+
 
 
 // ENUMUS SECTIONS
@@ -445,6 +465,7 @@ enum TypeSubject {
   refund
   user
   price
+  attendance
 }
 enum ConditionOperator {
   equals                   // es igual
@@ -459,4 +480,11 @@ enum ConditionOperator {
   starts_with              // empieza con un valor (solo para strings)
   ends_with                // termina con un valor (solo para strings)
   exists                   // verifica si el campo existe o no (útil para valores opcionales)
+}
+enum AttendanceStatus {
+  PENDING
+  PRESENT
+  ABSENT
+  LATE
+  JUSTIFIED
 }

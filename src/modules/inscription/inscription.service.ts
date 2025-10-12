@@ -7,6 +7,8 @@ import { PaginationDto, PaginationResult } from '@/common';
 import { PdfService } from '@/common/pdf/pdf.service';
 import { GoogledriveService } from '@/common/googledrive/googledrive.service';
 import { Prisma } from '@prisma/client';
+import { addDays, isSameDay } from 'date-fns';
+import { DayOfWeek } from '@prisma/client'; // Asegúrate de importar tu enum
 
 @Injectable()
 export class InscriptionService {
@@ -22,8 +24,7 @@ export class InscriptionService {
       const { assignmentRooms, inscriptionPrice, monthPrice, ...inscriptionData } = createInscriptionDto;
 
       const result = await this.prisma.$transaction(async (prisma) => {
-
-        // 1. Crear la inscripción principal
+        // 1️⃣ Crear la inscripción principal
         const inscription = await prisma.inscription.create({
           data: {
             staffId,
@@ -31,51 +32,93 @@ export class InscriptionService {
           },
         });
 
-        // 1.1 Crear el registro de precio
-
+        // 2️⃣ Crear precios
         await prisma.price.create({
           data: {
             inscriptionId: inscription.id,
             inscriptionPrice,
             monthPrice,
-          }
-        })
+          },
+        });
 
-        // 2. Validar si hay salas asignadas
-        if (assignmentRooms && assignmentRooms.length > 0) {
-          for (const assignmentRoomDto of assignmentRooms) {
-            const { assignmentSchedules, ...roomData } = assignmentRoomDto;
+        // 3️⃣ Procesar las salas asignadas
+        for (const assignmentRoomDto of assignmentRooms ?? []) {
+          const { assignmentSchedules, ...roomData } = assignmentRoomDto;
 
-            // Crear la asignación de aula
-            const assignmentRoom = await prisma.assignmentRoom.create({
+          // Crear la asignación de sala
+          const assignmentRoom = await prisma.assignmentRoom.create({
+            data: {
+              inscriptionId: inscription.id,
+              ...roomData,
+            },
+          });
+
+          // Obtener datos de la especialidad para saber cuántas sesiones generar
+          const room = await prisma.room.findUnique({
+            where: { id: roomData.roomId },
+            include: { specialty: { include: { branchSpecialties: true } } },
+          });
+
+          const numberSessions =
+            room?.specialty.branchSpecialties[0]?.numberSessions ?? 1;
+
+          // 4️⃣ Crear horarios y sesiones automáticas
+          for (const scheduleDto of assignmentSchedules ?? []) {
+            const assignmentSchedule = await prisma.assignmentSchedule.create({
               data: {
-                inscriptionId: inscription.id,
-                ...roomData,
+                assignmentRoomId: assignmentRoom.id,
+                scheduleId: scheduleDto.schedule.id,
+                day: scheduleDto.day,
               },
             });
 
-            // Crear los horarios asociados
-            if (assignmentSchedules && assignmentSchedules.length > 0) {
-              for (const scheduleDto of assignmentSchedules) {
-                await prisma.assignmentSchedule.create({
-                  data: {
-                    assignmentRoomId: assignmentRoom.id,
-                    scheduleId: scheduleDto.schedule.id,
-                    day: scheduleDto.day,
-                  },
+            // 5️⃣ Generar fechas de sesiones
+            const startDate = new Date(roomData.start);
+            const dayOfWeek = scheduleDto.day; // ej: MONDAY
+            const sessionsToCreate: { date: Date; assignmentScheduleId: string }[] =
+              [];
+
+            let currentDate = new Date(startDate);
+
+            // Continuar generando sesiones hasta alcanzar el número deseado
+            while (sessionsToCreate.length < numberSessions) {
+              // Verificar si el día actual coincide con el del schedule
+              const currentDay = currentDate.getDay(); // 0 = domingo ... 6 = sábado
+              const mappedDay = mapDayOfWeek(dayOfWeek); // función auxiliar abajo 👇
+
+              if (currentDay === mappedDay) {
+                sessionsToCreate.push({
+                  date: new Date(currentDate),
+                  assignmentScheduleId: assignmentSchedule.id,
                 });
               }
+
+              currentDate = addDays(currentDate, 1);
             }
+
+            // 6️⃣ Crear todas las sesiones como PENDING
+            await prisma.session.createMany({
+              data: sessionsToCreate.map((s) => ({
+                assignmentScheduleId: s.assignmentScheduleId,
+                date: s.date,
+              })),
+            });
           }
         }
 
-        // 6. Retornar la inscripción final
         return inscription;
       });
+
+      // 7️⃣ Generar PDF y actualizar URL
       const finalInscription = await this.findOne(result.id);
       const pdfBuffer = await this.pdfService.generateInscription(finalInscription);
-      const { webViewLink } = await this.googledriveService.uploadFile(`ins${finalInscription.id}.pdf`, pdfBuffer, 'application/pdf', 'inscripciones');
-      // ver la opcion de sustituir por el this.update
+      const { webViewLink } = await this.googledriveService.uploadFile(
+        `ins${finalInscription.id}.pdf`,
+        pdfBuffer,
+        'application/pdf',
+        'inscripciones',
+      );
+
       await this.prisma.inscription.update({
         where: { id: finalInscription.id },
         data: { url: webViewLink },
@@ -89,8 +132,81 @@ export class InscriptionService {
       console.log(error);
       throw new Error(`No se pudo crear la inscripción: ${error.message}`);
     }
-
   }
+  // async create(staffId: string, createInscriptionDto: CreateInscriptionDto) {
+  //   try {
+  //     const { assignmentRooms, inscriptionPrice, monthPrice, ...inscriptionData } = createInscriptionDto;
+
+  //     const result = await this.prisma.$transaction(async (prisma) => {
+
+  //       // 1. Crear la inscripción principal
+  //       const inscription = await prisma.inscription.create({
+  //         data: {
+  //           staffId,
+  //           ...inscriptionData,
+  //         },
+  //       });
+
+  //       // 1.1 Crear el registro de precio
+
+  //       await prisma.price.create({
+  //         data: {
+  //           inscriptionId: inscription.id,
+  //           inscriptionPrice,
+  //           monthPrice,
+  //         }
+  //       })
+
+  //       // 2. Validar si hay salas asignadas
+  //       if (assignmentRooms && assignmentRooms.length > 0) {
+  //         for (const assignmentRoomDto of assignmentRooms) {
+  //           const { assignmentSchedules, ...roomData } = assignmentRoomDto;
+
+  //           // Crear la asignación de aula
+  //           const assignmentRoom = await prisma.assignmentRoom.create({
+  //             data: {
+  //               inscriptionId: inscription.id,
+  //               ...roomData,
+  //             },
+  //           });
+
+  //           // Crear los horarios asociados
+  //           if (assignmentSchedules && assignmentSchedules.length > 0) {
+  //             for (const scheduleDto of assignmentSchedules) {
+  //               await prisma.assignmentSchedule.create({
+  //                 data: {
+  //                   assignmentRoomId: assignmentRoom.id,
+  //                   scheduleId: scheduleDto.schedule.id,
+  //                   day: scheduleDto.day,
+  //                 },
+  //               });
+  //             }
+  //           }
+  //         }
+  //       }
+
+  //       // 6. Retornar la inscripción final
+  //       return inscription;
+  //     });
+  //     const finalInscription = await this.findOne(result.id);
+  //     const pdfBuffer = await this.pdfService.generateInscription(finalInscription);
+  //     const { webViewLink } = await this.googledriveService.uploadFile(`ins${finalInscription.id}.pdf`, pdfBuffer, 'application/pdf', 'inscripciones');
+  //     // ver la opcion de sustituir por el this.update
+  //     await this.prisma.inscription.update({
+  //       where: { id: finalInscription.id },
+  //       data: { url: webViewLink },
+  //     });
+
+  //     return {
+  //       ...finalInscription,
+  //       pdfBase64: pdfBuffer.toString('base64'),
+  //     };
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new Error(`No se pudo crear la inscripción: ${error.message}`);
+  //   }
+
+  // }
 
 
   async findAllByStudent(paginationDto: PaginationDto): Promise<PaginationResult<InscriptionExtended>> {
@@ -303,4 +419,16 @@ export class InscriptionService {
       select: InscriptionSelect,
     });
   }
+}
+function mapDayOfWeek(day: DayOfWeek): number {
+  const map: Record<DayOfWeek, number> = {
+    SUNDAY: 0,
+    MONDAY: 1,
+    TUESDAY: 2,
+    WEDNESDAY: 3,
+    THURSDAY: 4,
+    FRIDAY: 5,
+    SATURDAY: 6,
+  };
+  return map[day];
 }
