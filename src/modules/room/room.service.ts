@@ -5,6 +5,8 @@ import { RoomSelect, RoomType } from './entities/room.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { ScheduleService } from '../schedule/schedule.service';
+import { Prisma } from '@prisma/client';
+import { CaslFilterContext } from '@/common/extended-request';
 
 @Injectable()
 export class RoomService {
@@ -14,12 +16,15 @@ export class RoomService {
     private readonly scheduleService: ScheduleService,
   ) { }
 
-  async create(createRoomDto: CreateRoomDto) {
+  async create(userId: string, createRoomDto: CreateRoomDto) {
     const { schedules, ...roomDto } = createRoomDto;
 
     const result = await this.prisma.$transaction(async (prisma) => {
       const room = await prisma.room.create({
-        data: roomDto,
+        data: {
+          createdById: userId,
+          ...roomDto,
+        },
         select: RoomSelect,
       });
 
@@ -29,6 +34,7 @@ export class RoomService {
             prisma.schedule.create({
               data: {
                 roomId: room.id,
+                createdById: userId,
                 ...schedule,
               },
             })
@@ -42,59 +48,78 @@ export class RoomService {
     return result;
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<RoomType>> {
+  async findAll(
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ): Promise<PaginationResult<RoomType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      const whereClause: any = {
+      console.log('🎯 CASL filter recibido (Room):', JSON.stringify(caslFilter, null, 2));
+
+      // 🧠 Construcción del filtro por sucursal (branch)
+      let branchFilter: Prisma.RoomWhereInput = {};
+      if (caslFilter?.filter?.OR) {
+        const branchCondition = caslFilter.filter.OR.find((cond: any) => cond.id?.in);
+        if (branchCondition) {
+          branchFilter = {
+            specialty: {
+              branchSpecialties: {
+                some: {
+                  branchId: { in: branchCondition.id.in }, // ✅ conexión indirecta
+                },
+              },
+            },
+          };
+        }
+      }
+
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.RoomWhereInput = {
         active: true,
+        ...(caslFilter?.hasNoRestrictions ? {} : branchFilter),
+        ...(keys
+          ? {
+            OR: [
+              { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+              { specialty: { name: { contains: keys, mode: Prisma.QueryMode.insensitive } } },
+            ],
+          }
+          : {}),
       };
 
-      if (keys.trim() !== '') {
-        whereClause.OR = [
-          {
-            name: { contains: keys, mode: 'insensitive' }
-          },
-          {
-            specialty: {
-              name: { contains: keys, mode: 'insensitive' }
-            }
-          },
-        ];
-      }
-      const totalPages = await this.prisma.room.count({
-        where: whereClause,
-      });
-      const lastPage = Math.ceil(totalPages / limit);
+      console.log('🧩 Filtro final RoomWhereInput:', JSON.stringify(whereClause, null, 2));
+
+      // 🔹 Paginación
+      const total = await this.prisma.room.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+      // 🔹 Consulta principal
       const rawData = await this.prisma.room.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: whereClause,
-        orderBy: {
-          createdAt: 'asc',
-        },
+        orderBy: { createdAt: 'asc' },
         select: RoomSelect,
       });
 
-      // ✅ filtramos los schedules activos manualmente
-      const filteredData = rawData.map((room) => ({
+      // 🔹 Post-procesar (filtrar schedules activos)
+      const data = rawData.map((room) => ({
         ...room,
         schedules: room.schedules?.filter((s) => s.active),
       }));
-      return {
-        data: filteredData,
-        meta: {
-          total: totalPages,
-          page,
-          lastPage,
-        },
-      };
-    } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Hubo un error al pedir aulas');
-    }
 
+      // 🔹 Retornar la respuesta formateada
+      return { data, meta: { total, page, lastPage } };
+
+    } catch (error) {
+      console.error('❌ Error en findAll(Room):', error);
+
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar las aulas');
+    }
   }
+
 
 
   async findOne(id: string) {
@@ -110,7 +135,7 @@ export class RoomService {
     return room;
   }
 
-  async update(id: string, updateRoomDto: UpdateRoomDto) {
+  async update(userId: string, id: string, updateRoomDto: UpdateRoomDto) {
     const { schedules = [], ...roomDto } = updateRoomDto;
 
     await this.findOne(id);
@@ -165,6 +190,7 @@ export class RoomService {
               start: schedule.start,
               end: schedule.end,
               capacity: schedule.capacity!,
+              createdById: userId,
               // active: schedule.active ?? true,
             },
           });

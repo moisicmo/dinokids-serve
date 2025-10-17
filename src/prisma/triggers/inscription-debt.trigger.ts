@@ -23,8 +23,8 @@ export async function createDebtTrigger(prisma: PrismaClient) {
             WHERE "inscription_id" = NEW."inscription_id" AND "type" = 'INSCRIPTION';
 
             IF NOT FOUND THEN
-                INSERT INTO "debts" ("inscription_id", "total_amount", "remaining_balance", "type")
-                VALUES (NEW."inscription_id", inscription_price, inscription_price, 'INSCRIPTION');
+                INSERT INTO "debts" ("inscription_id", "total_amount", "remaining_balance", "type", "created_by_id")
+                VALUES (NEW."inscription_id", inscription_price, inscription_price, 'INSCRIPTION', NEW."created_by_id");
             END IF;
 
             -- Verificar si existe deuda tipo MONTH
@@ -33,8 +33,8 @@ export async function createDebtTrigger(prisma: PrismaClient) {
             WHERE "inscription_id" = NEW."inscription_id" AND "type" = 'MONTH';
 
             IF NOT FOUND THEN
-                INSERT INTO "debts" ("inscription_id", "total_amount", "remaining_balance", "type")
-                VALUES (NEW."inscription_id", month_price, month_price, 'MONTH');
+                INSERT INTO "debts" ("inscription_id", "total_amount", "remaining_balance", "type", "created_by_id")
+                VALUES (NEW."inscription_id", month_price, month_price, 'MONTH', NEW."created_by_id");
             END IF;
         END IF;
 

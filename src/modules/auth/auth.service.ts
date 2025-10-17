@@ -86,6 +86,7 @@ export class AuthService {
           token,
           userAgent,
           ipAddress,
+          createdById: user.id,
         },
       });
 

@@ -22,7 +22,7 @@ export class BookingService {
     private readonly googledriveService: GoogledriveService,
   ) { }
 
-  async create(staffId: string, createBookingDto: CreateBookingDto) {
+  async create(userId: string, createBookingDto: CreateBookingDto) {
     try {
       const { assignmentRooms, ...bookingDto } = createBookingDto;
 
@@ -30,15 +30,20 @@ export class BookingService {
 
         // 1. Crear la reserva 
         const booking = await prisma.booking.create({
-          data: bookingDto,
+          data: {
+            ...bookingDto,
+            createdById: userId,
+          },
           select: BookingEntity,
         });
+        console.log('booking', booking)
+        console.log('==============')
         // 2. Crear la inscripción en modo reserva
 
         const inscription = await prisma.inscription.create({
           data: {
-            staffId,
             bookingId: booking.id,
+            createdById: userId,
           },
         });
 
@@ -51,6 +56,7 @@ export class BookingService {
             const assignmentRoom = await prisma.assignmentRoom.create({
               data: {
                 inscriptionId: inscription.id,
+                createdById: userId,
                 ...roomData,
               },
             });
@@ -63,6 +69,7 @@ export class BookingService {
                     assignmentRoomId: assignmentRoom.id,
                     scheduleId: scheduleDto.schedule.id,
                     day: scheduleDto.day,
+                    createdById: userId,
                   },
                 });
               }

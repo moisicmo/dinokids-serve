@@ -7,10 +7,11 @@ export class CityService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(name: string) {
+  async create(userId: string, name: string) {
     const city = await this.prisma.city.create({
       data: {
-        name
+        name,
+        createdById: userId,
       }
     });
     return city;
@@ -20,7 +21,7 @@ export class CityService {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      const whereClause: any = { };
+      const whereClause: any = {};
 
       if (keys.trim() !== '') {
         whereClause.OR = [

@@ -1,6 +1,10 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { AbilitiesGuard } from '@/guard/abilities.guard';
+import { TypeAction, TypeSubject } from '@prisma/client';
+import { checkAbilities } from '@/decorator';
+import { AuthenticatedRequest } from '@/common/extended-request';
+import { PaginationDto } from '@/common';
 
 @UseGuards(AbilitiesGuard)
 @Controller('report')
@@ -9,13 +13,22 @@ export class ReportController {
 
 
   @Get('inscription')
-  getInscriptionsInDocumentXlsx() {
-    return this.reportService.getInscriptionsInDocumentXlsx();
+  @checkAbilities({ action: TypeAction.read, subject: TypeSubject.report })
+
+  getInscriptionsInDocumentXlsx(
+    @Req() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.reportService.getInscriptionsInDocumentXlsx(paginationDto, req.caslFilter);
   }
 
   @Get('debt')
-  getDebsInDocumentXlsx() {
-    return this.reportService.getDebsInDocumentXlsx();
+  @checkAbilities({ action: TypeAction.read, subject: TypeSubject.report })
+  getDebsInDocumentXlsx(
+    @Req() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.reportService.getDebsInDocumentXlsx(paginationDto, req.caslFilter);
   }
 }
 

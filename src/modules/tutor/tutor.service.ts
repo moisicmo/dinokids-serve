@@ -4,13 +4,16 @@ import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { TutorSelect, TutorType } from './entities/tutor.entity';
+import { Prisma } from '@prisma/client';
+import { CaslFilterContext } from '@/common/extended-request';
+import { cleanCaslFilterForModel } from '@/common/casl.util';
 @Injectable()
 
 export class TutorService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(createTutorDto: CreateTutorDto) {
+  async create(userId: string, createTutorDto: CreateTutorDto) {
     const { cityId, zone, detail, ...userDto } = createTutorDto;
 
     const userExists = await this.prisma.user.findUnique({
@@ -24,7 +27,7 @@ export class TutorService {
 
 
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(userDto.email??'withoutpassword', salt);
+    const hashedPassword = bcrypt.hashSync(userDto.email ?? 'withoutpassword', salt);
 
     return await this.prisma.user.create({
       data: {
@@ -34,10 +37,13 @@ export class TutorService {
             cityId,
             zone,
             detail,
+            createdById: userId,
           }
         },
         tutor: {
-          create: {},
+          create: {
+            createdById: userId,
+          },
         },
         ...userDto,
       },
@@ -45,45 +51,47 @@ export class TutorService {
     });
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<TutorType>> {
+  async findAll(
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ): Promise<PaginationResult<TutorType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      const whereClause: any = {
-        active: true,
-      };
+      const shouldIgnoreCasl =
+        caslFilter?.subject === 'student' || caslFilter?.subject === 'tutor';
 
-      if (keys.trim() !== '') {
-        whereClause.OR = [
-          { city: { contains: keys, mode: 'insensitive' } },
-          {
+      const cleanedFilter = cleanCaslFilterForModel(caslFilter?.filter, 'student');
+
+
+      const whereClause: Prisma.TutorWhereInput = {
+        active: true,
+        ...(caslFilter?.hasNoRestrictions || shouldIgnoreCasl ? {} : cleanedFilter ?? {}),
+        ...(keys
+          ? {
             user: {
               OR: [
-                { name: { contains: keys, mode: 'insensitive' } },
-                { lastName: { contains: keys, mode: 'insensitive' } },
-                { email: { contains: keys, mode: 'insensitive' } },
-                { numberDocument: { contains: keys, mode: 'insensitive' } },
+                { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                { lastName: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                { email: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                { numberDocument: { contains: keys, mode: Prisma.QueryMode.insensitive } },
               ],
             },
-          },
-        ];
-      }
-      const totalPages = await this.prisma.tutor.count({
-        where: whereClause,
-      });
-      const lastPage = Math.ceil(totalPages / limit);
-      return {
-        data: await this.prisma.tutor.findMany({
-          skip: (page - 1) * limit,
-          take: limit,
-          where: whereClause,
-          orderBy: {
-            createdAt: 'asc',
-          },
-          select: TutorSelect,
-        }),
-        meta: { total: totalPages, page, lastPage },
+          }
+          : {}),
       };
+      // 🔹 Paginación
+      const total = await this.prisma.tutor.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+      const data = await this.prisma.tutor.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: TutorSelect,
+      });
+
+      return { data, meta: { total, page, lastPage } };
 
     } catch (error) {
       console.log(error);
@@ -134,7 +142,7 @@ export class TutorService {
           update: {
             where: { userId: id },
             data: {
-              
+
             },
           },
         },

@@ -1,97 +1,142 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaAbility, createPrismaAbility } from '@casl/prisma';
+import { PureAbility } from '@casl/ability';
+import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
 import { TypeAction, TypeSubject, Condition } from '@prisma/client';
 import { PermissionType } from '@/modules/permission/entities/permission.entity';
 import { StaffType } from '@/modules/staff/entities/staff.entity';
+import { RawRuleOf } from '@casl/ability';
 
-// Definimos el tipo de habilidad que se usará con CASL y Prisma
-export type AppAbility = PrismaAbility<[TypeAction, TypeSubject]>;
+// 🔹 Definimos los Subjects válidos desde tu enum
+type AppSubjects = Subjects<Record<TypeSubject, any>>;
+
+// 🔹 Tipo de habilidad global
+export type AppAbility = PureAbility<[TypeAction, AppSubjects], PrismaQuery>;
 
 @Injectable()
 export class CaslAbilityFactory {
-  // Crea las habilidades (permissions) a partir de los permisos que tiene el usuario
-  createForPermissions(staff: StaffType, permissions: PermissionType[]): AppAbility {
-    console.log('staff', JSON.stringify(staff)); // Imprime el usuario actual
-    console.log('permissions', JSON.stringify(permissions)); // Imprime los permisos recibidos
+  createForPermissions(
+    staff: StaffType,
+    permissions: PermissionType[],
+  ): AppAbility {
+    const context = {
+      userId: staff.userId,
+      branchIds: staff.branches?.map((b) => b.id) ?? [],
+      roleId: staff.role.id,
+      currentYear: new Date().getFullYear(),
+      currentHour: new Date().getHours(),
+    };
 
-    const branchIds = staff.branches.map((b) => b.id);
+    const rules: RawRuleOf<AppAbility>[] = [];
 
-    // Creamos las reglas CASL a partir de los permisos
-    const rules = permissions.map((perm) => {
-      const rule: any = {
+    for (const perm of permissions) {
+      const isDynamicConditionValid = this.evaluateDynamicConditions(
+        perm.conditions,
+        context,
+      );
+      if (!isDynamicConditionValid) continue;
+
+      const rule: RawRuleOf<AppAbility> = {
         action: perm.action,
         subject: perm.subject,
         inverted: perm.inverted,
-        reason: perm.reason,
+        reason: perm.reason ?? undefined,
+        conditions: this.parseStaticConditions(perm.conditions, context),
       };
-      
 
-      // Si tiene condiciones, las convertimos a objeto
-      if (perm.conditions && perm.conditions.length > 0) {
-        rule.conditions = this.buildConditionObject(perm.conditions, {
-          ...staff.user,
-          branchIds, // 👉 le pasamos los branchIds al parser de condiciones
-        });
-      }
+      rules.push(rule);
+    }
 
-      return rule;
-    });
+    console.log('🎯 Reglas generadas:', JSON.stringify(rules, null, 2));
 
-    // Retorna una instancia de CASL con las reglas creadas
     return createPrismaAbility<AppAbility>(rules);
   }
 
-  // Construye un objeto de condiciones que CASL pueda entender
-  private buildConditionObject(
-    conditions: Condition[],
-    context: { id: string; branchIds?: string[] }
-  ): any {
-    const conditionObject: any = {};
+  private evaluateDynamicConditions(
+    conds: Condition[],
+    context: Record<string, any>,
+  ): boolean {
+    for (const cond of conds) {
+      const field = cond.field;
+      const value = this.parseValue(cond.value, context);
 
-    for (const cond of conditions) {
-      let value: any = cond.value;
-
-      // Reemplazo de variables dinámicas
-      if (typeof value === 'string' && value.trim().replaceAll(' ', '') === '{{branchIds}}') {
-        console.log('Reemplazando {{branchIds}} con:', context.branchIds);
-        value = context.branchIds;
-      } else if (typeof value === 'string' && value.includes('{{id}}')) {
-        value = value.replace(/{{\s*id\s*}}/g, context.id);
-        try {
-          value = JSON.parse(value);
-        } catch (_) {
-          // mantener como string
+      switch (field) {
+        case 'hour': {
+          const [start, end] = Array.isArray(value)
+            ? value
+            : JSON.parse(value || '[0, 23]');
+          const current = context.currentHour;
+          if (current < start || current > end) return false;
+          break;
+        }
+        case 'year': {
+          const expected = Array.isArray(value) ? value[0] : Number(value);
+          if (context.currentYear !== expected) return false;
+          break;
+        }
+        case 'gestion': {
+          const gestionValue = String(value);
+          if (!gestionValue.includes(context.currentYear.toString()))
+            return false;
+          break;
         }
       }
+    }
+    return true;
+  }
+
+  private parseStaticConditions(
+    conds: Condition[],
+    context: Record<string, any>,
+  ): Record<string, any> {
+    const conditionObject: Record<string, any> = {};
+
+    for (const cond of conds) {
+      if (['hour', 'year', 'gestion'].includes(cond.field)) continue;
+
+      const field = cond.field;
+      const value = this.parseValue(cond.value, context);
 
       const operatorMap: Record<string, string> = {
-        equals: 'equals',
-        not_equals: 'not',
-        in: 'in',           // ← clave
-        not_in: 'notIn',
-        greater_than: 'gt',
-        greater_than_or_equal: 'gte',
-        less_than: 'lt',
-        less_than_or_equal: 'lte',
-        contains: 'contains',
-        starts_with: 'startsWith',
-        ends_with: 'endsWith',
-        exists: 'isSet',
+        eq: 'equals',
+        ne: 'not',
+        in: 'in',
+        nin: 'notIn',
+        gt: 'gt',
+        gte: 'gte',
+        lt: 'lt',
+        lte: 'lte',
+        between: 'between',
       };
 
       const op = operatorMap[cond.operator];
       if (!op) continue;
 
-      if (!conditionObject[cond.field]) {
-        conditionObject[cond.field] = {};
+      if (!conditionObject[field]) conditionObject[field] = {};
+
+      if (op === 'between' && Array.isArray(value) && value.length === 2) {
+        conditionObject[field] = { gte: value[0], lte: value[1] };
+      } else {
+        conditionObject[field][op] = value;
       }
-
-      conditionObject[cond.field][op] = value;
     }
-
-    console.log('🔍 Condiciones finales para CASL:', conditionObject);
 
     return conditionObject;
   }
 
+  private parseValue(value: any, context: Record<string, any>): any {
+    if (typeof value === 'string') {
+      for (const key of Object.keys(context)) {
+        const placeholder = `{{${key}}}`;
+        if (value.includes(placeholder)) {
+          value = value.replaceAll(placeholder, JSON.stringify(context[key]));
+        }
+      }
+    }
+
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
+  }
 }

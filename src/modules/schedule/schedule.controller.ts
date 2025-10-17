@@ -1,10 +1,11 @@
-import { Controller, Get, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { PaginationDto } from '@/common';
 import { checkAbilities } from '@/decorator';
 import { AbilitiesGuard } from '@/guard/abilities.guard';
 import { TypeAction, TypeSubject } from "@prisma/client";
+import { AuthenticatedRequest } from '@/common/extended-request';
 
 @UseGuards(AbilitiesGuard)
 @Controller('schedule')
@@ -13,8 +14,11 @@ export class ScheduleController {
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.schedule })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.scheduleService.findAll(paginationDto);
+  findAll(
+    @Req() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.scheduleService.findAll(paginationDto, req.caslFilter);
   }
 
   @Get(':id')

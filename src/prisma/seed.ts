@@ -10,11 +10,6 @@ async function main() {
 
   try {
 
-    const city = await prisma.city.create({
-      data: { name: 'La Paz' },
-    });
-
-
     const salt = bcrypt.genSaltSync(10);
     const user = await prisma.user.create({
       data: {
@@ -27,79 +22,54 @@ async function main() {
         password: bcrypt.hashSync('Muyseguro123*', salt),
       },
     });
+
+    const city = await prisma.city.create({
+      data: {
+        name: 'La Paz',
+        createdById: user.id,
+      },
+    });
+
+    const actions = [TypeAction.read, TypeAction.create, TypeAction.update, TypeAction.delete, TypeAction.manage];
+
+    const permissions = await Promise.all(
+      actions.map((action) =>
+        prisma.permission.create({
+          data: {
+            action,
+            subject: TypeSubject.all,
+            createdById: user.id,
+          },
+        }),
+      ),
+    );
+
     const role = await prisma.role.create({
-      data: { name: 'admin' }
-    });
-    await prisma.permission.createManyAndReturn({
-      data: [
-        { roleId: role.id, action: TypeAction.read, subject: TypeSubject.all },
-        { roleId: role.id, action: TypeAction.create, subject: TypeSubject.all },
-        { roleId: role.id, action: TypeAction.update, subject: TypeSubject.all },
-        { roleId: role.id, action: TypeAction.delete, subject: TypeSubject.all },
-        { roleId: role.id, action: TypeAction.manage, subject: TypeSubject.all },
-      ]
-    });
-
-    // Crear un rol limitado (por ejemplo, rol de staff sin acceso total)
-    const staffRole = await prisma.role.create({
-      data: { name: 'limited_staff' },
-    });
-
-    // Crear un permiso para leer su propio usuario
-    await prisma.permission.create({
       data: {
-        roleId: staffRole.id,
-        action: TypeAction.read,
-        subject: TypeSubject.permission,
-        conditions: {
-          create: [
-            {
-              field: 'id',
-              operator: 'equals',
-              value: '{{ id }}', // Se evaluará dinámicamente con el usuario logueado
-            },
-          ],
+        name: 'admin',
+        createdById: user.id,
+        permissions: {
+          connect: permissions.map((p) => ({ id: p.id })),
         },
       },
     });
 
-    // Crear rol para gerente de sucursal
-    const branchManagerRole = await prisma.role.create({
-      data: { name: 'branch_manager' },
-    });
-
-    // Crear permiso para editar solo su propia sucursal
-    await prisma.permission.create({
+    const addressBranch = await prisma.address.create({
       data: {
-        roleId: branchManagerRole.id,
-        action: 'update',
-        subject: 'branch', // o TypeSubject.branch si usas enum
-        reason: 'Puede editar solo su propia sucursal',
-        conditions: {
-          create: [
-            {
-              field: 'id',
-              operator: 'in',
-              value: '{{ branchIds }}', // Se reemplazará por el ID de la sucursal asignada al usuario logueado
-            },
-          ],
-        },
-      },
+        cityId: city.id,
+        zone: 'San Pedro',
+        detail: 'Av Algo #221',
+        createdById: user.id,
+      }
     });
-
     const branch = await prisma.branch.create({
       data: {
         name: 'Casa Matríz',
         phone: ['123456789'],
-        address: {
-          create: {
-            cityId: city.id,
-            zone: 'San Pedro',
-            detail: 'Av Algo #221',
-          }
-        }
+        addressId: addressBranch.id,
+        createdById: user.id,
       }
-    })
+    });
 
     await prisma.staff.create({
       data: {
@@ -109,11 +79,20 @@ async function main() {
           connect: [
             { id: branch.id }
           ],
-        }
+        },
+        createdById: user.id,
       }
     });
 
     // creando un profesor
+    const addressTeacher = await prisma.address.create({
+      data: {
+        cityId: city.id,
+        zone: 'San Pedro',
+        detail: 'Av Algo #221',
+        createdById: user.id,
+      }
+    });
     await prisma.user.create({
       data: {
         numberDocument: '123321',
@@ -123,23 +102,27 @@ async function main() {
         email: 'juan@gmail.com',
         phone: ['123456789'],
         password: bcrypt.hashSync('Muyseguro123*', salt),
-        address: {
-          create: {
-            cityId: city.id,
-            zone: 'San Pedro',
-            detail: 'Av Algo #221',
-          }
-        },
+        addressId: addressTeacher.id,
         teacher: {
           create: {
             major: 'Licenciado',
             academicStatus: AcademicStatus.EGRESADO,
             startJob: new Date(),
+            createdById: user.id,
           },
         },
+        createdById: user.id,
       },
     })
     // creando un tutor
+    const addressTutor = await prisma.address.create({
+      data: {
+        cityId: city.id,
+        zone: 'San Pedro',
+        detail: 'Av Algo #221',
+        createdById: user.id,
+      }
+    });
     const tutor = await prisma.user.create({
       data: {
         numberDocument: '3445452',
@@ -149,19 +132,22 @@ async function main() {
         email: 'maria@gmail.com',
         phone: ['123456789'],
         password: bcrypt.hashSync('Muyseguro123*', salt),
-        address: {
-          create: {
-            cityId: city.id,
-            zone: 'San Pedro',
-            detail: 'Av Algo #221',
-          }
-        },
+        addressId: addressTutor.id,
         tutor: {
-          create: {},
+          create: {
+            createdById: user.id,
+          },
         },
+        createdById: user.id,
       },
     });
     // creando un estudiante
+    const school = await prisma.school.create({
+      data: {
+        name: 'San Calixto',
+        createdById: user.id,
+      }
+    });
     await prisma.user.create({
       data: {
         numberDocument: '21321312',
@@ -176,18 +162,15 @@ async function main() {
             code: 'STU21321312',
             birthdate: new Date(),
             gender: Gender.MASCULINO,
-            school: {
-              create: {
-                name: 'San Calixto',
-              }
-            },
+            schoolId: school.id,
             grade: 5,
             educationLevel: EducationLevel.PRIMARIA,
             tutors: {
               connect: [
                 { userId: tutor.id }
               ],
-            }
+            },
+            createdById: user.id,
           },
         },
       },
@@ -201,8 +184,10 @@ async function main() {
             branchId: branch.id,
             estimatedSessionCost: 20.0,
             numberSessions: 30,
+            createdById: user.id,
           }
-        }
+        },
+        createdById: user.id,
       }
     });
 

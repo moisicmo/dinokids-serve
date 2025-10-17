@@ -1,12 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { StaffService } from './staff.service';
 import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { PaginationDto } from '@/common';
 
-import { checkAbilities } from '@/decorator';
+import { checkAbilities, CurrentUser } from '@/decorator';
 import { AbilitiesGuard } from '@/guard/abilities.guard';
 import { TypeAction, TypeSubject } from '@prisma/client';
+import { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
+import { AuthenticatedRequest } from '@/common/extended-request';
 
 @UseGuards(AbilitiesGuard)
 @Controller('staff')
@@ -15,14 +17,17 @@ export class StaffController {
 
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.staff })
-  create(@Body() createStaffDto: CreateStaffDto) {
-    return this.staffService.create(createStaffDto);
+  create(@CurrentUser() user: JwtPayload, @Body() createStaffDto: CreateStaffDto) {
+    return this.staffService.create(user.id, createStaffDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.staff })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.staffService.findAll(paginationDto);
+  findAll(
+    @Req() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.staffService.findAll(paginationDto, req.caslFilter);
   }
 
   @Get(':id')

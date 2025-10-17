@@ -7,8 +7,9 @@ import { PaginationDto, PaginationResult } from '@/common';
 import { PdfService } from '@/common/pdf/pdf.service';
 import { GoogledriveService } from '@/common/googledrive/googledrive.service';
 import { Prisma } from '@prisma/client';
-import { addDays, isSameDay } from 'date-fns';
+import { addDays } from 'date-fns';
 import { DayOfWeek } from '@prisma/client'; // Asegúrate de importar tu enum
+import { CaslFilterContext } from '@/common/extended-request';
 
 @Injectable()
 export class InscriptionService {
@@ -19,42 +20,44 @@ export class InscriptionService {
     private readonly googledriveService: GoogledriveService,
   ) { }
 
-  async create(staffId: string, createInscriptionDto: CreateInscriptionDto) {
+  async create(userId: string, createInscriptionDto: CreateInscriptionDto) {
     try {
       const { assignmentRooms, inscriptionPrice, monthPrice, ...inscriptionData } = createInscriptionDto;
 
-      const result = await this.prisma.$transaction(async (prisma) => {
-        // 1️⃣ Crear la inscripción principal
-        const inscription = await prisma.inscription.create({
+      const result = await this.prisma.$transaction(async (tx) => {
+        // 1️⃣ Crear inscripción
+        const inscription = await tx.inscription.create({
           data: {
-            staffId,
+            createdById: userId,
             ...inscriptionData,
           },
         });
 
-        // 2️⃣ Crear precios
-        await prisma.price.create({
+        console.log('✅ userId dentro de transacción:', userId);
+
+        // 2️⃣ Crear precio
+        await tx.price.create({
           data: {
             inscriptionId: inscription.id,
             inscriptionPrice,
             monthPrice,
+            createdById: userId, // 👈 aquí sí se respeta dentro de la misma conexión
           },
         });
 
-        // 3️⃣ Procesar las salas asignadas
+        // 3️⃣ Procesar salas
         for (const assignmentRoomDto of assignmentRooms ?? []) {
           const { assignmentSchedules, ...roomData } = assignmentRoomDto;
 
-          // Crear la asignación de sala
-          const assignmentRoom = await prisma.assignmentRoom.create({
+          const assignmentRoom = await tx.assignmentRoom.create({
             data: {
               inscriptionId: inscription.id,
+              createdById: userId,
               ...roomData,
             },
           });
 
-          // Obtener datos de la especialidad para saber cuántas sesiones generar
-          const room = await prisma.room.findUnique({
+          const room = await tx.room.findUnique({
             where: { id: roomData.roomId },
             include: { specialty: { include: { branchSpecialties: true } } },
           });
@@ -62,45 +65,38 @@ export class InscriptionService {
           const numberSessions =
             room?.specialty.branchSpecialties[0]?.numberSessions ?? 1;
 
-          // 4️⃣ Crear horarios y sesiones automáticas
           for (const scheduleDto of assignmentSchedules ?? []) {
-            const assignmentSchedule = await prisma.assignmentSchedule.create({
+            const assignmentSchedule = await tx.assignmentSchedule.create({
               data: {
                 assignmentRoomId: assignmentRoom.id,
                 scheduleId: scheduleDto.schedule.id,
                 day: scheduleDto.day,
+                createdById: userId,
               },
             });
 
-            // 5️⃣ Generar fechas de sesiones
+            // Crear sesiones
             const startDate = new Date(roomData.start);
-            const dayOfWeek = scheduleDto.day; // ej: MONDAY
-            const sessionsToCreate: { date: Date; assignmentScheduleId: string }[] =
-              [];
-
+            const sessionsToCreate: { date: Date; assignmentScheduleId: string }[] = [];
             let currentDate = new Date(startDate);
 
-            // Continuar generando sesiones hasta alcanzar el número deseado
             while (sessionsToCreate.length < numberSessions) {
-              // Verificar si el día actual coincide con el del schedule
-              const currentDay = currentDate.getDay(); // 0 = domingo ... 6 = sábado
-              const mappedDay = mapDayOfWeek(dayOfWeek); // función auxiliar abajo 👇
-
+              const currentDay = currentDate.getDay();
+              const mappedDay = mapDayOfWeek(scheduleDto.day);
               if (currentDay === mappedDay) {
                 sessionsToCreate.push({
                   date: new Date(currentDate),
                   assignmentScheduleId: assignmentSchedule.id,
                 });
               }
-
               currentDate = addDays(currentDate, 1);
             }
 
-            // 6️⃣ Crear todas las sesiones como PENDING
-            await prisma.session.createMany({
+            await tx.session.createMany({
               data: sessionsToCreate.map((s) => ({
                 assignmentScheduleId: s.assignmentScheduleId,
                 date: s.date,
+                createdById: userId,
               })),
             });
           }
@@ -108,6 +104,8 @@ export class InscriptionService {
 
         return inscription;
       });
+
+
 
       // 7️⃣ Generar PDF y actualizar URL
       const finalInscription = await this.findOne(result.id);
@@ -209,101 +207,172 @@ export class InscriptionService {
   // }
 
 
-  async findAllByStudent(paginationDto: PaginationDto): Promise<PaginationResult<InscriptionExtended>> {
-    try {
-      const inscriptionsByStudent = await this.findAll(paginationDto, {
-        student: { isNot: null },
-        prices: {
-          some: {
-            active: true,
+async findAllByStudent(
+  paginationDto: PaginationDto,
+  caslFilter?: CaslFilterContext,
+): Promise<PaginationResult<InscriptionExtended>> {
+  try {
+    const { page = 1, limit = 10 } = paginationDto;
+
+    // 🧩 1️⃣ Filtro base (solo inscripciones con estudiante y precios activos)
+    const whereCustom: Prisma.InscriptionWhereInput = {
+      student: { isNot: null },
+      prices: { some: { active: true } },
+    };
+
+    // 🧠 2️⃣ Construir filtro adicional según CASL (sucursal del usuario)
+    let branchFilter: Prisma.InscriptionWhereInput = {};
+    if (caslFilter?.filter?.OR) {
+      const branchCondition = caslFilter.filter.OR.find(
+        (cond: any) => cond.id?.in,
+      );
+
+      if (branchCondition) {
+        branchFilter = {
+          assignmentRooms: {
+            some: {
+              room: {
+                specialty: {
+                  branchSpecialties: {
+                    some: {
+                      branchId: { in: branchCondition.id.in },
+                    },
+                  },
+                },
+              },
+            },
           },
-        },
-      });
-
-      const extendedData: InscriptionExtended[] = inscriptionsByStudent.data.map(inscription => {
-        const activePrice = inscription.prices.find(p => p.active);
-        return {
-          ...inscription,
-          inscriptionPrice: activePrice?.inscriptionPrice ?? 0,
-          monthPrice: activePrice?.monthPrice ?? 0,
         };
-      });
-
-      return {
-        data: extendedData,
-        meta: inscriptionsByStudent.meta,
-      };
-    } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Error retrieving inscriptions');
+      }
     }
+
+    // 🧩 3️⃣ Fusionar filtros: CASL + personalizados
+    const whereClause: Prisma.InscriptionWhereInput = {
+      AND: [
+        whereCustom,
+        ...(caslFilter?.hasNoRestrictions ? [] : [branchFilter]),
+      ],
+    };
+
+    // 🧩 4️⃣ Calcular total (paginación)
+    const total = await this.prisma.inscription.count({ where: whereClause });
+    const lastPage = Math.ceil(total / limit);
+
+    // 🧩 5️⃣ Obtener inscripciones con sus relaciones necesarias
+    const dataRaw = await this.prisma.inscription.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: whereClause,
+      orderBy: { createdAt: 'desc' },
+      select: InscriptionSelect
+    });
+
+    // 🧩 6️⃣ Extender resultado con precios activos
+    const extendedData: InscriptionExtended[] = dataRaw.map((inscription) => {
+      const activePrice = inscription.prices.find((p) => p.active);
+      return {
+        ...inscription,
+        inscriptionPrice: activePrice?.inscriptionPrice ?? 0,
+        monthPrice: activePrice?.monthPrice ?? 0,
+      };
+    });
+
+    // 🧩 7️⃣ Retornar con metadatos
+    return {
+      data: extendedData,
+      meta: { total, page, lastPage },
+    };
+  } catch (error) {
+    console.error('❌ Error en findAllByStudent(Inscription):', error);
+    if (error instanceof NotFoundException) throw error;
+    throw new InternalServerErrorException(
+      'Hubo un error al listar las inscripciones por estudiante',
+    );
   }
+}
+
+
+
 
 
 
   async findAll(
     paginationDto: PaginationDto,
     whereCustom?: Prisma.InscriptionWhereInput,
+    caslFilter?: CaslFilterContext,
   ): Promise<PaginationResult<InscriptionType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
+      // 🔹 1️⃣ Construimos el filtro base combinando CASL + filtros personalizados
       const whereClause: Prisma.InscriptionWhereInput = {
         active: true,
+        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...whereCustom,
+        ...(keys.trim()
+          ? {
+            OR: [
+              // 🔸 Buscar en Booking (nombre o DNI)
+              {
+                booking: {
+                  OR: [
+                    { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                    { dni: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                  ],
+                },
+              },
+              // 🔸 Buscar en Student → User (nombre, apellido, email, doc)
+              {
+                student: {
+                  user: {
+                    OR: [
+                      { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                      { lastName: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                      { email: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                      { numberDocument: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                    ],
+                  },
+                },
+              },
+              // 🔸 Buscar en el nombre del aula (room)
+              {
+                assignmentRooms: {
+                  some: {
+                    room: {
+                      name: { contains: keys, mode: Prisma.QueryMode.insensitive },
+                    },
+                  },
+                },
+              },
+            ],
+          }
+          : {}),
       };
 
-      if (keys.trim() !== '') {
-        whereClause.OR = [
-          // {
-          //   code: { contains: keys, mode: 'insensitive' },
-          // },
-          {
-            student: {
-              user: {
-                OR: [
-                  { name: { contains: keys, mode: 'insensitive' } },
-                  { lastName: { contains: keys, mode: 'insensitive' } },
-                  { email: { contains: keys, mode: 'insensitive' } },
-                  { numberDocument: { contains: keys, mode: 'insensitive' } },
-                ],
-              },
-            },
-          },
-          // {
-          //   room: {
-          //     name: { contains: keys, mode: 'insensitive' },
-          //   },
-          // },
-        ];
-      }
-
+      // 🔹 2️⃣ Conteo y paginación
       const total = await this.prisma.inscription.count({ where: whereClause });
       const lastPage = Math.ceil(total / limit);
 
+      // 🔹 3️⃣ Consulta principal
       const data = await this.prisma.inscription.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: whereClause,
-        orderBy: {
-          createdAt: 'desc',
-        },
+        orderBy: { createdAt: 'desc' },
         select: InscriptionSelect,
       });
 
-      return {
-        data,
-        meta: {
-          total,
-          page,
-          lastPage,
-        },
-      };
+      // 🔹 4️⃣ Respuesta formateada
+      return { data, meta: { total, page, lastPage } };
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Hubo un error al pedir inscripciones');
+      console.error('❌ Error en findAll(Inscription):', error);
+
+      // Manejo coherente de errores
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar las inscripciones');
     }
   }
+
 
 
 
@@ -344,7 +413,7 @@ export class InscriptionService {
     return inscription;
   }
 
-  async update(id: string, updateInscriptionDto: UpdateInscriptionDto) {
+  async update(userId: string, id: string, updateInscriptionDto: UpdateInscriptionDto) {
     const { assignmentRooms, ...inscriptionData } = updateInscriptionDto;
 
     // 1. Validar que exista
@@ -384,6 +453,7 @@ export class InscriptionService {
           const assignmentRoom = await prisma.assignmentRoom.create({
             data: {
               inscriptionId: id,
+              createdById: userId,
               ...roomData,
             },
           });

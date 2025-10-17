@@ -13,22 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Branch {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  addressId             String                @map("address_id")              @db.Uuid
-  name                  String                                                @db.VarChar
-  phone                 String[]                                              @db.VarChar
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  rooms                 Room[]
-  staffs                Staff[]
-  teachers              Teacher[]
-  branchSpecialties     BranchSpecialty[]
-  accessRecords         AccessRecord[]
-  address               Address                                               @relation(fields: [addressId], references: [id])
-	@@map("branches")
-}
 model User {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   addressId             String?               @map("address_id")              @db.Uuid
@@ -37,7 +21,7 @@ model User {
   numberCard            String?               @map("number_card")             @unique
   name                  String                                                @db.VarChar
   lastName              String                @map("last_name")               @db.VarChar
-  email                 String?                                                @unique
+  email                 String?
   emailValidated        Boolean               @map("email_validated")         @default(false)
   image                 String?                                               @db.VarChar
   phone                 Json
@@ -52,7 +36,57 @@ model User {
   authSessions          AuthSession[]
   accessRecords         AccessRecord[]
   address               Address?                                              @relation(fields: [addressId], references: [id])
+  createdById           String?               @map("created_by_id")           @db.Uuid
+  createdBy             User?                                                  @relation("users",fields: [createdById], references: [id])
+  // creaciones
+  cUsers                User[]                                                @relation("users")
+  cBranches             Branch[]                                              @relation("branches")
+  cStaffs               Staff[]                                               @relation("staffs")
+  cAddresses            Address[]                                             @relation("addresses")
+  cCities               City[]                                                @relation("cities")
+  cAuthSessions         AuthSession[]                                         @relation("auth_sessions")
+  cPermissions          Permission[]                                          @relation("permissions")
+  cConditions           Condition[]                                           @relation("conditions")
+  cRoles                Role[]                                                @relation("roles")
+  cStudents             Student[]                                             @relation("students")
+  cSchools              School[]                                              @relation("schools")
+  cTutors               Tutor[]                                               @relation("tutors")
+  cTeachers             Teacher[]                                             @relation("teachers")
+  cSpecialties          Specialty[]                                           @relation("specialties")
+  cBranchSpecialties    BranchSpecialty[]                                     @relation("branch_specialties")
+  cRooms                Room[]                                                @relation("rooms")
+  cAssignmentRooms      AssignmentRoom[]                                      @relation("assignment_rooms")
+  cSchedules            Schedule[]                                            @relation("schedules")
+  cAssignmentSchedules  AssignmentSchedule[]                                  @relation("assignment_schedules")
+  cPrices               Price[]                                               @relation("prices")
+  cInscriptions         Inscription[]                                         @relation("inscriptions")
+  cBookings             Booking[]                                             @relation("bookings")
+  cDebts                Debts[]                                               @relation("debts")
+  cPayments             Payment[]                                             @relation("payments")
+  cInvoices             Invoice[]                                             @relation("invoices")
+  cRefunds              Refund[]                                              @relation("refunds")
+  cSessions             Session[]                                             @relation("sessions")
+  cAccessRecords        AccessRecord[]                                        @relation("access_records")
+  
 	@@map("users")
+}
+model Branch {
+  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  addressId             String                @map("address_id")              @db.Uuid
+  name                  String                                                @db.VarChar
+  phone                 String[]                                              @db.VarChar
+  active                Boolean                                               @default(true)
+  createdAt             DateTime              @map("created_at")              @default(now())
+  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
+  rooms                 Room[]
+  staffs                Staff[]
+  teachers              Teacher[]
+  branchSpecialties     BranchSpecialty[]
+  accessRecords         AccessRecord[]
+  address               Address                                               @relation(fields: [addressId], references: [id])
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("branches",fields: [createdById], references: [id])
+  @@map("branches")
 }
 model Staff {
   userId                String                @map("user_id")                 @id @unique @db.Uuid
@@ -63,9 +97,10 @@ model Staff {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   user                  User                                                  @relation(fields: [userId], references: [id])
   role                  Role                                                  @relation(fields: [roleId], references: [id])
-  inscriptions          Inscription[]
   Invoices              Invoice[]
   branches              Branch[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("staffs",fields: [createdById], references: [id])
 	@@map("staffs")
 }
 model Address {
@@ -75,13 +110,21 @@ model Address {
   detail                String                                                @db.VarChar
   users                 User[]
   branches              Branch[]
+  createdAt             DateTime              @map("created_at")              @default(now())
+  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   city                  City                                                  @relation(fields: [cityId], references: [id])
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("addresses",fields: [createdById], references: [id])
   @@map("addresses")
 }
 model City {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                  String                                                @unique @db.VarChar
   address               Address[]
+  createdAt             DateTime              @map("created_at")              @default(now())
+  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("cities",fields: [createdById], references: [id])
   @@map("cities")
 }
 model AuthSession {
@@ -94,12 +137,12 @@ model AuthSession {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   revokedAt             DateTime              @map("revoked_at")              @updatedAt
   user                  User                                                  @relation(fields: [userId], references: [id])
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("auth_sessions",fields: [createdById], references: [id])
   @@map("auth_sessions")
 }
-
 model Permission {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  roleId                String              @map("role_id")                   @db.Uuid
   action                TypeAction
   subject               TypeSubject
   inverted              Boolean                                               @default(false)
@@ -107,8 +150,10 @@ model Permission {
   active                Boolean                                               @default(true)
   createdAt             DateTime            @map("created_at")                @default(now())
   updatedAt             DateTime            @map("updated_at")                @default(now()) @updatedAt
-  role                  Role                                                  @relation(fields: [roleId], references: [id])
+  roles                 Role[]
   conditions            Condition[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("permissions",fields: [createdById], references: [id])
   @@map("permissions")
 }
 model Condition {
@@ -118,6 +163,10 @@ model Condition {
   operator              ConditionOperator
   value                 String
   permission            Permission                                            @relation(fields: [permissionId], references: [id])
+  createdAt             DateTime            @map("created_at")                @default(now())
+  updatedAt             DateTime            @map("updated_at")                @default(now()) @updatedAt
+  createdById           String              @map("created_by_id")             @db.Uuid
+  createdBy             User                                                  @relation("conditions",fields: [createdById], references: [id])
   @@map("conditions")
 }
 model Role {
@@ -128,6 +177,8 @@ model Role {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   permissions           Permission[]
   staff                 Staff[]
+  createdById           String              @map("created_by_id")             @db.Uuid
+  createdBy             User                                                  @relation("roles",fields: [createdById], references: [id])
 	@@map("roles")
 }
 model Student {
@@ -145,12 +196,18 @@ model Student {
   inscriptions          Inscription[]
   tutors                Tutor[]
   school                School                                                @relation(fields: [schoolId], references: [id])
+  createdById           String              @map("created_by_id")             @db.Uuid
+  createdBy             User                                                  @relation("students",fields: [createdById], references: [id])
 	@@map("students")
 }
 model School {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                  String                                                @unique @db.VarChar
   students              Student[]
+  createdAt             DateTime              @map("created_at")              @default(now())
+  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("schools",fields: [createdById], references: [id])
   @@map("schools")
 }
 model Tutor {
@@ -159,7 +216,9 @@ model Tutor {
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   user                  User                                                  @relation(fields: [userId], references: [id])
-  students              Student[]       
+  students              Student[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("tutors",fields: [createdById], references: [id])
 	@@map("tutors")
 }
 model Teacher {
@@ -174,9 +233,10 @@ model Teacher {
   mainRooms             Room[]                                                @relation("room_teacher")
   assistedRooms         Room[]                                                @relation("room_assistant")
   branches              Branch[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("teachers",fields: [createdById], references: [id])
 	@@map("teachers")
 }
-
 model Specialty {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                  String                                                @db.VarChar
@@ -185,9 +245,10 @@ model Specialty {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   branchSpecialties     BranchSpecialty[]
   rooms                 Room[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("specialties",fields: [createdById], references: [id])
   @@map("specialties")
 }
-
 model BranchSpecialty {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   branchId              String                @map("branch_id")               @db.Uuid
@@ -199,11 +260,11 @@ model BranchSpecialty {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   branch                Branch                                                @relation(fields: [branchId], references: [id])
   specialty             Specialty                                             @relation(fields: [specialtyId], references: [id])
-
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("branch_specialties",fields: [createdById], references: [id])
   @@unique([branchId, specialtyId])
   @@map("branch_specialties")
 }
-
 model Room {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   branchId              String                @map("branch_id")               @db.Uuid
@@ -221,9 +282,10 @@ model Room {
   specialty             Specialty                                             @relation(fields: [specialtyId],references: [id])
   schedules             Schedule[]
   assignmentRooms       AssignmentRoom[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("rooms",fields: [createdById], references: [id])
 	@@map("rooms")
 }
-
 model AssignmentRoom {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   inscriptionId         String                @map("inscription_id")          @db.Uuid
@@ -234,6 +296,8 @@ model AssignmentRoom {
   inscription           Inscription                                           @relation(fields: [inscriptionId], references: [id])
   room                  Room                                                  @relation(fields: [roomId], references: [id]) 
   assignmentSchedules   AssignmentSchedule[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("assignment_rooms",fields: [createdById], references: [id])
   @@unique([inscriptionId, roomId])
 	@@map("assignment_rooms")
 }
@@ -249,9 +313,10 @@ model Schedule {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   room                  Room                                                  @relation(fields: [roomId], references: [id])   
   assignmentSchedules   AssignmentSchedule[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("schedules",fields: [createdById], references: [id])
 	@@map("schedules")
 }
-
 model AssignmentSchedule {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   assignmentRoomId      String                @map("assignment_room_id")      @db.Uuid
@@ -263,9 +328,10 @@ model AssignmentSchedule {
   assignmentRoom        AssignmentRoom                                        @relation(fields: [assignmentRoomId], references: [id])
   schedule              Schedule                                              @relation(fields: [scheduleId], references: [id])
   sessions              Session[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("assignment_schedules",fields: [createdById], references: [id])
 	@@map("assignment_schedules")
 }
-
 model Price {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   inscriptionId         String                @map("inscription_id")          @db.Uuid
@@ -275,14 +341,14 @@ model Price {
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   inscription           Inscription?                                          @relation(fields: [inscriptionId], references: [id])
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("prices",fields: [createdById], references: [id])
 	@@map("prices")
 }
-
 model Inscription {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   studentId             String?               @map("student_id")              @db.Uuid
   bookingId             String?               @unique @map("booking_id")      @db.Uuid
-  staffId               String                @map("staff_id")                @db.Uuid
   inscriptionType       InscriptionType?      @map("inscription_type")
   url                   String?                                               @db.VarChar
   active                Boolean               @default(true)
@@ -290,10 +356,11 @@ model Inscription {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   student               Student?                                              @relation(fields: [studentId], references: [userId])
   booking               Booking?                                              @relation("booking_to_inscription", fields: [bookingId], references: [id])
-  staff                 Staff                                                 @relation(fields: [staffId], references: [userId])
   prices                Price[]
   assignmentRooms       AssignmentRoom[]
   debts                 Debts[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("inscriptions",fields: [createdById], references: [id])
 	@@map("inscriptions")
 }
 model Booking {
@@ -306,9 +373,10 @@ model Booking {
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   inscription           Inscription?                                          @relation("booking_to_inscription")
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("bookings",fields: [createdById], references: [id])
 	@@map("bookings")
 }
-
 model Debts {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   inscriptionId         String?               @map("inscription_id")          @db.Uuid
@@ -321,9 +389,10 @@ model Debts {
   inscription           Inscription?                                          @relation(fields: [inscriptionId], references: [id])
   payments              Payment[]
   Refund                Refund?
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("debts",fields: [createdById], references: [id])
 	@@map("debts")
 }
-
 model Payment {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   debtId                String                @map("debt_id")                 @db.Uuid
@@ -335,9 +404,10 @@ model Payment {
   createdAt             DateTime              @map("created_at")              @default(now())
   debt                  Debts                                                 @relation(fields: [debtId], references: [id])
   invoice               Invoice?                                              @relation(fields: [invoiceId], references: [id])
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("payments",fields: [createdById], references: [id])
 	@@map("payments")
 }
-
 model Invoice {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   code                  String                                                @db.VarChar
@@ -349,9 +419,10 @@ model Invoice {
   createdAt             DateTime              @map("created_at")              @default(now())
   staff                 Staff                                                 @relation(fields: [staffId], references: [userId])
   payments              Payment[]
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("invoices",fields: [createdById], references: [id])
 	@@map("invoices")
 }
-
 model Refund {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   debtId                String                @map("debt_id")                 @db.Uuid @unique
@@ -359,9 +430,10 @@ model Refund {
   amount                Float                                                 @default(0.00)
   createdAt             DateTime              @map("created_at")              @default(now())
   Debts                 Debts                                                 @relation(fields: [debtId], references: [id])
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("refunds",fields: [createdById], references: [id])
 	@@map("refunds")
 }
-
 model Session {
   id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   assignmentScheduleId  String                @map("assignment_schedule_id")  @db.Uuid
@@ -372,6 +444,8 @@ model Session {
   createdAt             DateTime              @map("created_at")              @default(now())
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   assignmentSchedule    AssignmentSchedule                                    @relation(fields: [assignmentScheduleId], references: [id])
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("sessions",fields: [createdById], references: [id])
   @@map("sessions")
 }
 model AccessRecord {
@@ -385,6 +459,8 @@ model AccessRecord {
   updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
   branch                Branch                                                @relation(fields: [branchId], references: [id])
   user                  User                                                  @relation(fields: [userId], references: [id])
+  createdById           String                @map("created_by_id")           @db.Uuid
+  createdBy             User                                                  @relation("access_records",fields: [createdById], references: [id])
   @@map("access_records")
 }
 
@@ -466,6 +542,7 @@ enum TypeSubject {
   user
   price
   attendance
+  report
 }
 enum ConditionOperator {
   equals                   // es igual
@@ -480,6 +557,7 @@ enum ConditionOperator {
   starts_with              // empieza con un valor (solo para strings)
   ends_with                // termina con un valor (solo para strings)
   exists                   // verifica si el campo existe o no (útil para valores opcionales)
+  between
 }
 enum AttendanceStatus {
   PENDING

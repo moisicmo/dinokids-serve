@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-payment.dto';
 import { Paymentselect } from './entities/payment.entity';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -7,6 +7,8 @@ import { DebtService } from '../debt/debt.service';
 import { PdfService } from '@/common/pdf/pdf.service';
 import { GoogledriveService } from '@/common/googledrive/googledrive.service';
 import { InvoiceService } from '../invoice/invoice.service';
+import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PaymentService {
@@ -31,7 +33,11 @@ export class PaymentService {
 
           // Crear el pago
           const payment = await prisma.payment.create({
-            data: { debtId, amount },
+            data: {
+              debtId,
+              amount,
+              createdById: userId,
+            },
           });
 
           paymentIds.push(payment.id);
@@ -55,6 +61,7 @@ export class PaymentService {
             staffId: userId,
             buyerNit: cartDto.buyerNit,
             buyerName: cartDto.buyerName,
+            createdById: userId,
           },
         });
 
@@ -95,24 +102,46 @@ export class PaymentService {
 
 
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.payment.count({
-      where: { active: true },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+  async findAll(
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ) {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    const data = await this.prisma.payment.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: { active: true },
-      select: Paymentselect,
-    });
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.PaymentWhereInput = {
+        active: true,
+        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
+        ...(keys
+          ? {}
+          : {}),
+      };
 
-    return {
-      data,
-      meta: { total: totalPages, page, lastPage },
-    };
+
+      // 🔹 Paginación
+      const total = await this.prisma.payment.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+
+      const data = await this.prisma.payment.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: Paymentselect,
+      });
+
+      // 🔹 Retornar la respuesta formateada
+      return { data, meta: { total, page, lastPage } };
+
+    } catch (error) {
+      console.error('❌ Error en findAll(Payment):', error);
+
+      // Manejo de errores más claro y consistente
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar pagos');
+    }
   }
 
   async findOne(id: string) {

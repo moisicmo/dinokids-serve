@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities } from '@/decorator';
+import { checkAbilities, CurrentUser } from '@/decorator';
 import { AbilitiesGuard } from '@/guard/abilities.guard';
 import { TypeAction, TypeSubject } from "@prisma/client";
+import { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
+import { AuthenticatedRequest } from '@/common/extended-request';
 
 @UseGuards(AbilitiesGuard)
 @Controller('room')
@@ -14,14 +16,17 @@ export class RoomController {
 
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.room })
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomService.create(createRoomDto);
+  create(@CurrentUser() user: JwtPayload, @Body() createRoomDto: CreateRoomDto) {
+    return this.roomService.create(user.id, createRoomDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.room })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.roomService.findAll(paginationDto);
+  findAll(
+    @Req() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.roomService.findAll(paginationDto, req.caslFilter);
   }
 
   @Get(':id')
@@ -32,8 +37,8 @@ export class RoomController {
 
   @Patch(':id')
   @checkAbilities({ action: TypeAction.update, subject: TypeSubject.room })
-  update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomService.update(id, updateRoomDto);
+  update(@Param('id') id: string, @CurrentUser() user: JwtPayload, @Body() updateRoomDto: UpdateRoomDto) {
+    return this.roomService.update(user.id, id, updateRoomDto);
   }
 
   @Delete(':id')

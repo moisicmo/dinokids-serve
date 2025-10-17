@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { BranchService } from './branch.service';
 import { CreateBranchDto } from './dto/create-branch.dto';
 import { UpdateBranchDto } from './dto/update-branch.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities } from '@/decorator';
+import { checkAbilities, CurrentUser } from '@/decorator';
 import { AbilitiesGuard } from '@/guard/abilities.guard';
 import { TypeAction, TypeSubject } from "@prisma/client";
+import { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
+import { AuthenticatedRequest } from '@/common/extended-request';
 
 @UseGuards(AbilitiesGuard)
 @Controller('branch')
@@ -14,14 +16,17 @@ export class BranchController {
 
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.branch })
-  create(@Body() createBranchDto: CreateBranchDto) {
-    return this.branchService.create(createBranchDto);
+  create(@CurrentUser() user: JwtPayload, @Body() createBranchDto: CreateBranchDto) {
+    return this.branchService.create(user.id, createBranchDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.branch })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.branchService.findAll(paginationDto);
+  findAll(
+    @Req() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.branchService.findAll(paginationDto, req.caslFilter);
   }
 
   @Get(':id')

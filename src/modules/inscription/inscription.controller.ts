@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { InscriptionService } from './inscription.service';
 import { CreateInscriptionDto } from './dto/create-inscription.dto';
 import { UpdateInscriptionDto } from './dto/update-inscription.dto';
@@ -7,6 +7,7 @@ import { checkAbilities, CurrentUser } from '@/decorator';
 import { AbilitiesGuard } from '@/guard/abilities.guard';
 import { TypeAction, TypeSubject } from "@prisma/client";
 import { JwtPayload } from '../auth/entities/jwt-payload.interface';
+import { AuthenticatedRequest } from '@/common/extended-request';
 
 @UseGuards(AbilitiesGuard)
 @Controller('inscription')
@@ -15,15 +16,19 @@ export class InscriptionController {
 
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.inscription })
-  create( @CurrentUser() user: JwtPayload, @Body() createInscriptionDto: CreateInscriptionDto) {
-    return this.inscriptionService.create(user.id,createInscriptionDto);
+  create(@CurrentUser() user: JwtPayload, @Body() createInscriptionDto: CreateInscriptionDto) {
+    return this.inscriptionService.create(user.id, createInscriptionDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.inscription })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.inscriptionService.findAllByStudent(paginationDto);
+  findAll(
+    @Req() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.inscriptionService.findAllByStudent(paginationDto,req.caslFilter);
   }
+  
   @Get('pdf/:id')
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.inscription })
   findPdf(@Param('id') id: string) {
@@ -38,8 +43,8 @@ export class InscriptionController {
 
   @Patch(':id')
   @checkAbilities({ action: TypeAction.update, subject: TypeSubject.inscription })
-  update(@Param('id') id: string, @Body() updateInscriptionDto: UpdateInscriptionDto) {
-    return this.inscriptionService.update(id, updateInscriptionDto);
+  update(@Param('id') id: string, @CurrentUser() user: JwtPayload, @Body() updateInscriptionDto: UpdateInscriptionDto) {
+    return this.inscriptionService.update(user.id, id, updateInscriptionDto);
   }
 
   @Delete(':id')

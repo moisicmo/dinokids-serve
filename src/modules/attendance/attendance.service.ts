@@ -15,7 +15,7 @@ import { SessionEntity } from './entities/attendance.entity';
 export class AttendanceService {
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(createAttendanceDto: CreateAttendanceDto) {
+  async create(userId: string, createAttendanceDto: CreateAttendanceDto) {
     const { branchId, numberCard } = createAttendanceDto;
 
     // 🔹 Buscar usuario por número de tarjeta
@@ -88,6 +88,7 @@ export class AttendanceService {
         branchId,
         userId: user.id,
         checkIn: new Date(),
+        createdById: userId
       },
     });
 

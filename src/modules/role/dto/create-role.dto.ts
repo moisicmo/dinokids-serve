@@ -1,7 +1,5 @@
-import { CreatePermissionDto } from "@/modules/permission/dto/create-permission.dto";
 import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsArray, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsString } from "class-validator";
 
 export class CreateRoleDto {
   @IsString()
@@ -11,14 +9,11 @@ export class CreateRoleDto {
   })
   name: string;
 
-
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreatePermissionDto)
   @ApiProperty({
-    type: [CreatePermissionDto],
-    description: 'Lista de permisos a ingresar',
+    example: ['perm123', 'perm321'],
+    description: 'Lista de Identificadores de permisos',
   })
-  permissions: CreatePermissionDto[];
+  permissionIds: string[];
 
 }

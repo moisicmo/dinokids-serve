@@ -4,68 +4,111 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { RoleSelect, RoleType } from './entities/role.entity';
-import { PermissionService } from '@/modules/permission/permission.service';
+import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@prisma/client';
 @Injectable()
 export class RoleService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private permissionService: PermissionService,
   ) { }
 
-  async create(createRoleDto: CreateRoleDto) {
+  async create(userId: string, createRoleDto: CreateRoleDto) {
     try {
-      const { name, permissions } = createRoleDto;
+      const { name, permissionIds } = createRoleDto;
 
-      const role = await this.prisma.role.create({
-        data: { name },
+      // 🔹 Validar duplicado de nombre
+      const existingRole = await this.prisma.role.findFirst({
+        where: { name },
       });
 
-      for (const permission of permissions) {
-        await this.permissionService.create(role.id, {
-          ...permission,
-        });
+      if (existingRole) {
+        throw new BadRequestException(
+          `Ya existe un rol con el nombre "${name}"`,
+        );
       }
 
-      return this.findOne(role.id);
+      // 🔹 Validar existencia de los permisos (si se envían)
+      if (permissionIds && permissionIds.length > 0) {
+        const foundPermissions = await this.prisma.permission.findMany({
+          where: { id: { in: permissionIds } },
+          select: { id: true },
+        });
+
+        const foundIds = foundPermissions.map((p) => p.id);
+        const missingIds = permissionIds.filter((id) => !foundIds.includes(id));
+
+        if (missingIds.length > 0) {
+          throw new BadRequestException(
+            `Algunos permisos no existen: ${missingIds.join(', ')}`,
+          );
+        }
+      }
+
+      // 🔹 Crear el rol con la relación a permisos
+      const newRole = await this.prisma.role.create({
+        data: {
+          name,
+          createdById: userId,
+          permissions: permissionIds?.length
+            ? {
+              connect: permissionIds.map((id) => ({ id })),
+            }
+            : undefined,
+        },
+        select: RoleSelect,
+      });
+
+      return newRole;
     } catch (error) {
-      throw new Error(`No se pudo crear el rol: ${error.message}`);
+      console.error('❌ Error en RoleService.create():', error);
+
+      if (error instanceof BadRequestException) throw error;
+      throw new InternalServerErrorException('Hubo un error al crear el rol');
     }
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<RoleType>>  {
+
+  async findAll(
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ): Promise<PaginationResult<RoleType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      const whereClause: any = {
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.RoleWhereInput = {
         active: true,
+        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
+        ...(keys
+          ? {
+            OR: [
+              { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+            ],
+          }
+          : {}),
       };
 
-      if (keys.trim() !== '') {
-        whereClause.OR = [
-          { name: { contains: keys, mode: 'insensitive' } },
-        ];
-      }
-      const totalPages = await this.prisma.role.count({
+      // 🔹 Paginación
+      const total = await this.prisma.role.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+      const data = await this.prisma.role.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
         where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: RoleSelect,
       });
-      const lastPage = Math.ceil(totalPages / limit);
-      return {
-        data: await this.prisma.role.findMany({
-          skip: (page - 1) * limit,
-          take: limit,
-          where: whereClause,
-          orderBy: {
-            createdAt: 'asc',
-          },
-          select: RoleSelect,
-        }),
-        meta: { total: totalPages, page, lastPage },
-      };
+
+      return { data, meta: { total, page, lastPage } };
 
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Hubo un error al pedir roles');
+      console.error('❌ Error en findAll(Role):', error);
+
+      // Manejo de errores más claro y consistente
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar roles');
     }
   }
 
@@ -81,55 +124,90 @@ export class RoleService {
     return role;
   }
 
-  async update(id: string, updateRoleDto: UpdateRoleDto) {
-    const { name, permissions } = updateRoleDto;
+  async update(userId: string, id: string, updateRoleDto: UpdateRoleDto) {
+    try {
+      const { name, permissionIds } = updateRoleDto;
 
-    await this.findOne(id);
-
-    if (!permissions || permissions.length === 0) {
-      return this.prisma.role.update({
+      // 🔹 Verificar existencia del rol
+      const existingRole = await this.prisma.role.findUnique({
         where: { id },
-        data: { name },
-        select: RoleSelect,
+        include: { permissions: true },
       });
-    }
-    const updatedPermissions: { id: string }[] = [];
 
-    for (const perm of permissions) {
-      let permissionToAssign: { id: string };
-
-      if (perm.conditions && perm.id) {
-        const basePerm = await this.permissionService.findOne(perm.id);
-        if (!basePerm) {
-          throw new NotFoundException(`Permission with id #${perm.id} not found`);
-        }
-
-        const newPerm = await this.permissionService.create(id, {
-          ...basePerm,
-          conditions: perm.conditions,
-        });
-
-        permissionToAssign = { id: newPerm.id };
-      } else if (perm.id) {
-        permissionToAssign = { id: perm.id };
-      } else {
-        throw new BadRequestException('Permission must have an ID to be assigned or updated');
+      if (!existingRole) {
+        throw new NotFoundException(`No se encontró el rol con ID "${id}"`);
       }
 
-      updatedPermissions.push(permissionToAssign);
-    }
+      // 🔹 Si cambia el nombre, verificar duplicado
+      if (name && name !== existingRole.name) {
+        const duplicate = await this.prisma.role.findFirst({ where: { name } });
+        if (duplicate) {
+          throw new BadRequestException(
+            `Ya existe otro rol con el nombre "${name}"`,
+          );
+        }
+      }
 
-    return this.prisma.role.update({
-      where: { id },
-      data: {
-        name,
-        permissions: {
-          set: updatedPermissions,
+      // 🔹 Validar los permisos si se envían
+      let connectData: any = undefined;
+      let disconnectData: any = undefined;
+
+      if (permissionIds) {
+        // Buscar todos los permisos válidos
+        const foundPermissions = await this.prisma.permission.findMany({
+          where: { id: { in: permissionIds } },
+          select: { id: true },
+        });
+
+        const foundIds = foundPermissions.map((p) => p.id);
+        const missingIds = permissionIds.filter((id) => !foundIds.includes(id));
+
+        if (missingIds.length > 0) {
+          throw new BadRequestException(
+            `Algunos permisos no existen: ${missingIds.join(', ')}`,
+          );
+        }
+
+        // Detectar permisos a conectar / desconectar
+        const currentIds = existingRole.permissions.map((p) => p.id);
+
+        const toConnect = foundIds
+          .filter((id) => !currentIds.includes(id))
+          .map((id) => ({ id }));
+
+        const toDisconnect = currentIds
+          .filter((id) => !foundIds.includes(id))
+          .map((id) => ({ id }));
+
+        connectData = toConnect.length > 0 ? { connect: toConnect } : undefined;
+        disconnectData =
+          toDisconnect.length > 0 ? { disconnect: toDisconnect } : undefined;
+      }
+
+      // 🔹 4️⃣ Actualizar el rol
+      const updatedRole = await this.prisma.role.update({
+        where: { id },
+        data: {
+          ...(name ? { name } : {}),
+          ...(connectData || disconnectData
+            ? { permissions: { ...connectData, ...disconnectData } }
+            : {}),
         },
-      },
-      select: RoleSelect,
-    });
+        select: RoleSelect,
+      });
+
+      return updatedRole;
+    } catch (error) {
+      console.error('❌ Error en RoleService.update():', error);
+
+      if (error instanceof NotFoundException) throw error;
+      if (error instanceof BadRequestException) throw error;
+      throw new InternalServerErrorException('Hubo un error al actualizar el rol');
+    }
   }
+
+
+
 
 
 

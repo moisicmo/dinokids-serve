@@ -3,13 +3,15 @@ import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, PaginationResult, UserEntity } from '@/common';import { StaffSelect, StaffType } from './entities/staff.entity';
- @Injectable()
+import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { StaffSelect, StaffType } from './entities/staff.entity';
+import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@prisma/client';
+@Injectable()
 export class StaffService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(createStaffDto: CreateStaffDto) {
+  async create(userId: string, createStaffDto: CreateStaffDto) {
     const { roleId, brancheIds, ...userDto } = createStaffDto;
 
     const userExists = await this.prisma.user.findUnique({
@@ -31,6 +33,7 @@ export class StaffService {
         staff: {
           create: {
             roleId: roleId,
+            createdById: userId,
             branches: {
               connect: brancheIds.map(id => ({ id })),
             }
@@ -41,50 +44,70 @@ export class StaffService {
     });
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StaffType>> {
-    try {
-      const { page = 1, limit = 10, keys = '' } = paginationDto;
+async findAll(
+  paginationDto: PaginationDto,
+  caslFilter?: CaslFilterContext,
+): Promise<PaginationResult<StaffType>> {
+  try {
+    const { page = 1, limit = 10, keys = '' } = paginationDto;
+    console.log('🎯 CASL filter recibido:', JSON.stringify(caslFilter, null, 2));
 
-      const whereClause: any = {
-        active: true,
-      };
-
-      if (keys.trim() !== '') {
-        whereClause.OR = [
-          {
-            user: {
-              OR: [
-                { name: { contains: keys, mode: 'insensitive' } },
-                { lastName: { contains: keys, mode: 'insensitive' } },
-                { email: { contains: keys, mode: 'insensitive' } },
-                { numberDocument: { contains: keys, mode: 'insensitive' } },
-              ],
+    // 🧠 Construcción del filtro por sucursal (branch)
+    let branchFilter: Prisma.StaffWhereInput = {};
+    if (caslFilter?.filter?.OR) {
+      const branchCondition = caslFilter.filter.OR.find((cond: any) => cond.id?.in);
+      if (branchCondition) {
+        branchFilter = {
+          branches: {
+            some: {
+              id: { in: branchCondition.id.in }, // ✅ el array que viene en CASL
             },
           },
-        ];
+        };
       }
-      const totalPages = await this.prisma.staff.count({
-        where: whereClause,
-      });
-      const lastPage = Math.ceil(totalPages / limit);
-      return {
-        data: await this.prisma.staff.findMany({
-          skip: (page - 1) * limit,
-          take: limit,
-          where: whereClause,
-          orderBy: {
-            createdAt: 'asc',
-          },
-          select: StaffSelect,
-        }),
-        meta: { total: totalPages, page, lastPage },
-      };
-
-    } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Hubo un error al pedir staff');
     }
+
+    // 🔹 Armar el filtro final para Prisma
+    const whereClause: Prisma.StaffWhereInput = {
+      active: true,
+      ...(caslFilter?.hasNoRestrictions ? {} : branchFilter),
+      ...(keys
+        ? {
+            user: {
+              OR: [
+                { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                { lastName: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                { email: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+                { numberDocument: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+              ],
+            },
+          }
+        : {}),
+    };
+
+    console.log('🧩 Filtro final StaffWhereInput:', JSON.stringify(whereClause, null, 2));
+
+    // 🔹 Paginación
+    const total = await this.prisma.staff.count({ where: whereClause });
+    const lastPage = Math.ceil(total / limit);
+
+    const data = await this.prisma.staff.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: whereClause,
+      orderBy: { createdAt: 'asc' },
+      select: StaffSelect,
+    });
+
+    return { data, meta: { total, page, lastPage } };
+
+  } catch (error) {
+    console.error('❌ Error en findAll(Staff):', error);
+    if (error instanceof NotFoundException) throw error;
+    throw new InternalServerErrorException('Hubo un error al listar staffs');
   }
+}
+
 
   async findOne(id: string) {
     const user = await this.prisma.user.findUnique({
@@ -105,32 +128,41 @@ export class StaffService {
   }
 
   async update(id: string, updateStaffDto: UpdateStaffDto) {
-    await this.findOne(id);
-    const {  roleId, brancheIds, ...userDto } = updateStaffDto;
-
-    return this.prisma.user.update({
-      where: {
-        id,
-        staff: {
-          isNot: null,
+    try {
+      await this.findOne(id);
+      const { roleId, brancheIds, ...userDto } = updateStaffDto;
+  
+      return this.prisma.user.update({
+        where: {
+          id,
+          staff: {
+            isNot: null,
+          },
         },
-      },
-      data: {
-        staff: {
-          update: {
-            where: { userId: id },
-            data: {
-              roleId,
-              branches: {
-                set: brancheIds?.map(id => ({ id })) ?? [],
+        data: {
+          staff: {
+            update: {
+              where: { userId: id },
+              data: {
+                roleId,
+                branches: {
+                  set: brancheIds?.map(id => ({ id })) ?? [],
+                },
               },
             },
           },
+          ...userDto,
         },
-        ...userDto,
-      },
-      select: UserEntity,
-    });
+        select: UserEntity,
+      });
+      
+    } catch (error) {
+      console.error('❌ Error en findAll(Staff):', error);
+
+      // Manejo de errores más claro y consistente
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar staffs');
+    }
   }
 
   async remove(id: string) {

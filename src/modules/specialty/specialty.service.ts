@@ -4,16 +4,25 @@ import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
 import { SpecialtySelect, SpecialtyType } from './entities/specialty.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
+import { CaslAbilityFactory } from '@/casl/casl-ability.factory';
+import { Prisma } from '@prisma/client';
+import { CaslFilterContext } from '@/common/extended-request';
 
 @Injectable()
 export class SpecialtyService {
 
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
+  ) { }
 
-  async create(createSpecialtyDto: CreateSpecialtyDto) {
+  async create(userId: string, createSpecialtyDto: CreateSpecialtyDto) {
     const { name, numberSessions, estimatedSessionCost, branchId } = createSpecialtyDto;
     const specialty = await this.prisma.specialty.create({
-      data: { name },
+      data: {
+        name,
+        createdById: userId,
+      },
       select: SpecialtySelect,
     });
     await this.prisma.branchSpecialty.create({
@@ -22,47 +31,72 @@ export class SpecialtyService {
         specialtyId: specialty.id,
         estimatedSessionCost,
         numberSessions,
+        createdById: userId,
       }
     })
 
     return specialty;
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<SpecialtyType>>  {
+  async findAll(
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ): Promise<PaginationResult<SpecialtyType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
-
-      const whereClause: any = {
-        active: true,
-      };
-
-      if (keys.trim() !== '') {
-        whereClause.OR = [
-          { name: { contains: keys, mode: 'insensitive' } },
-        ];
+      console.log(JSON.stringify(caslFilter));
+      let branchFilter = {};
+      if (caslFilter?.filter?.OR) {
+        const branchCondition = caslFilter.filter.OR.find((cond: any) => cond.id?.in);
+        if (branchCondition) {
+          branchFilter = {
+            branchSpecialties: {
+              some: {
+                branchId: branchCondition.id,
+              },
+            },
+          };
+        }
       }
-      const totalPages = await this.prisma.specialty.count({
-        where: whereClause,
-      });
-      const lastPage = Math.ceil(totalPages / limit);
-      return {
-        data: await this.prisma.specialty.findMany({
-          skip: (page - 1) * limit,
-          take: limit,
-          where: whereClause,
-          orderBy: {
-            createdAt: 'asc',
-          },
-          select: SpecialtySelect,
-        }),
-        meta: { total: totalPages, page, lastPage },
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.SpecialtyWhereInput = {
+        active: true,
+        ...(caslFilter?.hasNoRestrictions ? {} : branchFilter),
+        ...(keys
+          ? {
+            OR: [
+              { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+            ],
+          }
+          : {}),
       };
 
+
+      // 🔹 Paginación
+      const total = await this.prisma.specialty.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+      // 🔹 Consulta principal
+      const data = await this.prisma.specialty.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: SpecialtySelect,
+      });
+
+      return { data, meta: { total, page, lastPage } };
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Hubo un error al pedir especialidades');
+      console.error('❌ Error en findAll(Specialty):', error);
+
+      // Manejo de errores más claro y consistente
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar las especialidades');
     }
   }
+
+
+
 
   async findAllBySpecialty(branchId: string, paginationDto: PaginationDto) {
     const { page = 1, limit = 10 } = paginationDto;

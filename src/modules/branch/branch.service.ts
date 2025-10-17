@@ -4,25 +4,32 @@ import { UpdateBranchDto } from './dto/update-branch.dto';
 import { BranchSelect, BranchType } from './entities/branch.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
+import { Prisma } from '@prisma/client';
+import { CaslFilterContext } from '@/common/extended-request';
 
 @Injectable()
 export class BranchService {
 
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaService,
+  ) { }
 
-  async create(createBranchDto: CreateBranchDto) {
+  async create(userId: string, createBranchDto: CreateBranchDto) {
     try {
       const { cityId, zone, detail, ...branchDto } = createBranchDto;
+      const address = await this.prisma.address.create({
+        data: {
+          cityId,
+          zone,
+          detail,
+          createdById: userId,
+        }
+      });
       return await this.prisma.branch.create({
         data: {
           ...branchDto,
-          address: {
-            create: {
-              cityId,
-              zone,
-              detail,
-            }
-          }
+          addressId: address.id,
+          createdById: userId,
         },
         select: BranchSelect,
       });
@@ -33,41 +40,46 @@ export class BranchService {
     }
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<BranchType>> {
+  async findAll(
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ): Promise<PaginationResult<BranchType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      const whereClause: any = {
-        active: true,
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.BranchWhereInput = {
+        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
+        ...(keys ? { name: { contains: keys, mode: Prisma.QueryMode.insensitive } } : {}),
       };
 
-      if (keys.trim() !== '') {
-        whereClause.OR = [
-          { name: { contains: keys, mode: 'insensitive' } },
-        ];
-      }
-      const totalPages = await this.prisma.branch.count({
+      // 🔹 Paginación
+      const total = await this.prisma.branch.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+      // 🔹 Consulta final con selección de campos
+      const data = await this.prisma.branch.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
         where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: BranchSelect,
       });
-      const lastPage = Math.ceil(totalPages / limit);
-      return {
-        data: await this.prisma.branch.findMany({
-          skip: (page - 1) * limit,
-          take: limit,
-          where: whereClause,
-          orderBy: {
-            createdAt: 'asc',
-          },
-          select: BranchSelect,
-        }),
-        meta: { total: totalPages, page, lastPage },
-      };
 
+      // 🔹 Retornar la respuesta formateada
+      return {
+        data,
+        meta: { total, page, lastPage },
+      };
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Hubo un error al pedir sucursales');
+      console.error('❌ Error en findAll(Branch):', error);
+      // Manejo de errores personalizado
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar las sucursales');
     }
   }
+
+
 
   async findOne(id: string) {
     const branch = await this.prisma.branch.findUnique({

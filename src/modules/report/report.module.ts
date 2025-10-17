@@ -4,9 +4,11 @@ import { ReportController } from './report.controller';
 import { PrismaModule } from '@/prisma/prisma.module';
 import { CaslModule } from '@/casl/casl.module';
 import { XlsxModule } from '@/common/xlsx/xlsx.module';
+import { InscriptionModule } from '../inscription/inscription.module';
+import { DebtModule } from '../debt/debt.module';
 @Module({
   controllers: [ReportController],
   providers: [ReportService],
-  imports: [PrismaModule,CaslModule, XlsxModule],
+  imports: [PrismaModule,CaslModule, XlsxModule,DebtModule,InscriptionModule],
 })
 export class ReportModule { }

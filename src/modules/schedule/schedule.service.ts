@@ -1,33 +1,55 @@
-import {  Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { ScheduleEntity } from './entities/schedule.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto } from '@/common';
+import { Prisma } from '@prisma/client';
+import { CaslFilterContext } from '@/common/extended-request';
 
 @Injectable()
 export class ScheduleService {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.schedule.count({
-      where: { active: true },
-    });
-    const lastPage = Math.ceil(totalPages / limit);
+  async findAll(
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ) {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    const data = await this.prisma.schedule.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: { active: true },
-      select: ScheduleEntity,
-    });
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.ScheduleWhereInput = {
+        active: true,
+        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
+        ...(keys
+          ? {}
+          : {}),
+      };
 
-    return {
-      data,
-      meta: { total: totalPages, page, lastPage },
-    };
+      // 🔹 Paginación
+      const total = await this.prisma.schedule.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+
+      const data = await this.prisma.schedule.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: ScheduleEntity,
+      });
+
+      return { data, meta: { total, page, lastPage } };
+
+    } catch (error) {
+      console.error('❌ Error en findAll(Schedule):', error);
+
+      // Manejo de errores más claro y consistente
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar schedule');
+    }
   }
 
   async findOne(id: string) {

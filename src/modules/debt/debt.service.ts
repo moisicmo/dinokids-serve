@@ -2,6 +2,8 @@ import { Injectable, InternalServerErrorException, NotFoundException } from '@ne
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { DebtSelect, DebtType } from './entities/debt.entity';
+import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DebtService {
@@ -10,41 +12,27 @@ export class DebtService {
     private readonly prisma: PrismaService,
   ) { }
 
-  async findAll(paginationDto: PaginationDto) {
-    const { page = 1, limit = 10 } = paginationDto;
-    const totalPages = await this.prisma.debts.count({
-
-    });
-    const lastPage = Math.ceil(totalPages / limit);
-
-    const data = await this.prisma.debts.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      select: DebtSelect,
-    });
-
-    return {
-      data,
-      meta: { total: totalPages, page, lastPage },
-    };
-  }
-
-  async findAllByStudent(studentId: string, paginationDto: PaginationDto): Promise<PaginationResult<DebtType>> {
+  async findAll(
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ) {
     try {
-      const { page = 1, limit = 10 } = paginationDto;
-      const totalPages = await this.prisma.debts.count({
-        where: {
-          inscription: { studentId },
-        },
-      });
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
+
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.DebtsWhereInput = {
+        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
+        ...(keys ? {} : {}),
+      };
+
+      const totalPages = await this.prisma.debts.count({ where: whereClause });
       const lastPage = Math.ceil(totalPages / limit);
 
       const data = await this.prisma.debts.findMany({
         skip: (page - 1) * limit,
         take: limit,
-        where: {
-          inscription: { studentId },
-        },
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
         select: DebtSelect,
       });
 
@@ -52,9 +40,54 @@ export class DebtService {
         data,
         meta: { total: totalPages, page, lastPage },
       };
+
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Error al obtener deudas de un estudiante');
+      console.error('❌ Error en findAll(debt):', error);
+      // Manejo de errores personalizado
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar las deudas');
+    }
+  }
+
+  async findAllByStudent(
+    studentId: string,
+    paginationDto: PaginationDto,
+    caslFilter?: CaslFilterContext,
+  ): Promise<PaginationResult<DebtType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
+
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.DebtsWhereInput = {
+        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
+        ...(keys ? {
+          inscription: { studentId }
+        } : {
+          inscription: { studentId }
+        }),
+      };
+
+
+      const total = await this.prisma.debts.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+      const data = await this.prisma.debts.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: DebtSelect,
+      });
+
+      return {
+        data,
+        meta: { total, page, lastPage },
+      };
+    } catch (error) {
+      console.error('❌ Error en findAll by student(debt):', error);
+      // Manejo de errores personalizado
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar las deudas de un estudiante');
     }
   }
 

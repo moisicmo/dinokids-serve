@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { checkAbilities } from '@/decorator';
 import { TypeAction, TypeSubject } from '@prisma/client';
 import { PaginationDto } from '@/common';
+import { AuthenticatedRequest } from '@/common/extended-request';
 
 @Controller('invoice')
 export class InvoiceController {
-  constructor(private readonly invoiceService: InvoiceService) {}
+  constructor(private readonly invoiceService: InvoiceService) { }
 
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.invoice })
@@ -18,8 +19,11 @@ export class InvoiceController {
 
   @Get()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.invoice })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.invoiceService.findAll(paginationDto);
+  findAll(
+    @Req() req: AuthenticatedRequest,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.invoiceService.findAll(paginationDto, req.caslFilter);
   }
 
   @Get(':id')
