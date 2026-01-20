@@ -3,8 +3,7 @@ import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { ScheduleEntity } from './entities/schedule.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto } from '@/common';
-import { Prisma } from '@prisma/client';
-import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@/generated/prisma/client';
 
 @Injectable()
 export class ScheduleService {
@@ -12,17 +11,13 @@ export class ScheduleService {
   constructor(private readonly prisma: PrismaService) { }
 
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ) {
+  async findAll(paginationDto: PaginationDto) {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.ScheduleWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...(keys
           ? {}
           : {}),

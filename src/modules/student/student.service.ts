@@ -4,16 +4,14 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { StudentSelect, StudentType } from './entities/student.entity';
-import { Prisma } from '@prisma/client';
-import { CaslFilterContext } from '@/common/extended-request';
-import { cleanCaslFilterForModel } from '@/common/casl.util';
+import { Prisma } from '@/generated/prisma/client';
 @Injectable()
 
 export class StudentService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(userId: string, createStudentDto: CreateStudentDto) {
+  async create(email: string, createStudentDto: CreateStudentDto) {
     try {
       const { birthdate, gender, school, grade, educationLevel, tutorIds, ...userDto } = createStudentDto;
 
@@ -38,7 +36,7 @@ export class StudentService {
         : await this.prisma.school.create({
           data: {
             name: school,
-            createdById: userId,
+            createdBy: email,
           },
         });
 
@@ -60,7 +58,7 @@ export class StudentService {
                 connect: tutorIds.map((userId) => ({ userId })),
               },
               schoolId: schoolRecord.id,
-              createdById: userId,
+            createdBy: email,
             },
           },
         },
@@ -81,23 +79,13 @@ export class StudentService {
   }
 
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ): Promise<PaginationResult<StudentType>> {
+  async findAll( paginationDto: PaginationDto): Promise<PaginationResult<StudentType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
-      console.log('🎯 Filtro recibido desde CASL:', JSON.stringify(caslFilter, null, 2));
-
-      const shouldIgnoreCasl =
-        caslFilter?.subject === 'student' || caslFilter?.subject === 'tutor';
-
-      const cleanedFilter = cleanCaslFilterForModel(caslFilter?.filter, 'student');
 
 
       const whereClause: Prisma.StudentWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions || shouldIgnoreCasl ? {} : cleanedFilter ?? {}),
         ...(keys
           ? {
             user: {
@@ -147,7 +135,7 @@ export class StudentService {
     return student;
   }
 
-  async update(userId: string, id: string, updateStudentDto: UpdateStudentDto) {
+  async update(email: string, id: string, updateStudentDto: UpdateStudentDto) {
     await this.findOne(id); // Verificas que el estudiante existe
 
     const {
@@ -172,7 +160,7 @@ export class StudentService {
       : await this.prisma.school.create({
         data: {
           name: school,
-          createdById: userId,
+            createdBy: email,
         },
       });
 

@@ -4,8 +4,7 @@ import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { PaginationDto, PaginationResult } from '@/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { InvoiceSelect, InvoiceType } from './entities/invoice.entity';
-import { CaslFilterContext } from '@/common/extended-request';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 
 @Injectable()
 export class InvoiceService {
@@ -16,16 +15,12 @@ export class InvoiceService {
     return 'This action adds a new invoice';
   }
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ): Promise<PaginationResult<InvoiceType>> {
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<InvoiceType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       const whereClause: Prisma.InvoiceWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...(keys
           ? {}
           : {}),

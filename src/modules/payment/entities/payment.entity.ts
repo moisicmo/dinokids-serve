@@ -1,5 +1,9 @@
 import { DebtSelect } from "@/modules/debt/entities/debt.entity";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
+
+export type PaymentType = Prisma.PaymentGetPayload<{
+  select: typeof Paymentselect
+}>;
 
 export const Paymentselect = {
   id: true,
@@ -11,7 +15,3 @@ export const Paymentselect = {
   payMethod: true,
   createdAt: true,
 };
-
-export type PaymentType = Prisma.PaymentGetPayload<{
-  select: typeof Paymentselect
-}>;

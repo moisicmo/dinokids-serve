@@ -1,15 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { PaginationDto } from '@/common';
 import { checkAbilities, CurrentUser } from '@/decorator';
-import { AbilitiesGuard } from '@/guard/abilities.guard';
-import { TypeAction, TypeSubject } from "@prisma/client";
-import { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
-import { AuthenticatedRequest } from '@/common/extended-request';
-
-@UseGuards(AbilitiesGuard)
+import { TypeAction } from "@/generated/prisma/client";
+import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
+import { TypeSubject } from '@/common/subjects';
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) { }
@@ -17,16 +14,13 @@ export class RoleController {
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.role })
   create(@CurrentUser() user: JwtPayload, @Body() createRoleDto: CreateRoleDto) {
-    return this.roleService.create(user.id, createRoleDto);
+    return this.roleService.create(user.email, createRoleDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.role })
-  findAll(
-    @Req() req: AuthenticatedRequest,
-    @Query() paginationDto: PaginationDto,
-  ) {
-    return this.roleService.findAll(paginationDto, req.caslFilter);
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.roleService.findAll(paginationDto);
   }
 
   @Get(':id')
@@ -38,7 +32,7 @@ export class RoleController {
   @Patch(':id')
   @checkAbilities({ action: TypeAction.update, subject: TypeSubject.role })
   update(@Param('id') id: string, @CurrentUser() user: JwtPayload, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.roleService.update(user.id, id, updateRoleDto);
+    return this.roleService.update(user.email, id, updateRoleDto);
   }
 
   @Delete(':id')

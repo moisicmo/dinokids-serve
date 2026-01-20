@@ -1,43 +1,33 @@
-import { Controller, Get, Param, Delete, UseGuards, Query, Req } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Query } from '@nestjs/common';
 import { DebtService } from './debt.service';
 import { checkAbilities } from '@/decorator';
-import { TypeAction, TypeSubject } from '@prisma/client';
-import { AbilitiesGuard } from '@/guard/abilities.guard';
 import { PaginationDto } from '@/common';
-import { AuthenticatedRequest } from '@/common/extended-request';
-
-@UseGuards(AbilitiesGuard)
+import { TypeSubject } from '@/common/subjects';
+import { TypeAction } from '@/generated/prisma/enums';
 @Controller('debt')
 export class DebtController {
-  constructor(private readonly debtService: DebtService) {}
+  constructor(private readonly debtService: DebtService) { }
 
   @Get()
-  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.inscription })
-  findAll(
-    @Req() req: AuthenticatedRequest,
-    @Query() paginationDto: PaginationDto,
-  ) {
-    return this.debtService.findAll(paginationDto,req.caslFilter);
+  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.debt })
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.debtService.findAll(paginationDto);
   }
 
   @Get('student/:studentId')
-  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.inscription })
-  findAllByStudent(
-    @Req() req: AuthenticatedRequest,
-    @Param('studentId') studentId: string,
-    @Query() paginationDto: PaginationDto
-  ) {
-    return this.debtService.findAllByStudent(studentId,paginationDto,req.caslFilter);
+  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.debt })
+  findAllByStudent(@Param('studentId') studentId: string, @Query() paginationDto: PaginationDto) {
+    return this.debtService.findAllByStudent(studentId, paginationDto);
   }
 
   @Get(':id')
-  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.inscription })
+  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.debt })
   findOne(@Param('id') id: string) {
     return this.debtService.findOne(id);
   }
 
   @Delete(':id')
-  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.inscription })
+  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.debt })
   remove(@Param('id') id: string) {
     return this.debtService.remove(id);
   }

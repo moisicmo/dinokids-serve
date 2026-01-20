@@ -4,8 +4,7 @@ import { UpdateBranchDto } from './dto/update-branch.dto';
 import { BranchSelect, BranchType } from './entities/branch.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
-import { Prisma } from '@prisma/client';
-import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@/generated/prisma/client';
 
 @Injectable()
 export class BranchService {
@@ -14,22 +13,22 @@ export class BranchService {
     private readonly prisma: PrismaService,
   ) { }
 
-  async create(userId: string, createBranchDto: CreateBranchDto) {
+  async create(email: string, createBranchDto: CreateBranchDto) {
     try {
-      const { cityId, zone, detail, ...branchDto } = createBranchDto;
+      const { city, zone, detail, ...branchDto } = createBranchDto;
       const address = await this.prisma.address.create({
         data: {
-          cityId,
+          city,
           zone,
           detail,
-          createdById: userId,
+          createdBy: email,
         }
       });
       return await this.prisma.branch.create({
         data: {
-          ...branchDto,
           addressId: address.id,
-          createdById: userId,
+          createdBy: email,
+          ...branchDto,
         },
         select: BranchSelect,
       });
@@ -40,16 +39,12 @@ export class BranchService {
     }
   }
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ): Promise<PaginationResult<BranchType>> {
+  async findAll( paginationDto: PaginationDto): Promise<PaginationResult<BranchType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.BranchWhereInput = {
-        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...(keys ? { name: { contains: keys, mode: Prisma.QueryMode.insensitive } } : {}),
       };
 
@@ -95,7 +90,7 @@ export class BranchService {
   }
 
   async update(id: string, updateBranchDto: UpdateBranchDto) {
-    const { cityId, zone, detail, ...branchDto } = updateBranchDto;
+    const { city, zone, detail, ...branchDto } = updateBranchDto;
     await this.findOne(id);
 
     return this.prisma.branch.update({
@@ -104,7 +99,7 @@ export class BranchService {
         ...branchDto,
         address: {
           update: {
-            cityId,
+            city,
             zone,
             detail,
           }

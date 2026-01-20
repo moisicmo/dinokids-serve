@@ -1,15 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { SpecialtyService } from './specialty.service';
 import { CreateSpecialtyDto } from './dto/create-specialty.dto';
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
 import { PaginationDto } from '@/common';
 import { checkAbilities, CurrentUser } from '@/decorator';
-import { AbilitiesGuard } from '@/guard/abilities.guard';
-import { TypeAction, TypeSubject } from "@prisma/client";
-import { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
-import { AuthenticatedRequest } from '@/common/extended-request';
-
-@UseGuards(AbilitiesGuard)
+import { TypeAction } from "@/generated/prisma/client";
+import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
+import { TypeSubject } from '@/common/subjects';
 @Controller('specialty')
 export class SpecialtyController {
   constructor(private readonly specialtyService: SpecialtyService) { }
@@ -17,16 +14,13 @@ export class SpecialtyController {
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.specialty })
   create(@CurrentUser() user: JwtPayload, @Body() createSpecialtyDto: CreateSpecialtyDto) {
-    return this.specialtyService.create(user.id, createSpecialtyDto);
+    return this.specialtyService.create(user.email, createSpecialtyDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.specialty })
-  findAll(
-    @Req() req: AuthenticatedRequest,
-    @Query() paginationDto: PaginationDto,
-  ) {
-    return this.specialtyService.findAll(paginationDto, req.caslFilter);
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.specialtyService.findAll(paginationDto);
   }
 
   @Get('/branch/:branchId')

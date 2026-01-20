@@ -1,6 +1,6 @@
 import { CreateUserDto } from "@/common/dto/create-user.dto";
+import { EducationLevel, Gender } from "@/generated/prisma/enums";
 import { ApiProperty } from "@nestjs/swagger";
-import { EducationLevel, Gender } from "@prisma/client";
 import { Type } from "class-transformer";
 import { IsArray, IsDate, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 

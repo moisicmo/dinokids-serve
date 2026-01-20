@@ -4,24 +4,21 @@ import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
 import { SpecialtySelect, SpecialtyType } from './entities/specialty.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
-import { CaslAbilityFactory } from '@/casl/casl-ability.factory';
-import { Prisma } from '@prisma/client';
-import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@/generated/prisma/client';
 
 @Injectable()
 export class SpecialtyService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) { }
 
-  async create(userId: string, createSpecialtyDto: CreateSpecialtyDto) {
+  async create(email: string, createSpecialtyDto: CreateSpecialtyDto) {
     const { name, numberSessions, estimatedSessionCost, branchId } = createSpecialtyDto;
     const specialty = await this.prisma.specialty.create({
       data: {
         name,
-        createdById: userId,
+        createdBy: email,
       },
       select: SpecialtySelect,
     });
@@ -31,37 +28,20 @@ export class SpecialtyService {
         specialtyId: specialty.id,
         estimatedSessionCost,
         numberSessions,
-        createdById: userId,
+        createdBy: email,
       }
     })
 
     return specialty;
   }
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ): Promise<PaginationResult<SpecialtyType>> {
+  async findAll( paginationDto: PaginationDto): Promise<PaginationResult<SpecialtyType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
-      console.log(JSON.stringify(caslFilter));
-      let branchFilter = {};
-      if (caslFilter?.filter?.OR) {
-        const branchCondition = caslFilter.filter.OR.find((cond: any) => cond.id?.in);
-        if (branchCondition) {
-          branchFilter = {
-            branchSpecialties: {
-              some: {
-                branchId: branchCondition.id,
-              },
-            },
-          };
-        }
-      }
+
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.SpecialtyWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions ? {} : branchFilter),
         ...(keys
           ? {
             OR: [

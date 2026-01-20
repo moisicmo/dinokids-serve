@@ -4,17 +4,15 @@ import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { TutorSelect, TutorType } from './entities/tutor.entity';
-import { Prisma } from '@prisma/client';
-import { CaslFilterContext } from '@/common/extended-request';
-import { cleanCaslFilterForModel } from '@/common/casl.util';
+import { Prisma } from '@/generated/prisma/client';
 @Injectable()
 
 export class TutorService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(userId: string, createTutorDto: CreateTutorDto) {
-    const { cityId, zone, detail, ...userDto } = createTutorDto;
+  async create(email: string, createTutorDto: CreateTutorDto) {
+    const { city, zone, detail, ...userDto } = createTutorDto;
 
     const userExists = await this.prisma.user.findUnique({
       where: { numberDocument: userDto.numberDocument },
@@ -34,15 +32,15 @@ export class TutorService {
         password: hashedPassword,
         address: {
           create: {
-            cityId,
+            city,
             zone,
             detail,
-            createdById: userId,
+            createdBy: email,
           }
         },
         tutor: {
           create: {
-            createdById: userId,
+            createdBy: email,
           },
         },
         ...userDto,
@@ -51,22 +49,12 @@ export class TutorService {
     });
   }
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ): Promise<PaginationResult<TutorType>> {
+  async findAll( paginationDto: PaginationDto): Promise<PaginationResult<TutorType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      const shouldIgnoreCasl =
-        caslFilter?.subject === 'student' || caslFilter?.subject === 'tutor';
-
-      const cleanedFilter = cleanCaslFilterForModel(caslFilter?.filter, 'student');
-
-
       const whereClause: Prisma.TutorWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions || shouldIgnoreCasl ? {} : cleanedFilter ?? {}),
         ...(keys
           ? {
             user: {
@@ -121,7 +109,7 @@ export class TutorService {
 
   async update(id: string, updateTutorDto: UpdateTutorDto) {
     await this.findOne(id);
-    const { cityId, zone, detail, ...userDto } = updateTutorDto;
+    const { city, zone, detail, ...userDto } = updateTutorDto;
 
     return this.prisma.user.update({
       where: {
@@ -133,7 +121,7 @@ export class TutorService {
       data: {
         address: {
           update: {
-            cityId,
+            city,
             zone,
             detail,
           }

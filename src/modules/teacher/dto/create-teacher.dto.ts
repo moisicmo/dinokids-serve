@@ -1,10 +1,10 @@
 import { CreateUserDto } from "@/common/dto/create-user.dto";
 import { ApiProperty } from "@nestjs/swagger";
-import { AcademicStatus } from "@prisma/client";
 import { Type } from "class-transformer";
 import { IsArray, IsDate, IsEnum, IsString } from "class-validator";
 import { IntersectionType } from '@nestjs/mapped-types';
 import { CreateAddressDto } from "@/common/dto/create-address.dto";
+import { AcademicStatus } from "@/generated/prisma/enums";
 
 export class CreateTeacherDto extends IntersectionType(CreateUserDto, CreateAddressDto) {
 

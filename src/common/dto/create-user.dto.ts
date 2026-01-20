@@ -1,5 +1,5 @@
+import { TypeDocument } from "@/generated/prisma/enums";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { TypeDocument } from "@prisma/client";
 import { IsArray, IsEmail, IsEnum, IsOptional, IsString } from "class-validator";
 
 export class CreateUserDto {

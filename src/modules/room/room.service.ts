@@ -5,8 +5,7 @@ import { RoomSelect, RoomType } from './entities/room.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { ScheduleService } from '../schedule/schedule.service';
-import { Prisma } from '@prisma/client';
-import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@/generated/prisma/client';
 
 @Injectable()
 export class RoomService {
@@ -16,13 +15,13 @@ export class RoomService {
     private readonly scheduleService: ScheduleService,
   ) { }
 
-  async create(userId: string, createRoomDto: CreateRoomDto) {
+  async create(email: string, createRoomDto: CreateRoomDto) {
     const { schedules, ...roomDto } = createRoomDto;
 
     const result = await this.prisma.$transaction(async (prisma) => {
       const room = await prisma.room.create({
         data: {
-          createdById: userId,
+          createdBy: email,
           ...roomDto,
         },
         select: RoomSelect,
@@ -34,7 +33,7 @@ export class RoomService {
             prisma.schedule.create({
               data: {
                 roomId: room.id,
-                createdById: userId,
+                createdBy: email,
                 ...schedule,
               },
             })
@@ -48,36 +47,14 @@ export class RoomService {
     return result;
   }
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ): Promise<PaginationResult<RoomType>> {
+  async findAll(paginationDto: PaginationDto,): Promise<PaginationResult<RoomType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      console.log('🎯 CASL filter recibido (Room):', JSON.stringify(caslFilter, null, 2));
-
-      // 🧠 Construcción del filtro por sucursal (branch)
-      let branchFilter: Prisma.RoomWhereInput = {};
-      if (caslFilter?.filter?.OR) {
-        const branchCondition = caslFilter.filter.OR.find((cond: any) => cond.id?.in);
-        if (branchCondition) {
-          branchFilter = {
-            specialty: {
-              branchSpecialties: {
-                some: {
-                  branchId: { in: branchCondition.id.in }, // ✅ conexión indirecta
-                },
-              },
-            },
-          };
-        }
-      }
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.RoomWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions ? {} : branchFilter),
         ...(keys
           ? {
             OR: [
@@ -135,7 +112,7 @@ export class RoomService {
     return room;
   }
 
-  async update(userId: string, id: string, updateRoomDto: UpdateRoomDto) {
+  async update(email: string, id: string, updateRoomDto: UpdateRoomDto) {
     const { schedules = [], ...roomDto } = updateRoomDto;
 
     await this.findOne(id);
@@ -190,7 +167,7 @@ export class RoomService {
               start: schedule.start,
               end: schedule.end,
               capacity: schedule.capacity!,
-              createdById: userId,
+              createdBy: email,
               // active: schedule.active ?? true,
             },
           });

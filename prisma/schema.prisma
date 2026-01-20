@@ -5,488 +5,570 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  addressId             String?               @map("address_id")              @db.Uuid
-  numberDocument        String?               @map("number_document")         @unique
-  typeDocument          TypeDocument          @map("type_document")           @default(DNI)
-  numberCard            String?               @map("number_card")             @unique
-  name                  String                                                @db.VarChar
-  lastName              String                @map("last_name")               @db.VarChar
-  email                 String?
-  emailValidated        Boolean               @map("email_validated")         @default(false)
-  image                 String?                                               @db.VarChar
-  phone                 Json
-  password              String                                                @db.VarChar
-  codeValidation        String?               @map("code_validation")         @unique
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  staff                 Staff?
-  student               Student?
-  teacher               Teacher?
-  tutor                 Tutor?
-  authSessions          AuthSession[]
-  accessRecords         AccessRecord[]
-  address               Address?                                              @relation(fields: [addressId], references: [id])
-  createdById           String?               @map("created_by_id")           @db.Uuid
-  createdBy             User?                                                  @relation("users",fields: [createdById], references: [id])
-  // creaciones
-  cUsers                User[]                                                @relation("users")
-  cBranches             Branch[]                                              @relation("branches")
-  cStaffs               Staff[]                                               @relation("staffs")
-  cAddresses            Address[]                                             @relation("addresses")
-  cCities               City[]                                                @relation("cities")
-  cAuthSessions         AuthSession[]                                         @relation("auth_sessions")
-  cPermissions          Permission[]                                          @relation("permissions")
-  cConditions           Condition[]                                           @relation("conditions")
-  cRoles                Role[]                                                @relation("roles")
-  cStudents             Student[]                                             @relation("students")
-  cSchools              School[]                                              @relation("schools")
-  cTutors               Tutor[]                                               @relation("tutors")
-  cTeachers             Teacher[]                                             @relation("teachers")
-  cSpecialties          Specialty[]                                           @relation("specialties")
-  cBranchSpecialties    BranchSpecialty[]                                     @relation("branch_specialties")
-  cRooms                Room[]                                                @relation("rooms")
-  cAssignmentRooms      AssignmentRoom[]                                      @relation("assignment_rooms")
-  cSchedules            Schedule[]                                            @relation("schedules")
-  cAssignmentSchedules  AssignmentSchedule[]                                  @relation("assignment_schedules")
-  cPrices               Price[]                                               @relation("prices")
-  cInscriptions         Inscription[]                                         @relation("inscriptions")
-  cBookings             Booking[]                                             @relation("bookings")
-  cDebts                Debts[]                                               @relation("debts")
-  cPayments             Payment[]                                             @relation("payments")
-  cInvoices             Invoice[]                                             @relation("invoices")
-  cRefunds              Refund[]                                              @relation("refunds")
-  cSessions             Session[]                                             @relation("sessions")
-  cAccessRecords        AccessRecord[]                                        @relation("access_records")
-  
-	@@map("users")
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  addressId      String?        @map("address_id") @db.Uuid
+  numberDocument String?        @unique @map("number_document")
+  typeDocument   TypeDocument   @default(DNI) @map("type_document")
+  numberCard     String?        @unique @map("number_card")
+  name           String         @db.VarChar
+  lastName       String         @map("last_name") @db.VarChar
+  email          String?
+  emailValidated Boolean        @default(false) @map("email_validated")
+  image          String?        @db.VarChar
+  password       String         @db.VarChar
+  phone          Json
+  codeValidation String?        @unique @map("code_validation")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
+  staff          Staff?
+  student        Student?
+  teacher        Teacher?
+  tutor          Tutor?
+  authSessions   AuthSession[]
+  accessRecords  AccessRecord[]
+  address        Address?       @relation(fields: [addressId], references: [id])
+
+  @@map("users")
 }
+
 model Branch {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  addressId             String                @map("address_id")              @db.Uuid
-  name                  String                                                @db.VarChar
-  phone                 String[]                                              @db.VarChar
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  rooms                 Room[]
-  staffs                Staff[]
-  teachers              Teacher[]
-  branchSpecialties     BranchSpecialty[]
-  accessRecords         AccessRecord[]
-  address               Address                                               @relation(fields: [addressId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("branches",fields: [createdById], references: [id])
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  addressId         String            @map("address_id") @db.Uuid
+  name              String            @db.VarChar
+  phone             String[]          @db.VarChar
+  active            Boolean           @default(true)
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @default(now()) @updatedAt @map("updated_at")
+  createdBy         String            @map("created_by")
+  rooms             Room[]
+  staffs            Staff[]
+  teachers          Teacher[]
+  branchSpecialties BranchSpecialty[]
+  accessRecords     AccessRecord[]
+  address           Address           @relation(fields: [addressId], references: [id])
+
   @@map("branches")
 }
+
 model Staff {
-  userId                String                @map("user_id")                 @id @unique @db.Uuid
-  roleId                String                @map("role_id")                 @db.Uuid
-  active                Boolean                                               @default(true)
-  superStaff            Boolean               @map("super_staff")             @default(false)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  user                  User                                                  @relation(fields: [userId], references: [id])
-  role                  Role                                                  @relation(fields: [roleId], references: [id])
-  Invoices              Invoice[]
-  branches              Branch[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("staffs",fields: [createdById], references: [id])
-	@@map("staffs")
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String   @unique @map("user_id") @db.Uuid
+  roleId     String   @map("role_id") @db.Uuid
+  active     Boolean  @default(true)
+  superStaff Boolean  @default(false) @map("super_staff")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy  String   @map("created_by")
+  user       User     @relation(fields: [userId], references: [id])
+  role       Role     @relation(fields: [roleId], references: [id])
+  branches   Branch[]
+
+  @@map("staffs")
 }
+
 model Address {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  cityId                String                @map("city_id")                 @db.Uuid
-  zone                  String                                                @db.VarChar
-  detail                String                                                @db.VarChar
-  users                 User[]
-  branches              Branch[]
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  city                  City                                                  @relation(fields: [cityId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("addresses",fields: [createdById], references: [id])
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  city      String   @db.VarChar
+  zone      String   @db.VarChar
+  detail    String   @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  users     User[]
+  branches  Branch[]
+
   @@map("addresses")
 }
-model City {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                  String                                                @unique @db.VarChar
-  address               Address[]
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("cities",fields: [createdById], references: [id])
-  @@map("cities")
-}
+
 model AuthSession {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId                String                @map("user_id")                 @db.Uuid
-  token                 String                                                @db.VarChar @unique
-  ipAddress             String                @map("ip_address")              @db.VarChar
-  userAgent             String                @map("user_agent")              @db.VarChar
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  revokedAt             DateTime              @map("revoked_at")              @updatedAt
-  user                  User                                                  @relation(fields: [userId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("auth_sessions",fields: [createdById], references: [id])
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  token     String   @unique @db.VarChar
+  ipAddress String   @map("ip_address") @db.VarChar
+  userAgent String   @map("user_agent") @db.VarChar
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+  revokedAt DateTime @updatedAt @map("revoked_at")
+  user      User     @relation(fields: [userId], references: [id])
+
   @@map("auth_sessions")
 }
+
 model Permission {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  action                TypeAction
-  subject               TypeSubject
-  inverted              Boolean                                               @default(false)
-  reason                String?                                               @db.Text
-  active                Boolean                                               @default(true)
-  createdAt             DateTime            @map("created_at")                @default(now())
-  updatedAt             DateTime            @map("updated_at")                @default(now()) @updatedAt
-  roles                 Role[]
-  conditions            Condition[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("permissions",fields: [createdById], references: [id])
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  action    TypeAction
+  subject   String
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @default(now()) @updatedAt @map("updated_at")
+  createdBy String     @map("created_by")
+  roles     Role[]
+
+  @@unique([action, subject])
   @@map("permissions")
 }
-model Condition {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  permissionId          String              @map("permission_id")             @db.Uuid 
-  field                 String
-  operator              ConditionOperator
-  value                 String
-  permission            Permission                                            @relation(fields: [permissionId], references: [id])
-  createdAt             DateTime            @map("created_at")                @default(now())
-  updatedAt             DateTime            @map("updated_at")                @default(now()) @updatedAt
-  createdById           String              @map("created_by_id")             @db.Uuid
-  createdBy             User                                                  @relation("conditions",fields: [createdById], references: [id])
-  @@map("conditions")
-}
+
 model Role {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                  String                                                @db.VarChar
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  permissions           Permission[]
-  staff                 Staff[]
-  createdById           String              @map("created_by_id")             @db.Uuid
-  createdBy             User                                                  @relation("roles",fields: [createdById], references: [id])
-	@@map("roles")
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String       @db.VarChar
+  active      Boolean      @default(true)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
+  createdBy   String       @map("created_by")
+  permissions Permission[]
+  staff       Staff[]
+
+  @@map("roles")
 }
+
 model Student {
-  userId                String                @map("user_id")                 @id @unique @db.Uuid
-  schoolId              String                @map("school_id")               @db.Uuid
-  code                  String                                                @unique
-  birthdate             DateTime
-  gender                Gender
-  grade                 Int?                                                   @db.Integer
-  educationLevel        EducationLevel?       @map("education_level")
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  user                  User                                                  @relation(fields: [userId], references: [id])
-  inscriptions          Inscription[]
-  tutors                Tutor[]
-  school                School                                                @relation(fields: [schoolId], references: [id])
-  createdById           String              @map("created_by_id")             @db.Uuid
-  createdBy             User                                                  @relation("students",fields: [createdById], references: [id])
-	@@map("students")
+  id                  String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId              String               @unique @map("user_id") @db.Uuid
+  schoolId            String               @map("school_id") @db.Uuid
+  code                String               @unique
+  birthdate           DateTime
+  gender              Gender
+  grade               Int?                 @db.Integer
+  educationLevel      EducationLevel?      @map("education_level")
+  active              Boolean              @default(true)
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at")
+  createdBy           String               @map("created_by")
+  user                User                 @relation(fields: [userId], references: [id])
+  inscriptions        Inscription[]
+  tutors              Tutor[]
+  weeklyPlannings     WeeklyPlanning[]
+  evaluationPlannings EvaluationPlanning[]
+  school              School               @relation(fields: [schoolId], references: [id])
+  sessionTrackings    SessionTracking[]
+
+  @@map("students")
 }
+
+// seguimiento de sesion
+model SessionTracking {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studentId         String   @map("student_id") @db.Uuid
+  workArea          String   @map("work_area") @db.VarChar
+  developedActivity String   @map("developed_activity") @db.VarChar
+  observation       String?  @db.VarChar
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy         String   @map("created_by")
+  student           Student  @relation(fields: [studentId], references: [userId])
+
+  @@map("session_trackings")
+}
+
+// planificacion semanal
+model WeeklyPlanning {
+  id         String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studentId  String                    @map("student_id") @db.Uuid
+  weekNumber Int
+  workArea   String                    @map("work_area") @db.VarChar
+  isLocked   Boolean                   @default(false) @map("is_locked")
+  createdAt  DateTime                  @default(now()) @map("created_at")
+  updatedAt  DateTime                  @default(now()) @updatedAt @map("updated_at")
+  createdBy  String                    @map("created_by")
+  student    Student                   @relation(fields: [studentId], references: [userId])
+  objectives WeeklyPlanningObjective[]
+
+  @@map("weekly_plannings")
+}
+
+model WeeklyPlanningObjective {
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  weeklyWeekId   String         @map("weekly_week_id") @db.Uuid
+  smartObjective String
+  answer         String
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
+  createdBy      String         @map("created_by")
+  weeklyWeek     WeeklyPlanning @relation(fields: [weeklyWeekId], references: [id])
+
+  @@map("weekly_planning_objectives")
+}
+
+// planificación de evaluación
+model EvaluationPlanning {
+  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studentId      String              @map("student_id") @db.Uuid
+  evaluationDate DateTime            @map("evaluation_date")
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @default(now()) @updatedAt @map("updated_at")
+  createdBy      String              @map("created_by")
+  student        Student             @relation(fields: [studentId], references: [userId])
+  sections       SectionDefinition[]
+
+  @@map("evaluation_plannings")
+}
+
+model SectionDefinition {
+  id           String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  evaluationId String             @map("evaluation_id") @db.Uuid
+  name         String
+  schema       Json
+  isActive     Boolean            @default(true)
+  createdAt    DateTime           @default(now()) @map("created_at")
+  updatedAt    DateTime           @default(now()) @updatedAt @map("updated_at")
+  createdBy    String             @map("created_by")
+  evaluation   EvaluationPlanning @relation(fields: [evaluationId], references: [id])
+
+  @@map("section_definitions")
+}
+
 model School {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                  String                                                @unique @db.VarChar
-  students              Student[]
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("schools",fields: [createdById], references: [id])
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String    @unique @db.VarChar
+  students  Student[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  createdBy String    @map("created_by")
+
   @@map("schools")
 }
+
 model Tutor {
-  userId                String                @map("user_id")                 @id @unique @db.Uuid
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  user                  User                                                  @relation(fields: [userId], references: [id])
-  students              Student[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("tutors",fields: [createdById], references: [id])
-	@@map("tutors")
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String    @unique @map("user_id") @db.Uuid
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  createdBy String    @map("created_by")
+  user      User      @relation(fields: [userId], references: [id])
+  students  Student[]
+
+  @@map("tutors")
 }
+
 model Teacher {
-  userId                String                @map("user_id")                 @id @unique @db.Uuid
-  major                 String                                                @db.VarChar
-  academicStatus        AcademicStatus        @map("academic_status")
-  startJob              DateTime              @map("start_job")               @default(now())
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  user                  User                                                  @relation(fields: [userId], references: [id])
-  mainRooms             Room[]                                                @relation("room_teacher")
-  assistedRooms         Room[]                                                @relation("room_assistant")
-  branches              Branch[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("teachers",fields: [createdById], references: [id])
-	@@map("teachers")
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String         @unique @map("user_id") @db.Uuid
+  major          String         @db.VarChar
+  academicStatus AcademicStatus @map("academic_status")
+  startJob       DateTime       @default(now()) @map("start_job")
+  active         Boolean        @default(true)
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
+  createdBy      String         @map("created_by")
+  user           User           @relation(fields: [userId], references: [id])
+  mainRooms      Room[]         @relation("room_teacher")
+  assistedRooms  Room[]         @relation("room_assistant")
+  branches       Branch[]
+
+  @@map("teachers")
 }
+
 model Specialty {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                  String                                                @db.VarChar
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  branchSpecialties     BranchSpecialty[]
-  rooms                 Room[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("specialties",fields: [createdById], references: [id])
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String            @db.VarChar
+  active            Boolean           @default(true)
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @default(now()) @updatedAt @map("updated_at")
+  createdBy         String            @map("created_by")
+  branchSpecialties BranchSpecialty[]
+  rooms             Room[]
+
   @@map("specialties")
 }
+
 model BranchSpecialty {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  branchId              String                @map("branch_id")               @db.Uuid
-  specialtyId           String                @map("specialty_id")            @db.Uuid
-  estimatedSessionCost  Float                 @map("estimated_session_cost")  @default(0.00)
-  numberSessions        Int                   @map("number_sessions")         @default(1)
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  branch                Branch                                                @relation(fields: [branchId], references: [id])
-  specialty             Specialty                                             @relation(fields: [specialtyId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("branch_specialties",fields: [createdById], references: [id])
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branchId             String    @map("branch_id") @db.Uuid
+  specialtyId          String    @map("specialty_id") @db.Uuid
+  estimatedSessionCost Float     @default(0.00) @map("estimated_session_cost")
+  numberSessions       Int       @default(1) @map("number_sessions")
+  active               Boolean   @default(true)
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at")
+  createdBy            String    @map("created_by")
+  branch               Branch    @relation(fields: [branchId], references: [id])
+  specialty            Specialty @relation(fields: [specialtyId], references: [id])
+
   @@unique([branchId, specialtyId])
   @@map("branch_specialties")
 }
+
 model Room {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  branchId              String                @map("branch_id")               @db.Uuid
-  teacherId             String                @map("teacher_id")              @db.Uuid
-  assistantId           String                @map("assistant_id")            @db.Uuid
-  specialtyId           String                @map("specialty_id")            @db.Uuid
-  name                  String                                                @db.VarChar
-  rangeYears            Json                  @map("range_years")             @db.Json
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  branch                Branch                                                @relation(fields: [branchId],references: [id])
-  teacher               Teacher                                               @relation("room_teacher",fields: [teacherId], references: [userId])
-  assistant             Teacher                                               @relation("room_assistant",fields: [assistantId], references: [userId])
-  specialty             Specialty                                             @relation(fields: [specialtyId],references: [id])
-  schedules             Schedule[]
-  assignmentRooms       AssignmentRoom[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("rooms",fields: [createdById], references: [id])
-	@@map("rooms")
+  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branchId        String           @map("branch_id") @db.Uuid
+  teacherId       String           @map("teacher_id") @db.Uuid
+  assistantId     String           @map("assistant_id") @db.Uuid
+  specialtyId     String           @map("specialty_id") @db.Uuid
+  name            String           @db.VarChar
+  rangeYears      Json             @map("range_years") @db.Json
+  active          Boolean          @default(true)
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @default(now()) @updatedAt @map("updated_at")
+  createdBy       String           @map("created_by")
+  branch          Branch           @relation(fields: [branchId], references: [id])
+  teacher         Teacher          @relation("room_teacher", fields: [teacherId], references: [userId])
+  assistant       Teacher          @relation("room_assistant", fields: [assistantId], references: [userId])
+  specialty       Specialty        @relation(fields: [specialtyId], references: [id])
+  schedules       Schedule[]
+  assignmentRooms AssignmentRoom[]
+
+  @@map("rooms")
 }
+
 model AssignmentRoom {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  inscriptionId         String                @map("inscription_id")          @db.Uuid
-  roomId                String                @map("room_id")                 @db.Uuid
-  start                 DateTime
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscription           Inscription                                           @relation(fields: [inscriptionId], references: [id])
-  room                  Room                                                  @relation(fields: [roomId], references: [id]) 
-  assignmentSchedules   AssignmentSchedule[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("assignment_rooms",fields: [createdById], references: [id])
+  id                  String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  inscriptionId       String               @map("inscription_id") @db.Uuid
+  roomId              String               @map("room_id") @db.Uuid
+  start               DateTime
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at")
+  createdBy           String               @map("created_by")
+  inscription         Inscription          @relation(fields: [inscriptionId], references: [id])
+  room                Room                 @relation(fields: [roomId], references: [id])
+  assignmentSchedules AssignmentSchedule[]
+
   @@unique([inscriptionId, roomId])
-	@@map("assignment_rooms")
+  @@map("assignment_rooms")
 }
+
 model Schedule {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  roomId                String                                                @db.Uuid
-  capacity              Int                                                   @db.Integer
-  day                   DayOfWeek           
-  start                 DateTime                                              @default(now())
-  end                   DateTime                                              @default(now())
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  room                  Room                                                  @relation(fields: [roomId], references: [id])   
-  assignmentSchedules   AssignmentSchedule[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("schedules",fields: [createdById], references: [id])
-	@@map("schedules")
+  id                  String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roomId              String               @db.Uuid
+  capacity            Int                  @db.Integer
+  day                 DayOfWeek
+  start               DateTime             @default(now())
+  end                 DateTime             @default(now())
+  active              Boolean              @default(true)
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at")
+  createdBy           String               @map("created_by")
+  room                Room                 @relation(fields: [roomId], references: [id])
+  assignmentSchedules AssignmentSchedule[]
+
+  @@map("schedules")
 }
+
 model AssignmentSchedule {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  assignmentRoomId      String                @map("assignment_room_id")      @db.Uuid
-  scheduleId            String                @map("schedule_id")             @db.Uuid
-  day                   DayOfWeek
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  assignmentRoom        AssignmentRoom                                        @relation(fields: [assignmentRoomId], references: [id])
-  schedule              Schedule                                              @relation(fields: [scheduleId], references: [id])
-  sessions              Session[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("assignment_schedules",fields: [createdById], references: [id])
-	@@map("assignment_schedules")
+  id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assignmentRoomId String         @map("assignment_room_id") @db.Uuid
+  scheduleId       String         @map("schedule_id") @db.Uuid
+  day              DayOfWeek
+  active           Boolean        @default(true)
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @default(now()) @updatedAt @map("updated_at")
+  createdBy        String         @map("created_by")
+  assignmentRoom   AssignmentRoom @relation(fields: [assignmentRoomId], references: [id])
+  schedule         Schedule       @relation(fields: [scheduleId], references: [id])
+  sessions         Session[]
+
+  @@map("assignment_schedules")
 }
+
 model Price {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  inscriptionId         String                @map("inscription_id")          @db.Uuid
-  inscriptionPrice      Float                 @map("inscription_price")       @default(0.00)
-  monthPrice            Float                 @map("month_price")             @default(0.00)
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscription           Inscription?                                          @relation(fields: [inscriptionId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("prices",fields: [createdById], references: [id])
-	@@map("prices")
+  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  inscriptionId    String       @map("inscription_id") @db.Uuid
+  inscriptionPrice Float        @default(0.00) @map("inscription_price")
+  monthPrice       Float        @default(0.00) @map("month_price")
+  active           Boolean      @default(true)
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @default(now()) @updatedAt @map("updated_at")
+  createdBy        String       @map("created_by")
+  inscription      Inscription? @relation(fields: [inscriptionId], references: [id])
+
+  @@map("prices")
 }
+
 model Inscription {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  studentId             String?               @map("student_id")              @db.Uuid
-  bookingId             String?               @unique @map("booking_id")      @db.Uuid
-  inscriptionType       InscriptionType?      @map("inscription_type")
-  url                   String?                                               @db.VarChar
-  active                Boolean               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  student               Student?                                              @relation(fields: [studentId], references: [userId])
-  booking               Booking?                                              @relation("booking_to_inscription", fields: [bookingId], references: [id])
-  prices                Price[]
-  assignmentRooms       AssignmentRoom[]
-  debts                 Debts[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("inscriptions",fields: [createdById], references: [id])
-	@@map("inscriptions")
+  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studentId       String?          @map("student_id") @db.Uuid
+  bookingId       String?          @unique @map("booking_id") @db.Uuid
+  inscriptionType InscriptionType? @map("inscription_type")
+  url             String?          @db.VarChar
+  active          Boolean          @default(true)
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @default(now()) @updatedAt @map("updated_at")
+  createdBy       String           @map("created_by")
+  student         Student?         @relation(fields: [studentId], references: [userId])
+  booking         Booking?         @relation("booking_to_inscription", fields: [bookingId], references: [id])
+  prices          Price[]
+  assignmentRooms AssignmentRoom[]
+  debts           Debts[]
+
+  @@map("inscriptions")
 }
+
 model Booking {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  days                  Int                                                   @db.Integer
-  dni                   String                                                @db.VarChar
-  name                  String                                                @db.VarChar
-  amount                Float                                                 @default(0.00)
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscription           Inscription?                                          @relation("booking_to_inscription")
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("bookings",fields: [createdById], references: [id])
-	@@map("bookings")
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  days        Int          @db.Integer
+  dni         String       @db.VarChar
+  name        String       @db.VarChar
+  amount      Float        @default(0.00)
+  active      Boolean      @default(true)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
+  createdBy   String       @map("created_by")
+  inscription Inscription? @relation("booking_to_inscription")
+
+  @@map("bookings")
 }
+
 model Debts {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  inscriptionId         String?               @map("inscription_id")          @db.Uuid
-  totalAmount           Float                 @map("total_amount")            @default(0.00)
-  remainingBalance      Float                 @map("remaining_balance")       @default(0.00)
-  type                  TypeDebt                                              @default(MONTH)
-  dueDate               DateTime?             @map("due_date")
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  inscription           Inscription?                                          @relation(fields: [inscriptionId], references: [id])
-  payments              Payment[]
-  Refund                Refund?
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("debts",fields: [createdById], references: [id])
-	@@map("debts")
+  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  inscriptionId    String?      @map("inscription_id") @db.Uuid
+  totalAmount      Float        @default(0.00) @map("total_amount")
+  remainingBalance Float        @default(0.00) @map("remaining_balance")
+  type             TypeDebt     @default(MONTH)
+  dueDate          DateTime?    @map("due_date")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @default(now()) @updatedAt @map("updated_at")
+  createdBy        String       @map("created_by")
+  inscription      Inscription? @relation(fields: [inscriptionId], references: [id])
+  payments         Payment[]
+  Refund           Refund?
+
+  @@map("debts")
 }
+
 model Payment {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  debtId                String                @map("debt_id")                 @db.Uuid
-  invoiceId             String?               @map("invoice_id")              @db.Uuid
-  reference             String?                                               @db.VarChar
-  amount                Float                                                 @default(0.00)
-  payMethod             PayMethod             @map("pay_method")              @default(CASH)
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  debt                  Debts                                                 @relation(fields: [debtId], references: [id])
-  invoice               Invoice?                                              @relation(fields: [invoiceId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("payments",fields: [createdById], references: [id])
-	@@map("payments")
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  debtId    String    @map("debt_id") @db.Uuid
+  invoiceId String?   @map("invoice_id") @db.Uuid
+  reference String?   @db.VarChar
+  amount    Float     @default(0.00)
+  payMethod PayMethod @default(CASH) @map("pay_method")
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdBy String    @map("created_by")
+  debt      Debts     @relation(fields: [debtId], references: [id])
+  invoice   Invoice?  @relation(fields: [invoiceId], references: [id])
+
+  @@map("payments")
 }
+
 model Invoice {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  code                  String                                                @db.VarChar
-  url                   String?                                               @db.VarChar
-  staffId               String                @map("staff_id")                @db.Uuid
-  buyerNit              String                @map("buyer_nit")               @db.VarChar
-  buyerName             String                @map("buyer_name")              @db.VarChar
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  staff                 Staff                                                 @relation(fields: [staffId], references: [userId])
-  payments              Payment[]
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("invoices",fields: [createdById], references: [id])
-	@@map("invoices")
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code      String    @db.VarChar
+  url       String?   @db.VarChar
+  buyerNit  String    @map("buyer_nit") @db.VarChar
+  buyerName String    @map("buyer_name") @db.VarChar
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now()) @map("created_at")
+  createdBy String    @map("created_by")
+  payments  Payment[]
+
+  @@map("invoices")
 }
+
 model Refund {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  debtId                String                @map("debt_id")                 @db.Uuid @unique
-  reference             String?                                               @db.VarChar
-  amount                Float                                                 @default(0.00)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  Debts                 Debts                                                 @relation(fields: [debtId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("refunds",fields: [createdById], references: [id])
-	@@map("refunds")
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  debtId    String   @unique @map("debt_id") @db.Uuid
+  reference String?  @db.VarChar
+  amount    Float    @default(0.00)
+  createdAt DateTime @default(now()) @map("created_at")
+  createdBy String   @map("created_by")
+  Debts     Debts    @relation(fields: [debtId], references: [id])
+
+  @@map("refunds")
 }
+
 model Session {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  assignmentScheduleId  String                @map("assignment_schedule_id")  @db.Uuid
-  date                  DateTime?                                             @default(now())
-  status                AttendanceStatus                                      @default(PENDING)
-  observation           String?                                               @db.VarChar
-  active                Boolean                                               @default(true)
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  assignmentSchedule    AssignmentSchedule                                    @relation(fields: [assignmentScheduleId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("sessions",fields: [createdById], references: [id])
+  id                   String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assignmentScheduleId String             @map("assignment_schedule_id") @db.Uuid
+  date                 DateTime?          @default(now())
+  status               AttendanceStatus   @default(PENDING)
+  observation          String?            @db.VarChar
+  active               Boolean            @default(true)
+  createdAt            DateTime           @default(now()) @map("created_at")
+  updatedAt            DateTime           @default(now()) @updatedAt @map("updated_at")
+  createdBy            String             @map("created_by")
+  assignmentSchedule   AssignmentSchedule @relation(fields: [assignmentScheduleId], references: [id])
+
   @@map("sessions")
 }
+
 model AccessRecord {
-  id                    String                                                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  branchId              String                @map("branch_id")               @db.Uuid
-  userId                String                @map("user_id")                 @db.Uuid
-  checkIn               DateTime              @map("check_in")                @default(now())
-  checkOut              DateTime?             @map("check_out")
-  observation           String?
-  createdAt             DateTime              @map("created_at")              @default(now())
-  updatedAt             DateTime              @map("updated_at")              @default(now()) @updatedAt
-  branch                Branch                                                @relation(fields: [branchId], references: [id])
-  user                  User                                                  @relation(fields: [userId], references: [id])
-  createdById           String                @map("created_by_id")           @db.Uuid
-  createdBy             User                                                  @relation("access_records",fields: [createdById], references: [id])
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  branchId    String    @map("branch_id") @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  checkIn     DateTime  @default(now()) @map("check_in")
+  checkOut    DateTime? @map("check_out")
+  observation String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  createdBy   String    @map("created_by")
+  branch      Branch    @relation(fields: [branchId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
   @@map("access_records")
 }
 
+model Document {
+  id            String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type          String
+  data          Json
+  createdAt     DateTime               @default(now()) @map("created_at")
+  updatedAt     DateTime               @default(now()) @updatedAt @map("updated_at")
+  createdBy     String                 @map("created_by")
+  transmissions DocumentTransmission[]
 
+  @@map("documents")
+}
+
+model DocumentTransmission {
+  id         String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId String             @map("document_id") @db.Uuid
+  senderId   String             @map("sender_id") @db.Uuid
+  receiverId String             @map("receiver_id") @db.Uuid
+  status     TransmissionStatus @default(PENDING)
+  createdAt  DateTime           @default(now()) @map("created_at")
+  updatedAt  DateTime           @default(now()) @updatedAt @map("updated_at")
+  readAt     DateTime?          @map("read_at")
+  archivedAt DateTime?          @map("archived_at")
+  createdBy  String             @map("created_by")
+  document   Document           @relation(fields: [documentId], references: [id])
+
+  @@map("documentTransmissions")
+}
 
 // ENUMUS SECTIONS
+enum TransmissionStatus {
+  PENDING
+  RECEIVED
+  READ
+  ARCHIVED
+}
+
 enum TypeDocument {
   DNI
   RUC
   PASAPORTE
 }
+
 enum InscriptionType {
   STUDENTS
   BOOKINGS
 }
+
 enum TypeDebt {
   BOOKING
   INSCRIPTION
   MONTH
   PER_SESSION
 }
+
 enum PayMethod {
   CASH
   BANK
   QR
 }
+
 enum DayOfWeek {
   MONDAY
   TUESDAY
@@ -496,14 +578,17 @@ enum DayOfWeek {
   SATURDAY
   SUNDAY
 }
+
 enum Gender {
   MASCULINO
   FEMENINO
 }
+
 enum EducationLevel {
   PRIMARIA
   SECUNDARIA
 }
+
 enum AcademicStatus {
   ACTIVO
   INACTIVO
@@ -511,6 +596,7 @@ enum AcademicStatus {
   TITULADO
   MAESTRIA
 }
+
 enum TypeAction {
   manage
   create
@@ -518,47 +604,7 @@ enum TypeAction {
   update
   delete
 }
-enum TypeSubject {
-  all
-  permission
-  role
-  staff
-  student
-  tutor
-  teacher
-  assignmentRoom
-  assignmentSchedule
-  booking
-  branch
-  room
-  specialty
-  schedule
-  session
-  inscription
-  debt
-  payment
-  invoice
-  refund
-  user
-  price
-  attendance
-  report
-}
-enum ConditionOperator {
-  equals                   // es igual
-  not_equals               // no es igual
-  in                       // está dentro de una lista de valores
-  not_in                   // no está dentro de una lista de valores
-  greater_than             // es mayor que
-  greater_than_or_equal    // es mayor o igual que
-  less_than                // es menor que
-  less_than_or_equal       // es menor o igual que
-  contains                 // contiene un valor (usado en cadenas de texto o arrays)
-  starts_with              // empieza con un valor (solo para strings)
-  ends_with                // termina con un valor (solo para strings)
-  exists                   // verifica si el campo existe o no (útil para valores opcionales)
-  between
-}
+
 enum AttendanceStatus {
   PENDING
   PRESENT

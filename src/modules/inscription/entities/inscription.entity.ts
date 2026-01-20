@@ -2,7 +2,7 @@ import { BookingEntity } from "@/modules/booking/entities/booking.entity";
 import { StudentSelect } from "@/modules/student/entities/student.entity";
 import { AssignmentRoomEntity } from "./assignment-room.entity";
 import { PriceEntity } from "./price.entity";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 
 export type InscriptionExtended = InscriptionType & {

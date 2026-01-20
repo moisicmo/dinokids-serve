@@ -1,6 +1,5 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { XlsxService } from '@/common/xlsx/xlsx.service';
-import { CaslFilterContext } from '@/common/extended-request';
 import { InscriptionService } from '../inscription/inscription.service';
 import { DebtService } from '../debt/debt.service';
 import { PaginationDto } from '@/common';
@@ -14,12 +13,9 @@ export class ReportService {
     private readonly debtService: DebtService,
   ) { }
 
-  async getInscriptionsInDocumentXlsx(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ) {
+  async getInscriptionsInDocumentXlsx(paginationDto: PaginationDto) {
     try {
-      const inscriptions = await this.inscriptionService.findAll(paginationDto, {}, caslFilter);
+      const inscriptions = await this.inscriptionService.findAll(paginationDto, {});
       const xlsxBuffer = await this.xlsxService.generateInscription(inscriptions.data);
       return {
         xlsxBase64: xlsxBuffer.toString('base64'),
@@ -33,11 +29,9 @@ export class ReportService {
     }
   }
 
-  async getDebsInDocumentXlsx(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,) {
+  async getDebsInDocumentXlsx(paginationDto: PaginationDto) {
     try {
-      const debts = await this.debtService.findAll(paginationDto, caslFilter);
+      const debts = await this.debtService.findAll(paginationDto);
       const xlsxBuffer = await this.xlsxService.generateDebt(debts.data);
       return {
         xlsxBase64: xlsxBuffer.toString('base64'),

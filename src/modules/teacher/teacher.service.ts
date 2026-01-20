@@ -5,16 +5,15 @@ import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { PaginationDto, PaginationResult, UserEntity } from '@/common';
 import { TeacherSelect, TeacherType } from './entities/teacher.entity';
-import { Prisma } from '@prisma/client';
-import { CaslFilterContext } from '@/common/extended-request';
+import { Prisma } from '@/generated/prisma/client';
 @Injectable()
 
 export class TeacherService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(userId: string, createTeacherDto: CreateTeacherDto) {
-    const { cityId, zone, detail, major, academicStatus, startJob, brancheIds, ...userDto } = createTeacherDto;
+  async create(email: string, createTeacherDto: CreateTeacherDto) {
+    const { city, zone, detail, major, academicStatus, startJob, brancheIds, ...userDto } = createTeacherDto;
 
     const userExists = await this.prisma.user.findUnique({
       where: { numberDocument: userDto.numberDocument },
@@ -33,10 +32,10 @@ export class TeacherService {
         password: hashedPassword,
         address: {
           create: {
-            cityId,
+            city,
             zone,
             detail,
-            createdById: userId,
+            createdBy: email,
           }
         },
         teacher: {
@@ -47,7 +46,7 @@ export class TeacherService {
             branches: {
               connect: brancheIds.map(id => ({ id })),
             },
-            createdById: userId,
+            createdBy: email,
           },
         },
         ...userDto,
@@ -56,35 +55,15 @@ export class TeacherService {
     });
   }
 
-async findAll(
-  paginationDto: PaginationDto,
-  caslFilter?: CaslFilterContext,
-): Promise<PaginationResult<TeacherType>> {
-  try {
-    const { page = 1, limit = 10, keys = '' } = paginationDto;
-    console.log('🎯 CASL filter recibido:', JSON.stringify(caslFilter, null, 2));
+  async findAll( paginationDto: PaginationDto ): Promise<PaginationResult<TeacherType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    // 🧠 Construcción del filtro por sucursal (branch)
-    let branchFilter: Prisma.TeacherWhereInput = {};
-    if (caslFilter?.filter?.OR) {
-      const branchCondition = caslFilter.filter.OR.find((cond: any) => cond.id?.in);
-      if (branchCondition) {
-        branchFilter = {
-          branches: {
-            some: {
-              id: { in: branchCondition.id.in }, // ✅ el array que viene en CASL
-            },
-          },
-        };
-      }
-    }
-
-    // 🔹 Armar el filtro final para Prisma
-    const whereClause: Prisma.TeacherWhereInput = {
-      active: true,
-      ...(caslFilter?.hasNoRestrictions ? {} : branchFilter),
-      ...(keys
-        ? {
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.TeacherWhereInput = {
+        active: true,
+        ...(keys
+          ? {
             user: {
               OR: [
                 { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
@@ -94,31 +73,31 @@ async findAll(
               ],
             },
           }
-        : {}),
-    };
+          : {}),
+      };
 
-    console.log('🧩 Filtro final StaffWhereInput:', JSON.stringify(whereClause, null, 2));
+      console.log('🧩 Filtro final StaffWhereInput:', JSON.stringify(whereClause, null, 2));
 
-    // 🔹 Paginación
-    const total = await this.prisma.teacher.count({ where: whereClause });
-    const lastPage = Math.ceil(total / limit);
+      // 🔹 Paginación
+      const total = await this.prisma.teacher.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
 
-    const data = await this.prisma.teacher.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: whereClause,
-      orderBy: { createdAt: 'asc' },
-      select: TeacherSelect,
-    });
+      const data = await this.prisma.teacher.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: TeacherSelect,
+      });
 
-    return { data, meta: { total, page, lastPage } };
+      return { data, meta: { total, page, lastPage } };
 
-  } catch (error) {
-    console.error('❌ Error en findAll(Teacher):', error);
-    if (error instanceof NotFoundException) throw error;
-    throw new InternalServerErrorException('Hubo un error al listar profesores');
+    } catch (error) {
+      console.error('❌ Error en findAll(Teacher):', error);
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar profesores');
+    }
   }
-}
 
   async findOne(id: string) {
     const user = await this.prisma.user.findUnique({
@@ -140,7 +119,7 @@ async findAll(
 
   async update(id: string, updateTeacherDto: UpdateTeacherDto) {
     await this.findOne(id);
-    const { cityId, zone, detail, major, academicStatus, startJob, brancheIds, ...userDto } = updateTeacherDto;
+    const { city, zone, detail, major, academicStatus, startJob, brancheIds, ...userDto } = updateTeacherDto;
 
     return this.prisma.user.update({
       where: {
@@ -152,7 +131,7 @@ async findAll(
       data: {
         address: {
           update: {
-            cityId,
+            city,
             zone,
             detail,
           }

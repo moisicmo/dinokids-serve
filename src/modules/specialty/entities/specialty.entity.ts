@@ -1,5 +1,5 @@
 import { BranchSelect } from "@/modules/branch/entities/branch.entity";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 export type SpecialtyType = Prisma.SpecialtyGetPayload<{
   select: typeof SpecialtySelect;

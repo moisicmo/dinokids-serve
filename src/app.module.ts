@@ -27,8 +27,8 @@ import { GoogledriveModule } from './common/googledrive/googledrive.module';
 import { GmailModule } from './common/gmail/gmail.module';
 import { PdfModule } from './common/pdf/pdf.module';
 import { XlsxModule } from './common/xlsx/xlsx.module';
-import { CityModule } from './modules/city/city.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
+import { CorrespondenceModule } from './modules/correspondence/correspondence.module';
 @Module({
   imports: [
     PrismaModule,
@@ -55,8 +55,8 @@ import { AttendanceModule } from './modules/attendance/attendance.module';
     InvoiceModule,
     DashboardModule,
     ReportModule,
-    CityModule,
     AttendanceModule,
+    CorrespondenceModule,
   ],
   providers: [
     PrismaService,

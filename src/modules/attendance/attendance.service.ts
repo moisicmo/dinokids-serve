@@ -3,19 +3,19 @@ import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { UserEntity } from '@/common';
 import { startOfDay, endOfDay } from 'date-fns';
-import { AttendanceStatus } from '@prisma/client';
 import { StudentSelect } from '../student/entities/student.entity';
 import { InscriptionSelect } from '../inscription/entities/inscription.entity';
 import { DebtSelect } from '../debt/entities/debt.entity';
 import { AssignmentRoomEntity } from '../inscription/entities/assignment-room.entity';
 import { AssignmentSchedulesEntity } from '../inscription/entities/assignment-schedule.entity';
 import { SessionEntity } from './entities/attendance.entity';
+import { AttendanceStatus } from '@/generated/prisma/enums';
 
 @Injectable()
 export class AttendanceService {
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(userId: string, createAttendanceDto: CreateAttendanceDto) {
+  async create(email: string, createAttendanceDto: CreateAttendanceDto) {
     const { branchId, numberCard } = createAttendanceDto;
 
     // 🔹 Buscar usuario por número de tarjeta
@@ -88,7 +88,7 @@ export class AttendanceService {
         branchId,
         userId: user.id,
         checkIn: new Date(),
-        createdById: userId
+        createdBy: email,
       },
     });
 

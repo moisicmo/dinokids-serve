@@ -1,5 +1,5 @@
 import { TutorSelect } from "@/modules/tutor/entities/tutor.entity";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 export type StudentType = Prisma.StudentGetPayload<{
   select: typeof StudentSelect;

@@ -2,8 +2,7 @@ import { Injectable, InternalServerErrorException, NotFoundException } from '@ne
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { DebtSelect, DebtType } from './entities/debt.entity';
-import { CaslFilterContext } from '@/common/extended-request';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 
 @Injectable()
 export class DebtService {
@@ -12,16 +11,12 @@ export class DebtService {
     private readonly prisma: PrismaService,
   ) { }
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ) {
+  async findAll( paginationDto: PaginationDto ) {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.DebtsWhereInput = {
-        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...(keys ? {} : {}),
       };
 
@@ -51,15 +46,13 @@ export class DebtService {
 
   async findAllByStudent(
     studentId: string,
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
+    paginationDto: PaginationDto
   ): Promise<PaginationResult<DebtType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.DebtsWhereInput = {
-        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...(keys ? {
           inscription: { studentId }
         } : {

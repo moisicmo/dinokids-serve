@@ -7,8 +7,7 @@ import { DebtService } from '../debt/debt.service';
 import { PdfService } from '@/common/pdf/pdf.service';
 import { GoogledriveService } from '@/common/googledrive/googledrive.service';
 import { InvoiceService } from '../invoice/invoice.service';
-import { CaslFilterContext } from '@/common/extended-request';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 
 @Injectable()
 export class PaymentService {
@@ -21,7 +20,7 @@ export class PaymentService {
     private readonly googledriveService: GoogledriveService,
   ) { }
 
-  async create(userId: string, createPaymentDto: CreateCartDto) {
+  async create(email: string, createPaymentDto: CreateCartDto) {
     const { payments, ...cartDto } = createPaymentDto;
 
     try {
@@ -36,7 +35,7 @@ export class PaymentService {
             data: {
               debtId,
               amount,
-              createdById: userId,
+              createdBy: email,
             },
           });
 
@@ -58,10 +57,9 @@ export class PaymentService {
         const invoice = await prisma.invoice.create({
           data: {
             code: `COM-${Date.now()}`, // o algún otro generador
-            staffId: userId,
             buyerNit: cartDto.buyerNit,
             buyerName: cartDto.buyerName,
-            createdById: userId,
+            createdBy: email,
           },
         });
 
@@ -102,17 +100,13 @@ export class PaymentService {
 
 
 
-  async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
-  ) {
+  async findAll( paginationDto: PaginationDto) {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.PaymentWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...(keys
           ? {}
           : {}),

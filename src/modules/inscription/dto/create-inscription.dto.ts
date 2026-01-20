@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsNumber, IsUUID, ValidateNested } from "class-validator";
+import { IsArray, IsNumber, IsString, IsUUID, ValidateNested } from "class-validator";
 import { CreateAssignmentRoomDto } from "./create-assignment-room.dto";
 
 export class CreateInscriptionDto {
 
-  @IsUUID()
+  @IsString()
   @ApiProperty({
     example: 'student123',
     description: 'Identificador único del estudiante',

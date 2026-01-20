@@ -3,7 +3,7 @@ import { IsNumber, IsString, IsUUID } from "class-validator";
 
 export class CreateSpecialtyDto {
 
-  @IsUUID()
+  @IsString()
   @ApiProperty({
     example: 'branch123',
     description: 'Identificador único de la sucursal',

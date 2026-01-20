@@ -3,15 +3,15 @@ import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { StaffSelect, StaffType } from './entities/staff.entity';
-import { CaslFilterContext } from '@/common/extended-request';
-import { Prisma } from '@prisma/client';
+import { PaginationDto, PaginationResult, UserEntity } from '@/common';
+import { StaffSelect, StaffType } from './entities/staff.entity';
+import { Prisma } from '@/generated/prisma/client';
 @Injectable()
 export class StaffService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(userId: string, createStaffDto: CreateStaffDto) {
+  async create(email: string, createStaffDto: CreateStaffDto) {
     const { roleId, brancheIds, ...userDto } = createStaffDto;
 
     const userExists = await this.prisma.user.findUnique({
@@ -33,7 +33,7 @@ export class StaffService {
         staff: {
           create: {
             roleId: roleId,
-            createdById: userId,
+            createdBy: email,
             branches: {
               connect: brancheIds.map(id => ({ id })),
             }
@@ -44,33 +44,13 @@ export class StaffService {
     });
   }
 
-async findAll(
-  paginationDto: PaginationDto,
-  caslFilter?: CaslFilterContext,
-): Promise<PaginationResult<StaffType>> {
+async findAll( paginationDto: PaginationDto): Promise<PaginationResult<StaffType>> {
   try {
     const { page = 1, limit = 10, keys = '' } = paginationDto;
-    console.log('🎯 CASL filter recibido:', JSON.stringify(caslFilter, null, 2));
-
-    // 🧠 Construcción del filtro por sucursal (branch)
-    let branchFilter: Prisma.StaffWhereInput = {};
-    if (caslFilter?.filter?.OR) {
-      const branchCondition = caslFilter.filter.OR.find((cond: any) => cond.id?.in);
-      if (branchCondition) {
-        branchFilter = {
-          branches: {
-            some: {
-              id: { in: branchCondition.id.in }, // ✅ el array que viene en CASL
-            },
-          },
-        };
-      }
-    }
 
     // 🔹 Armar el filtro final para Prisma
     const whereClause: Prisma.StaffWhereInput = {
       active: true,
-      ...(caslFilter?.hasNoRestrictions ? {} : branchFilter),
       ...(keys
         ? {
             user: {

@@ -2,13 +2,12 @@ import { UserEntity } from "@/common";
 import { BookingEntity } from "@/modules/booking/entities/booking.entity";
 import { BranchSelect } from "@/modules/branch/entities/branch.entity";
 import { AssignmentSchedulesEntity } from "@/modules/inscription/entities/assignment-schedule.entity";
-import { InscriptionSelect } from "@/modules/inscription/entities/inscription.entity";
 import { PriceEntity } from "@/modules/inscription/entities/price.entity";
 import { ScheduleEntity } from "@/modules/schedule/entities/schedule.entity";
 import { SpecialtySelect } from "@/modules/specialty/entities/specialty.entity";
 import { StudentSelect } from "@/modules/student/entities/student.entity";
 import { TeacherSelect } from "@/modules/teacher/entities/teacher.entity";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 export type RoomType = Prisma.RoomGetPayload<{
   select: typeof RoomSelect;

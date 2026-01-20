@@ -1,16 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TutorService } from './tutor.service';
 import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { PaginationDto } from '@/common';
 
 import { checkAbilities, CurrentUser } from '@/decorator';
-import { AbilitiesGuard } from '@/guard/abilities.guard';
-import { TypeAction, TypeSubject } from '@prisma/client';
-import { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
-import { AuthenticatedRequest } from '@/common/extended-request';
-
-@UseGuards(AbilitiesGuard)
+import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
+import { TypeSubject } from '@/common/subjects';
+import { TypeAction } from '@/generated/prisma/enums';
 @Controller('tutor')
 export class TutorController {
   constructor(private readonly tutorService: TutorService) { }
@@ -18,16 +15,13 @@ export class TutorController {
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.tutor })
   create(@CurrentUser() user: JwtPayload, @Body() createTutorDto: CreateTutorDto) {
-    return this.tutorService.create(user.id, createTutorDto);
+    return this.tutorService.create(user.email, createTutorDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.tutor })
-  findAll(
-    @Req() req: AuthenticatedRequest,
-    @Query() paginationDto: PaginationDto,
-  ) {
-    return this.tutorService.findAll(paginationDto, req.caslFilter);
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.tutorService.findAll(paginationDto);
   }
 
   @Get(':id')

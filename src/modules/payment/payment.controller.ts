@@ -1,14 +1,11 @@
-import { Controller, Get, Post, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreateCartDto } from './dto/create-payment.dto';
 import { PaginationDto } from '@/common';
 import { checkAbilities, CurrentUser } from '@/decorator';
-import { AbilitiesGuard } from '@/guard/abilities.guard';
-import { TypeAction, TypeSubject } from "@prisma/client";
-import { JwtPayload } from '../auth/entities/jwt-payload.interface';
-import { AuthenticatedRequest } from '@/common/extended-request';
-
-@UseGuards(AbilitiesGuard)
+import { TypeAction } from "@/generated/prisma/client";
+import type { JwtPayload } from '../auth/entities/jwt-payload.interface';
+import { TypeSubject } from '@/common/subjects';
 @Controller('payment')
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) { }
@@ -16,16 +13,13 @@ export class PaymentController {
   @Post('sendings')
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.payment })
   create(@CurrentUser() user: JwtPayload, @Body() createPaymentDto: CreateCartDto) {
-    return this.paymentService.create(user.id, createPaymentDto);
+    return this.paymentService.create(user.email, createPaymentDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.payment })
-  findAll(
-    @Req() req: AuthenticatedRequest,
-    @Query() paginationDto: PaginationDto,
-  ) {
-    return this.paymentService.findAll(paginationDto,req.caslFilter);
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.paymentService.findAll(paginationDto);
   }
 
   @Get(':id')

@@ -1,6 +1,6 @@
 import { UserEntity } from "@/common";
+import { Prisma } from "@/generated/prisma/client";
 import { BranchSelect } from "@/modules/branch/entities/branch.entity";
-import { Prisma } from "@prisma/client";
 
 export type TeacherType = Prisma.TeacherGetPayload<{
   select: typeof TeacherSelect;

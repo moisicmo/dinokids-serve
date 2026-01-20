@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { RequestInfo } from '@/decorator';
 import { PrismaService } from '@/prisma/prisma.service';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { RoleSelect } from '@/modules/role/entities/role.entity';
 import { BranchSelect } from '@/modules/branch/entities/branch.entity';
 import * as bcrypt from 'bcrypt';
@@ -20,9 +20,8 @@ export class AuthService {
     private readonly gmailService: GmailService,
   ) { }
 
-  signJWT(payload: JwtPayload, expiresIn?: string | number) {
-    if (expiresIn) return this.jwtService.sign(payload, { expiresIn });
-    return this.jwtService.sign(payload);
+  signJWT(payload: JwtPayload, expiresIn?: JwtSignOptions['expiresIn']) {
+    return this.jwtService.sign(payload, expiresIn ? { expiresIn } : {});
   }
 
   async login(createAuthDto: CreateAuthDto, requestInfo: RequestInfo) {
@@ -59,7 +58,7 @@ export class AuthService {
         throw new NotFoundException('Las credenciales no son válidas, por favor verifica tu correo y contraseña');
       }
       if (!staff.user.emailValidated) {
-        throw new UnauthorizedException({ idUser: staff.user.id, key: 'validar correo',email: staff.user.email });
+        throw new UnauthorizedException({ idUser: staff.user.id, key: 'validar correo', email: staff.user.email });
       }
 
       const isPasswordValid = bcrypt.compareSync(password, staff.user.password);
@@ -73,7 +72,7 @@ export class AuthService {
         id: user.id,
         name: user.name,
         lastName: user.lastName,
-        email: user.email,
+        email: user.email ?? '',
         jti: randomUUID(),
       };
 
@@ -86,7 +85,7 @@ export class AuthService {
           token,
           userAgent,
           ipAddress,
-          createdById: user.id,
+          createdBy: user.email ?? user.id,
         },
       });
 

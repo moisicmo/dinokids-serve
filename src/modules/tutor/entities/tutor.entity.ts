@@ -1,6 +1,10 @@
 import { UserEntity } from "@/common";
 import { AddressSelect } from "@/common/entities/address.select";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
+
+export type TutorType = Prisma.TutorGetPayload<{
+  select: typeof TutorSelect
+}>;
 
 export const TutorSelect = {
   userId: true,
@@ -31,8 +35,3 @@ export const TutorSelect = {
     select: UserEntity,
   }
 };
-
-
-export type TutorType = Prisma.TutorGetPayload<{
-  select: typeof TutorSelect
-}>;

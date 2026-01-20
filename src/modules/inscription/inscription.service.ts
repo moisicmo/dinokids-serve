@@ -6,10 +6,9 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { PdfService } from '@/common/pdf/pdf.service';
 import { GoogledriveService } from '@/common/googledrive/googledrive.service';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 import { addDays } from 'date-fns';
-import { DayOfWeek } from '@prisma/client'; // Asegúrate de importar tu enum
-import { CaslFilterContext } from '@/common/extended-request';
+import { DayOfWeek } from '@/generated/prisma/client';
 
 @Injectable()
 export class InscriptionService {
@@ -20,7 +19,7 @@ export class InscriptionService {
     private readonly googledriveService: GoogledriveService,
   ) { }
 
-  async create(userId: string, createInscriptionDto: CreateInscriptionDto) {
+  async create(email: string, createInscriptionDto: CreateInscriptionDto) {
     try {
       const { assignmentRooms, inscriptionPrice, monthPrice, ...inscriptionData } = createInscriptionDto;
 
@@ -28,20 +27,24 @@ export class InscriptionService {
         // 1️⃣ Crear inscripción
         const inscription = await tx.inscription.create({
           data: {
-            createdById: userId,
+            createdBy: email,
             ...inscriptionData,
           },
         });
 
-        console.log('✅ userId dentro de transacción:', userId);
-
         // 2️⃣ Crear precio
+        console.log({
+          inscriptionId: inscription.id,
+          inscriptionPrice,
+          monthPrice,
+          createdBy: email,
+        })
         await tx.price.create({
           data: {
             inscriptionId: inscription.id,
             inscriptionPrice,
             monthPrice,
-            createdById: userId, // 👈 aquí sí se respeta dentro de la misma conexión
+            createdBy: email,
           },
         });
 
@@ -52,7 +55,7 @@ export class InscriptionService {
           const assignmentRoom = await tx.assignmentRoom.create({
             data: {
               inscriptionId: inscription.id,
-              createdById: userId,
+              createdBy: email,
               ...roomData,
             },
           });
@@ -71,7 +74,7 @@ export class InscriptionService {
                 assignmentRoomId: assignmentRoom.id,
                 scheduleId: scheduleDto.schedule.id,
                 day: scheduleDto.day,
-                createdById: userId,
+                createdBy: email,
               },
             });
 
@@ -96,7 +99,7 @@ export class InscriptionService {
               data: sessionsToCreate.map((s) => ({
                 assignmentScheduleId: s.assignmentScheduleId,
                 date: s.date,
-                createdById: userId,
+                createdBy: email,
               })),
             });
           }
@@ -207,89 +210,58 @@ export class InscriptionService {
   // }
 
 
-async findAllByStudent(
-  paginationDto: PaginationDto,
-  caslFilter?: CaslFilterContext,
-): Promise<PaginationResult<InscriptionExtended>> {
-  try {
-    const { page = 1, limit = 10 } = paginationDto;
+  async findAllByStudent(paginationDto: PaginationDto): Promise<PaginationResult<InscriptionExtended>> {
+    try {
+      const { page = 1, limit = 10 } = paginationDto;
 
-    // 🧩 1️⃣ Filtro base (solo inscripciones con estudiante y precios activos)
-    const whereCustom: Prisma.InscriptionWhereInput = {
-      student: { isNot: null },
-      prices: { some: { active: true } },
-    };
-
-    // 🧠 2️⃣ Construir filtro adicional según CASL (sucursal del usuario)
-    let branchFilter: Prisma.InscriptionWhereInput = {};
-    if (caslFilter?.filter?.OR) {
-      const branchCondition = caslFilter.filter.OR.find(
-        (cond: any) => cond.id?.in,
-      );
-
-      if (branchCondition) {
-        branchFilter = {
-          assignmentRooms: {
-            some: {
-              room: {
-                specialty: {
-                  branchSpecialties: {
-                    some: {
-                      branchId: { in: branchCondition.id.in },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        };
-      }
-    }
-
-    // 🧩 3️⃣ Fusionar filtros: CASL + personalizados
-    const whereClause: Prisma.InscriptionWhereInput = {
-      AND: [
-        whereCustom,
-        ...(caslFilter?.hasNoRestrictions ? [] : [branchFilter]),
-      ],
-    };
-
-    // 🧩 4️⃣ Calcular total (paginación)
-    const total = await this.prisma.inscription.count({ where: whereClause });
-    const lastPage = Math.ceil(total / limit);
-
-    // 🧩 5️⃣ Obtener inscripciones con sus relaciones necesarias
-    const dataRaw = await this.prisma.inscription.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: whereClause,
-      orderBy: { createdAt: 'desc' },
-      select: InscriptionSelect
-    });
-
-    // 🧩 6️⃣ Extender resultado con precios activos
-    const extendedData: InscriptionExtended[] = dataRaw.map((inscription) => {
-      const activePrice = inscription.prices.find((p) => p.active);
-      return {
-        ...inscription,
-        inscriptionPrice: activePrice?.inscriptionPrice ?? 0,
-        monthPrice: activePrice?.monthPrice ?? 0,
+      // 🧩 1️⃣ Filtro base (solo inscripciones con estudiante y precios activos)
+      const whereCustom: Prisma.InscriptionWhereInput = {
+        student: { isNot: null },
+        prices: { some: { active: true } },
       };
-    });
 
-    // 🧩 7️⃣ Retornar con metadatos
-    return {
-      data: extendedData,
-      meta: { total, page, lastPage },
-    };
-  } catch (error) {
-    console.error('❌ Error en findAllByStudent(Inscription):', error);
-    if (error instanceof NotFoundException) throw error;
-    throw new InternalServerErrorException(
-      'Hubo un error al listar las inscripciones por estudiante',
-    );
+      const whereClause: Prisma.InscriptionWhereInput = {
+        AND: [
+          whereCustom,
+        ],
+      };
+
+      // 🧩 4️⃣ Calcular total (paginación)
+      const total = await this.prisma.inscription.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
+
+      // 🧩 5️⃣ Obtener inscripciones con sus relaciones necesarias
+      const dataRaw = await this.prisma.inscription.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'desc' },
+        select: InscriptionSelect
+      });
+
+      // 🧩 6️⃣ Extender resultado con precios activos
+      const extendedData: InscriptionExtended[] = dataRaw.map((inscription) => {
+        const activePrice = inscription.prices.find((p) => p.active);
+        return {
+          ...inscription,
+          inscriptionPrice: activePrice?.inscriptionPrice ?? 0,
+          monthPrice: activePrice?.monthPrice ?? 0,
+        };
+      });
+
+      // 🧩 7️⃣ Retornar con metadatos
+      return {
+        data: extendedData,
+        meta: { total, page, lastPage },
+      };
+    } catch (error) {
+      console.error('❌ Error en findAllByStudent(Inscription):', error);
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException(
+        'Hubo un error al listar las inscripciones por estudiante',
+      );
+    }
   }
-}
 
 
 
@@ -298,16 +270,12 @@ async findAllByStudent(
 
   async findAll(
     paginationDto: PaginationDto,
-    whereCustom?: Prisma.InscriptionWhereInput,
-    caslFilter?: CaslFilterContext,
-  ): Promise<PaginationResult<InscriptionType>> {
+    whereCustom?: Prisma.InscriptionWhereInput): Promise<PaginationResult<InscriptionType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-      // 🔹 1️⃣ Construimos el filtro base combinando CASL + filtros personalizados
       const whereClause: Prisma.InscriptionWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...whereCustom,
         ...(keys.trim()
           ? {
@@ -413,7 +381,7 @@ async findAllByStudent(
     return inscription;
   }
 
-  async update(userId: string, id: string, updateInscriptionDto: UpdateInscriptionDto) {
+  async update(email: string, id: string, updateInscriptionDto: UpdateInscriptionDto) {
     const { assignmentRooms, ...inscriptionData } = updateInscriptionDto;
 
     // 1. Validar que exista
@@ -453,7 +421,7 @@ async findAllByStudent(
           const assignmentRoom = await prisma.assignmentRoom.create({
             data: {
               inscriptionId: id,
-              createdById: userId,
+              createdBy: email,
               ...roomData,
             },
           });

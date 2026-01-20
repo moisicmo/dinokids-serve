@@ -3,7 +3,7 @@ import { IsString, IsUUID } from "class-validator";
 
 export class CreateAttendanceDto {
 
-  @IsUUID()
+  @IsString()
   @ApiProperty({
     example: 'branch123',
     description: 'Identificador único de la sucursal',

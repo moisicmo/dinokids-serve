@@ -1,20 +1,21 @@
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { TDocumentDefinitions, Column } from 'pdfmake/interfaces';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as pdfMake from 'pdfmake/build/pdfmake';
 import { InscriptionType } from '@/modules/inscription/entities/inscription.entity';
-
 import { es } from 'date-fns/locale';
 import { format } from 'date-fns';
 
-const fontPath = path.join(process.cwd(), 'dist/assets');
+const assetsPath = path.join(process.cwd(), 'dist/assets');
 
-export function buildInscriptionTemplate(inscription: InscriptionType): Promise<Buffer> {
+export function buildInscriptionTemplate(
+  inscription: InscriptionType
+): TDocumentDefinitions {
 
-  const logoPath = path.join(fontPath, 'logo.png');
+  const logoPath = path.join(assetsPath, 'logo.png');
   const logoBase64 = fs.existsSync(logoPath)
     ? fs.readFileSync(logoPath).toString('base64')
     : null;
+
 
   const content: TDocumentDefinitions['content'] = [
     {
@@ -61,7 +62,7 @@ export function buildInscriptionTemplate(inscription: InscriptionType): Promise<
         { text: `Fecha de nacimiento: ${format(new Date(inscription.student!.birthdate), 'dd-MMMM-yyyy', { locale: es })}` },
         { text: `Nombre del padre/madre/tutor: ${inscription.student?.tutors![0].user.name} ${inscription.student?.tutors![0].user.lastName}` },
         { text: `Cédula de identidad: ${inscription.student?.user.numberDocument}` },
-        { text: `Domicilio: ${inscription.student?.tutors[0].user?.address?.city?.name} ${inscription.student?.tutors[0].user?.address?.zone} ${inscription.student?.tutors[0].user?.address?.detail}` },
+        { text: `Domicilio: ${inscription.student?.tutors[0].user?.address?.city} ${inscription.student?.tutors[0].user?.address?.zone} ${inscription.student?.tutors[0].user?.address?.detail}` },
         { text: `Teléfono de contacto: ${inscription.student?.tutors?.[0]?.user?.phone?.[0] ?? 'Sin número'}` },
       ],
       style: 'stylePagrafer',
@@ -359,13 +360,13 @@ export function buildInscriptionTemplate(inscription: InscriptionType): Promise<
             { text: 'Participar en las entrevistas programadas, para un buen seguimiento al desarrollo y progreso de su niño, así mismo, informar oportunamente de alguna observación respecto a las sesiones desarrolladas.' },
             { text: 'Todo cambio de horario deberá ser solicitado y autorizado solo por el tutor o titular de la inscripción. Previo llenado y firma del Formulario correspondiente.' },
             { text: 'Evitar interrumpir el desarrollo de las sesiones y metodologías empleadas dentro de las actividades del niño, ya que toda actividad estará siempre orientada hacia el respeto y desarrollo adecuado del niño.' },
-            { 
+            {
               stack: [
-                { text: 'Sobre ausencias, permisos y reprogramaciones:'},
-                { text: '- Los permisos para reprogramación de sesiones sólo se concederán en caso de fuerza mayor o causa justificada debidamente documentada (enfermedad, situación familiar grave o eventos fortuitos), y estarán sujetos a la disponibilidad horaria del Centro. Una vez otorgado el permiso, EL REPRESENTANTE deberá agendar la sesión de reposición en la fecha y horario acordados con la administración.'},
-                { text: '- En caso de que, una vez agendada la reposición, EL REPRESENTANTE o el niño no asistan a dicha sesión reprogramada, la misma se considerará como realizada a todos los efectos, y no será objeto de una nueva reprogramación ni de reembolso. Esta política es necesaria para garantizar la adecuada planificación de las sesiones y la eficiencia del Programa..'},
+                { text: 'Sobre ausencias, permisos y reprogramaciones:' },
+                { text: '- Los permisos para reprogramación de sesiones sólo se concederán en caso de fuerza mayor o causa justificada debidamente documentada (enfermedad, situación familiar grave o eventos fortuitos), y estarán sujetos a la disponibilidad horaria del Centro. Una vez otorgado el permiso, EL REPRESENTANTE deberá agendar la sesión de reposición en la fecha y horario acordados con la administración.' },
+                { text: '- En caso de que, una vez agendada la reposición, EL REPRESENTANTE o el niño no asistan a dicha sesión reprogramada, la misma se considerará como realizada a todos los efectos, y no será objeto de una nueva reprogramación ni de reembolso. Esta política es necesaria para garantizar la adecuada planificación de las sesiones y la eficiencia del Programa..' },
               ]
-             },
+            },
             { text: 'Reconocer y aceptar que cada niño avanza dentro del Programa DINO CONDUCTUAL conforme a su propio ritmo de desarrollo y aprendizaje, y que dicho proceso requiere necesariamente un alto grado de compromiso, regularidad y constancia en la asistencia a las sesiones.' },
             { text: 'EL REPRESENTANTE se compromete expresamente a respetar el calendario de sesiones acordado y a evitar atrasos y faltas injustificadas, reconociendo que tales situaciones comprometen la eficacia del Programa y pueden afectar de manera directa el desarrollo integral del niño.' },
             { text: 'En caso de ausencia reiterada injustificada o falta de compromiso demostrado con el proceso, EL CENTRO se reserva el derecho de evaluar la continuidad del beneficiario dentro del Programa, en resguardo de los principios pedagógicos y terapéuticos que sustentan su metodología.' },
@@ -480,37 +481,44 @@ export function buildInscriptionTemplate(inscription: InscriptionType): Promise<
       alignment: 'justify',
     },
   ];
+  const headerColumns: Column[] = [
+    {
+      stack: [
+        { text: 'DINO KIDS. 4758808011', bold: true, color: 'green', fontSize: 12 },
+        { text: 'Calle Batallón Colorados', fontSize: 10 },
+        { text: 'Edificio Batallón Colorados Of. 4', fontSize: 10 },
+        { text: 'www.dinokids.com.bo', fontSize: 10, color: 'gray' },
+      ],
+      width: '*',
+    },
+  ];
 
-  const docDefinition: TDocumentDefinitions = {
+
+
+  if (logoBase64) {
+    headerColumns.push({
+      image: `data:image/png;base64,${logoBase64}`,
+      width: 100,
+      alignment: 'right',
+    });
+  }
+
+  return {
     pageSize: 'LETTER',
     pageMargins: [70, 90, 70, 60],
+
     header: {
       margin: [70, 20, 70, 10],
-      columns: [
-        {
-          stack: [
-            { text: 'DINO KIDS. 4758808011', bold: true, color: 'green', fontSize: 12, margin: [0, 0, 0, 2] },
-            { text: 'Calle Batallón Colorados', fontSize: 10, margin: [0, 0, 0, 2] },
-            { text: 'Edificio Batallón Colorados Of. 4', fontSize: 10, margin: [0, 0, 0, 2] },
-            { text: 'www.dinokids.com.bo', fontSize: 10, color: 'gray' },
-          ],
-          width: '*'
-        },
-        logoBase64
-          ? {
-            image: `data:image/png;base64,${logoBase64}`,
-            width: 100,
-            alignment: 'right',
-          }
-          : {}
-      ]
-    } as any,
+      columns: headerColumns,
+    },
 
     content,
+
     defaultStyle: {
       font: 'Poppins',
       fontSize: 12,
     },
+
     styles: {
       styleTitle: {
         bold: true,
@@ -526,14 +534,4 @@ export function buildInscriptionTemplate(inscription: InscriptionType): Promise<
     },
   };
 
-
-  return new Promise((resolve, reject) => {
-    const pdfDoc = pdfMake.createPdf(docDefinition);
-
-    pdfDoc.getBuffer((buffer) => {
-      resolve(buffer);
-    });
-
-    pdfDoc.getStream().on('error', reject);
-  });
 }

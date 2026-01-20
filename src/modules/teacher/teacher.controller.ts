@@ -1,16 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { PaginationDto } from '@/common';
 
 import { checkAbilities, CurrentUser } from '@/decorator';
-import { AbilitiesGuard } from '@/guard/abilities.guard';
-import { TypeAction, TypeSubject } from '@prisma/client';
-import { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
-import { AuthenticatedRequest } from '@/common/extended-request';
-
-@UseGuards(AbilitiesGuard)
+import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
+import { TypeSubject } from '@/common/subjects';
+import { TypeAction } from '@/generated/prisma/enums';
 @Controller('teacher')
 export class TeacherController {
   constructor(private readonly teacherService: TeacherService) { }
@@ -18,16 +15,13 @@ export class TeacherController {
   @Post()
   @checkAbilities({ action: TypeAction.create, subject: TypeSubject.teacher })
   create(@CurrentUser() user: JwtPayload, @Body() createTeacherDto: CreateTeacherDto) {
-    return this.teacherService.create(user.id, createTeacherDto);
+    return this.teacherService.create(user.email, createTeacherDto);
   }
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.teacher })
-  findAll(
-    @Req() req: AuthenticatedRequest,
-    @Query() paginationDto: PaginationDto,
-  ) {
-    return this.teacherService.findAll(paginationDto, req.caslFilter);
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.teacherService.findAll(paginationDto);
   }
 
   @Get(':id')

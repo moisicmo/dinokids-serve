@@ -1,5 +1,9 @@
 import { InscriptionSelect } from "@/modules/inscription/entities/inscription.entity";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
+
+export type DebtType = Prisma.DebtsGetPayload<{
+  select: typeof DebtSelect
+}>;
 
 export const DebtSelect = {
   id: true,
@@ -14,7 +18,4 @@ export const DebtSelect = {
   createdAt: true,
 };
 
-export type DebtType = Prisma.DebtsGetPayload<{
-  select: typeof DebtSelect
-}>;
 

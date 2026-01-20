@@ -4,8 +4,8 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { RoleSelect, RoleType } from './entities/role.entity';
-import { CaslFilterContext } from '@/common/extended-request';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
+
 @Injectable()
 export class RoleService {
 
@@ -13,7 +13,7 @@ export class RoleService {
     private readonly prisma: PrismaService,
   ) { }
 
-  async create(userId: string, createRoleDto: CreateRoleDto) {
+  async create(email: string, createRoleDto: CreateRoleDto) {
     try {
       const { name, permissionIds } = createRoleDto;
 
@@ -49,7 +49,7 @@ export class RoleService {
       const newRole = await this.prisma.role.create({
         data: {
           name,
-          createdById: userId,
+          createdBy: email,
           permissions: permissionIds?.length
             ? {
               connect: permissionIds.map((id) => ({ id })),
@@ -70,8 +70,7 @@ export class RoleService {
 
 
   async findAll(
-    paginationDto: PaginationDto,
-    caslFilter?: CaslFilterContext,
+    paginationDto: PaginationDto
   ): Promise<PaginationResult<RoleType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
@@ -79,7 +78,6 @@ export class RoleService {
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.RoleWhereInput = {
         active: true,
-        ...(caslFilter?.hasNoRestrictions ? {} : caslFilter?.filter ?? {}),
         ...(keys
           ? {
             OR: [
@@ -124,7 +122,7 @@ export class RoleService {
     return role;
   }
 
-  async update(userId: string, id: string, updateRoleDto: UpdateRoleDto) {
+  async update(email: string, id: string, updateRoleDto: UpdateRoleDto) {
     try {
       const { name, permissionIds } = updateRoleDto;
 
