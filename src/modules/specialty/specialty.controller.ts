@@ -6,7 +6,7 @@ import { PaginationDto } from '@/common';
 import { checkAbilities, CurrentUser } from '@/decorator';
 import { TypeAction } from "@/generated/prisma/client";
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 @Controller('specialty')
 export class SpecialtyController {
   constructor(private readonly specialtyService: SpecialtyService) { }

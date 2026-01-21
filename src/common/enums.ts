@@ -1,5 +1,4 @@
 export enum TypeSubject {
-  all = "todo",
   branch = "sucursales",
   permission = "permisos",
   role = "roles",

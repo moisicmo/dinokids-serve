@@ -45,6 +45,7 @@ export type PriceMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type PriceMaxAggregateOutputType = {
@@ -56,6 +57,7 @@ export type PriceMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type PriceCountAggregateOutputType = {
@@ -67,6 +69,7 @@ export type PriceCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -90,6 +93,7 @@ export type PriceMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type PriceMaxAggregateInputType = {
@@ -101,6 +105,7 @@ export type PriceMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type PriceCountAggregateInputType = {
@@ -112,6 +117,7 @@ export type PriceCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -210,6 +216,7 @@ export type PriceGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: PriceCountAggregateOutputType | null
   _avg: PriceAvgAggregateOutputType | null
   _sum: PriceSumAggregateOutputType | null
@@ -244,6 +251,7 @@ export type PriceWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Price"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Price"> | Date | string
   createdBy?: Prisma.StringFilter<"Price"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Price"> | string | null
   inscription?: Prisma.XOR<Prisma.InscriptionNullableScalarRelationFilter, Prisma.InscriptionWhereInput> | null
 }
 
@@ -256,6 +264,7 @@ export type PriceOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   inscription?: Prisma.InscriptionOrderByWithRelationInput
 }
 
@@ -271,6 +280,7 @@ export type PriceWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Price"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Price"> | Date | string
   createdBy?: Prisma.StringFilter<"Price"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Price"> | string | null
   inscription?: Prisma.XOR<Prisma.InscriptionNullableScalarRelationFilter, Prisma.InscriptionWhereInput> | null
 }, "id">
 
@@ -283,6 +293,7 @@ export type PriceOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.PriceCountOrderByAggregateInput
   _avg?: Prisma.PriceAvgOrderByAggregateInput
   _max?: Prisma.PriceMaxOrderByAggregateInput
@@ -302,6 +313,7 @@ export type PriceScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Price"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Price"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Price"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Price"> | string | null
 }
 
 export type PriceCreateInput = {
@@ -312,6 +324,7 @@ export type PriceCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   inscription?: Prisma.InscriptionCreateNestedOneWithoutPricesInput
 }
 
@@ -324,6 +337,7 @@ export type PriceUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type PriceUpdateInput = {
@@ -334,6 +348,7 @@ export type PriceUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inscription?: Prisma.InscriptionUpdateOneWithoutPricesNestedInput
 }
 
@@ -346,6 +361,7 @@ export type PriceUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PriceCreateManyInput = {
@@ -357,6 +373,7 @@ export type PriceCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type PriceUpdateManyMutationInput = {
@@ -367,6 +384,7 @@ export type PriceUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PriceUncheckedUpdateManyInput = {
@@ -378,6 +396,7 @@ export type PriceUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PriceCountOrderByAggregateInput = {
@@ -389,6 +408,7 @@ export type PriceCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type PriceAvgOrderByAggregateInput = {
@@ -405,6 +425,7 @@ export type PriceMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type PriceMinOrderByAggregateInput = {
@@ -416,6 +437,7 @@ export type PriceMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type PriceSumOrderByAggregateInput = {
@@ -483,6 +505,7 @@ export type PriceCreateWithoutInscriptionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type PriceUncheckedCreateWithoutInscriptionInput = {
@@ -493,6 +516,7 @@ export type PriceUncheckedCreateWithoutInscriptionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type PriceCreateOrConnectWithoutInscriptionInput = {
@@ -533,6 +557,7 @@ export type PriceScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Price"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Price"> | Date | string
   createdBy?: Prisma.StringFilter<"Price"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Price"> | string | null
 }
 
 export type PriceCreateManyInscriptionInput = {
@@ -543,6 +568,7 @@ export type PriceCreateManyInscriptionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type PriceUpdateWithoutInscriptionInput = {
@@ -553,6 +579,7 @@ export type PriceUpdateWithoutInscriptionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PriceUncheckedUpdateWithoutInscriptionInput = {
@@ -563,6 +590,7 @@ export type PriceUncheckedUpdateWithoutInscriptionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type PriceUncheckedUpdateManyWithoutInscriptionInput = {
@@ -573,6 +601,7 @@ export type PriceUncheckedUpdateManyWithoutInscriptionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -586,6 +615,7 @@ export type PriceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   inscription?: boolean | Prisma.Price$inscriptionArgs<ExtArgs>
 }, ExtArgs["result"]["price"]>
 
@@ -598,6 +628,7 @@ export type PriceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   inscription?: boolean | Prisma.Price$inscriptionArgs<ExtArgs>
 }, ExtArgs["result"]["price"]>
 
@@ -610,6 +641,7 @@ export type PriceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   inscription?: boolean | Prisma.Price$inscriptionArgs<ExtArgs>
 }, ExtArgs["result"]["price"]>
 
@@ -622,9 +654,10 @@ export type PriceSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type PriceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "inscriptionId" | "inscriptionPrice" | "monthPrice" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["price"]>
+export type PriceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "inscriptionId" | "inscriptionPrice" | "monthPrice" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["price"]>
 export type PriceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   inscription?: boolean | Prisma.Price$inscriptionArgs<ExtArgs>
 }
@@ -649,6 +682,7 @@ export type $PricePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["price"]>
   composites: {}
 }
@@ -1081,6 +1115,7 @@ export interface PriceFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Price", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Price", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Price", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Price", 'String'>
 }
     
 

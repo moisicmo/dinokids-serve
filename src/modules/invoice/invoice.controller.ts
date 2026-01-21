@@ -5,7 +5,7 @@ import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { checkAbilities } from '@/decorator';
 import { TypeAction } from '@/generated/prisma/client';
 import { PaginationDto } from '@/common';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 
 @Controller('invoice')
 export class InvoiceController {

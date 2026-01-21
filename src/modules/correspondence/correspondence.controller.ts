@@ -3,7 +3,7 @@ import { CorrespondenceService } from './correspondence.service';
 import { CreateCorrespondenceDto } from './dto/create-correspondence.dto';
 import { checkAbilities, CurrentUser } from '@/decorator';
 import { TypeAction } from '@/generated/prisma/enums';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
 import { PaginationDto } from '@/common';
 

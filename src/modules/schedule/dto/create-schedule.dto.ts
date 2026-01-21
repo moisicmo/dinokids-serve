@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { DayOfWeek } from "@/generated/prisma/client";
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsNumber } from "class-validator";
+import { IsDate, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateScheduleDto {
 
@@ -28,6 +28,14 @@ export class CreateScheduleDto {
     description: 'Hora de fin del horario',
   })
   end: Date;
+  
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    example: 'Sala 101',
+    description: 'Nombre de la sala',
+  })
+  color?: string;
 
   @IsNumber()
   @ApiProperty({

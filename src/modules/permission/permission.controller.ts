@@ -3,7 +3,7 @@ import { PermissionService } from './permission.service';
 import { PaginationDto } from '@/common';
 import { checkAbilities } from '@/decorator';
 import { TypeAction } from "@/generated/prisma/client";
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 
 @Controller('permission')
 export class PermissionController {

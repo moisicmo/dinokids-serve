@@ -3,6 +3,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 export interface RequestInfo {
   ipAddress: string;
   userAgent: string;
+  branchSelect: string;
 }
 
 export const RequestInfo = createParamDecorator((_data: unknown, ctx: ExecutionContext): RequestInfo => {
@@ -16,9 +17,12 @@ export const RequestInfo = createParamDecorator((_data: unknown, ctx: ExecutionC
 
     const userAgent = request.headers['user-agent'] || '';
 
+    const branchSelect = request.headers['branch-select'];
+
     return {
       ipAddress: typeof ipAddress === 'string' ? ipAddress : ipAddress[0],
       userAgent,
+      branchSelect,
     };
   },
 );

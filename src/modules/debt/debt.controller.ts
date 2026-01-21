@@ -2,7 +2,7 @@ import { Controller, Get, Param, Delete, Query } from '@nestjs/common';
 import { DebtService } from './debt.service';
 import { checkAbilities } from '@/decorator';
 import { PaginationDto } from '@/common';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 import { TypeAction } from '@/generated/prisma/enums';
 @Controller('debt')
 export class DebtController {

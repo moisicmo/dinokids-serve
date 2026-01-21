@@ -33,6 +33,7 @@ export type SessionTrackingMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SessionTrackingMaxAggregateOutputType = {
@@ -44,6 +45,7 @@ export type SessionTrackingMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SessionTrackingCountAggregateOutputType = {
@@ -55,6 +57,7 @@ export type SessionTrackingCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -68,6 +71,7 @@ export type SessionTrackingMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type SessionTrackingMaxAggregateInputType = {
@@ -79,6 +83,7 @@ export type SessionTrackingMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type SessionTrackingCountAggregateInputType = {
@@ -90,6 +95,7 @@ export type SessionTrackingCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -174,6 +180,7 @@ export type SessionTrackingGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: SessionTrackingCountAggregateOutputType | null
   _min: SessionTrackingMinAggregateOutputType | null
   _max: SessionTrackingMaxAggregateOutputType | null
@@ -206,6 +213,7 @@ export type SessionTrackingWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"SessionTracking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SessionTracking"> | Date | string
   createdBy?: Prisma.StringFilter<"SessionTracking"> | string
+  updatedBy?: Prisma.StringNullableFilter<"SessionTracking"> | string | null
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
 }
 
@@ -218,6 +226,7 @@ export type SessionTrackingOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
 }
 
@@ -233,6 +242,7 @@ export type SessionTrackingWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"SessionTracking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SessionTracking"> | Date | string
   createdBy?: Prisma.StringFilter<"SessionTracking"> | string
+  updatedBy?: Prisma.StringNullableFilter<"SessionTracking"> | string | null
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
 }, "id">
 
@@ -245,6 +255,7 @@ export type SessionTrackingOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SessionTrackingCountOrderByAggregateInput
   _max?: Prisma.SessionTrackingMaxOrderByAggregateInput
   _min?: Prisma.SessionTrackingMinOrderByAggregateInput
@@ -262,6 +273,7 @@ export type SessionTrackingScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SessionTracking"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SessionTracking"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"SessionTracking"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"SessionTracking"> | string | null
 }
 
 export type SessionTrackingCreateInput = {
@@ -272,6 +284,7 @@ export type SessionTrackingCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   student: Prisma.StudentCreateNestedOneWithoutSessionTrackingsInput
 }
 
@@ -284,6 +297,7 @@ export type SessionTrackingUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionTrackingUpdateInput = {
@@ -294,6 +308,7 @@ export type SessionTrackingUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneRequiredWithoutSessionTrackingsNestedInput
 }
 
@@ -306,6 +321,7 @@ export type SessionTrackingUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionTrackingCreateManyInput = {
@@ -317,6 +333,7 @@ export type SessionTrackingCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionTrackingUpdateManyMutationInput = {
@@ -327,6 +344,7 @@ export type SessionTrackingUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionTrackingUncheckedUpdateManyInput = {
@@ -338,6 +356,7 @@ export type SessionTrackingUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionTrackingListRelationFilter = {
@@ -359,6 +378,7 @@ export type SessionTrackingCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SessionTrackingMaxOrderByAggregateInput = {
@@ -370,6 +390,7 @@ export type SessionTrackingMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SessionTrackingMinOrderByAggregateInput = {
@@ -381,6 +402,7 @@ export type SessionTrackingMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SessionTrackingCreateNestedManyWithoutStudentInput = {
@@ -433,6 +455,7 @@ export type SessionTrackingCreateWithoutStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionTrackingUncheckedCreateWithoutStudentInput = {
@@ -443,6 +466,7 @@ export type SessionTrackingUncheckedCreateWithoutStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionTrackingCreateOrConnectWithoutStudentInput = {
@@ -483,6 +507,7 @@ export type SessionTrackingScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"SessionTracking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SessionTracking"> | Date | string
   createdBy?: Prisma.StringFilter<"SessionTracking"> | string
+  updatedBy?: Prisma.StringNullableFilter<"SessionTracking"> | string | null
 }
 
 export type SessionTrackingCreateManyStudentInput = {
@@ -493,6 +518,7 @@ export type SessionTrackingCreateManyStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionTrackingUpdateWithoutStudentInput = {
@@ -503,6 +529,7 @@ export type SessionTrackingUpdateWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionTrackingUncheckedUpdateWithoutStudentInput = {
@@ -513,6 +540,7 @@ export type SessionTrackingUncheckedUpdateWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionTrackingUncheckedUpdateManyWithoutStudentInput = {
@@ -523,6 +551,7 @@ export type SessionTrackingUncheckedUpdateManyWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -536,6 +565,7 @@ export type SessionTrackingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sessionTracking"]>
 
@@ -548,6 +578,7 @@ export type SessionTrackingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sessionTracking"]>
 
@@ -560,6 +591,7 @@ export type SessionTrackingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sessionTracking"]>
 
@@ -572,9 +604,10 @@ export type SessionTrackingSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type SessionTrackingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "workArea" | "developedActivity" | "observation" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["sessionTracking"]>
+export type SessionTrackingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "workArea" | "developedActivity" | "observation" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["sessionTracking"]>
 export type SessionTrackingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }
@@ -599,6 +632,7 @@ export type $SessionTrackingPayload<ExtArgs extends runtime.Types.Extensions.Int
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["sessionTracking"]>
   composites: {}
 }
@@ -1031,6 +1065,7 @@ export interface SessionTrackingFieldRefs {
   readonly createdAt: Prisma.FieldRef<"SessionTracking", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SessionTracking", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"SessionTracking", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"SessionTracking", 'String'>
 }
     
 

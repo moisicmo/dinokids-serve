@@ -30,6 +30,7 @@ export class StaffService {
       data: {
         ...userDto,
         password: hashedPassword,
+        createdBy: email,
         staff: {
           create: {
             roleId: roleId,
@@ -44,15 +45,15 @@ export class StaffService {
     });
   }
 
-async findAll( paginationDto: PaginationDto): Promise<PaginationResult<StaffType>> {
-  try {
-    const { page = 1, limit = 10, keys = '' } = paginationDto;
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StaffType>> {
+    try {
+      const { page = 1, limit = 10, keys = '' } = paginationDto;
 
-    // 🔹 Armar el filtro final para Prisma
-    const whereClause: Prisma.StaffWhereInput = {
-      active: true,
-      ...(keys
-        ? {
+      // 🔹 Armar el filtro final para Prisma
+      const whereClause: Prisma.StaffWhereInput = {
+        active: true,
+        ...(keys
+          ? {
             user: {
               OR: [
                 { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
@@ -62,31 +63,28 @@ async findAll( paginationDto: PaginationDto): Promise<PaginationResult<StaffType
               ],
             },
           }
-        : {}),
-    };
+          : {}),
+      };
+      // 🔹 Paginación
+      const total = await this.prisma.staff.count({ where: whereClause });
+      const lastPage = Math.ceil(total / limit);
 
-    console.log('🧩 Filtro final StaffWhereInput:', JSON.stringify(whereClause, null, 2));
+      const data = await this.prisma.staff.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: whereClause,
+        orderBy: { createdAt: 'asc' },
+        select: StaffSelect,
+      });
 
-    // 🔹 Paginación
-    const total = await this.prisma.staff.count({ where: whereClause });
-    const lastPage = Math.ceil(total / limit);
+      return { data, meta: { total, page, lastPage } };
 
-    const data = await this.prisma.staff.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: whereClause,
-      orderBy: { createdAt: 'asc' },
-      select: StaffSelect,
-    });
-
-    return { data, meta: { total, page, lastPage } };
-
-  } catch (error) {
-    console.error('❌ Error en findAll(Staff):', error);
-    if (error instanceof NotFoundException) throw error;
-    throw new InternalServerErrorException('Hubo un error al listar staffs');
+    } catch (error) {
+      console.error('❌ Error en findAll(Staff):', error);
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Hubo un error al listar staffs');
+    }
   }
-}
 
 
   async findOne(id: string) {
@@ -111,7 +109,7 @@ async findAll( paginationDto: PaginationDto): Promise<PaginationResult<StaffType
     try {
       await this.findOne(id);
       const { roleId, brancheIds, ...userDto } = updateStaffDto;
-  
+
       return this.prisma.user.update({
         where: {
           id,
@@ -135,7 +133,7 @@ async findAll( paginationDto: PaginationDto): Promise<PaginationResult<StaffType
         },
         select: UserEntity,
       });
-      
+
     } catch (error) {
       console.error('❌ Error en findAll(Staff):', error);
 

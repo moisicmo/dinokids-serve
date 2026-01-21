@@ -7,7 +7,7 @@ export class DashboardService {
 
   constructor(private readonly prisma: PrismaService) { }
 
-  async findAll() {
+  async findAll(branchSelect: string) {
     const totalStudents = await this.prisma.student.count({
       where: { active: true },
     });

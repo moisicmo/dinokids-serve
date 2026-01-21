@@ -30,6 +30,8 @@ model User {
   codeValidation String?        @unique @map("code_validation")
   createdAt      DateTime       @default(now()) @map("created_at")
   updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
+  createdBy      String         @map("created_by")
+  updatedBy      String?        @map("updated_by")
   staff          Staff?
   student        Student?
   teacher        Teacher?
@@ -44,12 +46,13 @@ model User {
 model Branch {
   id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   addressId         String            @map("address_id") @db.Uuid
-  name              String            @db.VarChar
+  name              String            @unique @db.VarChar
   phone             String[]          @db.VarChar
   active            Boolean           @default(true)
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @default(now()) @updatedAt @map("updated_at")
   createdBy         String            @map("created_by")
+  updatedBy         String?           @map("updated_by")
   rooms             Room[]
   staffs            Staff[]
   teachers          Teacher[]
@@ -69,6 +72,7 @@ model Staff {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy  String   @map("created_by")
+  updatedBy  String?  @map("updated_by")
   user       User     @relation(fields: [userId], references: [id])
   role       Role     @relation(fields: [roleId], references: [id])
   branches   Branch[]
@@ -84,9 +88,11 @@ model Address {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
   users     User[]
   branches  Branch[]
 
+  @@unique([city, zone, detail])
   @@map("addresses")
 }
 
@@ -99,6 +105,7 @@ model AuthSession {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
   revokedAt DateTime @updatedAt @map("revoked_at")
   user      User     @relation(fields: [userId], references: [id])
 
@@ -113,6 +120,7 @@ model Permission {
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @default(now()) @updatedAt @map("updated_at")
   createdBy String     @map("created_by")
+  updatedBy String?    @map("updated_by")
   roles     Role[]
 
   @@unique([action, subject])
@@ -121,11 +129,12 @@ model Permission {
 
 model Role {
   id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String       @db.VarChar
+  name        String       @unique @db.VarChar
   active      Boolean      @default(true)
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
   createdBy   String       @map("created_by")
+  updatedBy   String?      @map("updated_by")
   permissions Permission[]
   staff       Staff[]
 
@@ -145,6 +154,7 @@ model Student {
   createdAt           DateTime             @default(now()) @map("created_at")
   updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at")
   createdBy           String               @map("created_by")
+  updatedBy           String?              @map("updated_by")
   user                User                 @relation(fields: [userId], references: [id])
   inscriptions        Inscription[]
   tutors              Tutor[]
@@ -166,6 +176,7 @@ model SessionTracking {
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @default(now()) @updatedAt @map("updated_at")
   createdBy         String   @map("created_by")
+  updatedBy         String?  @map("updated_by")
   student           Student  @relation(fields: [studentId], references: [userId])
 
   @@map("session_trackings")
@@ -181,6 +192,7 @@ model WeeklyPlanning {
   createdAt  DateTime                  @default(now()) @map("created_at")
   updatedAt  DateTime                  @default(now()) @updatedAt @map("updated_at")
   createdBy  String                    @map("created_by")
+  updatedBy  String?                   @map("updated_by")
   student    Student                   @relation(fields: [studentId], references: [userId])
   objectives WeeklyPlanningObjective[]
 
@@ -195,6 +207,7 @@ model WeeklyPlanningObjective {
   createdAt      DateTime       @default(now()) @map("created_at")
   updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
   createdBy      String         @map("created_by")
+  updatedBy      String?        @map("updated_by")
   weeklyWeek     WeeklyPlanning @relation(fields: [weeklyWeekId], references: [id])
 
   @@map("weekly_planning_objectives")
@@ -208,6 +221,7 @@ model EvaluationPlanning {
   createdAt      DateTime            @default(now()) @map("created_at")
   updatedAt      DateTime            @default(now()) @updatedAt @map("updated_at")
   createdBy      String              @map("created_by")
+  updatedBy      String?             @map("updated_by")
   student        Student             @relation(fields: [studentId], references: [userId])
   sections       SectionDefinition[]
 
@@ -223,6 +237,7 @@ model SectionDefinition {
   createdAt    DateTime           @default(now()) @map("created_at")
   updatedAt    DateTime           @default(now()) @updatedAt @map("updated_at")
   createdBy    String             @map("created_by")
+  updatedBy    String?            @map("updated_by")
   evaluation   EvaluationPlanning @relation(fields: [evaluationId], references: [id])
 
   @@map("section_definitions")
@@ -235,6 +250,7 @@ model School {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   createdBy String    @map("created_by")
+  updatedBy String?   @map("updated_by")
 
   @@map("schools")
 }
@@ -246,6 +262,7 @@ model Tutor {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   createdBy String    @map("created_by")
+  updatedBy String?   @map("updated_by")
   user      User      @relation(fields: [userId], references: [id])
   students  Student[]
 
@@ -262,6 +279,7 @@ model Teacher {
   createdAt      DateTime       @default(now()) @map("created_at")
   updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
   createdBy      String         @map("created_by")
+  updatedBy      String?        @map("updated_by")
   user           User           @relation(fields: [userId], references: [id])
   mainRooms      Room[]         @relation("room_teacher")
   assistedRooms  Room[]         @relation("room_assistant")
@@ -272,11 +290,12 @@ model Teacher {
 
 model Specialty {
   id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name              String            @db.VarChar
+  name              String            @unique @db.VarChar
   active            Boolean           @default(true)
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime          @default(now()) @updatedAt @map("updated_at")
   createdBy         String            @map("created_by")
+  updatedBy         String?           @map("updated_by")
   branchSpecialties BranchSpecialty[]
   rooms             Room[]
 
@@ -293,6 +312,7 @@ model BranchSpecialty {
   createdAt            DateTime  @default(now()) @map("created_at")
   updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at")
   createdBy            String    @map("created_by")
+  updatedBy            String?   @map("updated_by")
   branch               Branch    @relation(fields: [branchId], references: [id])
   specialty            Specialty @relation(fields: [specialtyId], references: [id])
 
@@ -312,6 +332,7 @@ model Room {
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @default(now()) @updatedAt @map("updated_at")
   createdBy       String           @map("created_by")
+  updatedBy       String?          @map("updated_by")
   branch          Branch           @relation(fields: [branchId], references: [id])
   teacher         Teacher          @relation("room_teacher", fields: [teacherId], references: [userId])
   assistant       Teacher          @relation("room_assistant", fields: [assistantId], references: [userId])
@@ -330,6 +351,7 @@ model AssignmentRoom {
   createdAt           DateTime             @default(now()) @map("created_at")
   updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at")
   createdBy           String               @map("created_by")
+  updatedBy           String?              @map("updated_by")
   inscription         Inscription          @relation(fields: [inscriptionId], references: [id])
   room                Room                 @relation(fields: [roomId], references: [id])
   assignmentSchedules AssignmentSchedule[]
@@ -345,10 +367,12 @@ model Schedule {
   day                 DayOfWeek
   start               DateTime             @default(now())
   end                 DateTime             @default(now())
+  color               String?              @db.VarChar
   active              Boolean              @default(true)
   createdAt           DateTime             @default(now()) @map("created_at")
   updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at")
   createdBy           String               @map("created_by")
+  updatedBy           String?              @map("updated_by")
   room                Room                 @relation(fields: [roomId], references: [id])
   assignmentSchedules AssignmentSchedule[]
 
@@ -364,6 +388,7 @@ model AssignmentSchedule {
   createdAt        DateTime       @default(now()) @map("created_at")
   updatedAt        DateTime       @default(now()) @updatedAt @map("updated_at")
   createdBy        String         @map("created_by")
+  updatedBy        String?        @map("updated_by")
   assignmentRoom   AssignmentRoom @relation(fields: [assignmentRoomId], references: [id])
   schedule         Schedule       @relation(fields: [scheduleId], references: [id])
   sessions         Session[]
@@ -380,6 +405,7 @@ model Price {
   createdAt        DateTime     @default(now()) @map("created_at")
   updatedAt        DateTime     @default(now()) @updatedAt @map("updated_at")
   createdBy        String       @map("created_by")
+  updatedBy        String?      @map("updated_by")
   inscription      Inscription? @relation(fields: [inscriptionId], references: [id])
 
   @@map("prices")
@@ -395,6 +421,7 @@ model Inscription {
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @default(now()) @updatedAt @map("updated_at")
   createdBy       String           @map("created_by")
+  updatedBy       String?          @map("updated_by")
   student         Student?         @relation(fields: [studentId], references: [userId])
   booking         Booking?         @relation("booking_to_inscription", fields: [bookingId], references: [id])
   prices          Price[]
@@ -414,6 +441,7 @@ model Booking {
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
   createdBy   String       @map("created_by")
+  updatedBy   String?      @map("updated_by")
   inscription Inscription? @relation("booking_to_inscription")
 
   @@map("bookings")
@@ -429,6 +457,7 @@ model Debts {
   createdAt        DateTime     @default(now()) @map("created_at")
   updatedAt        DateTime     @default(now()) @updatedAt @map("updated_at")
   createdBy        String       @map("created_by")
+  updatedBy        String?      @map("updated_by")
   inscription      Inscription? @relation(fields: [inscriptionId], references: [id])
   payments         Payment[]
   Refund           Refund?
@@ -446,6 +475,7 @@ model Payment {
   active    Boolean   @default(true)
   createdAt DateTime  @default(now()) @map("created_at")
   createdBy String    @map("created_by")
+  updatedBy String?   @map("updated_by")
   debt      Debts     @relation(fields: [debtId], references: [id])
   invoice   Invoice?  @relation(fields: [invoiceId], references: [id])
 
@@ -461,6 +491,7 @@ model Invoice {
   active    Boolean   @default(true)
   createdAt DateTime  @default(now()) @map("created_at")
   createdBy String    @map("created_by")
+  updatedBy String?   @map("updated_by")
   payments  Payment[]
 
   @@map("invoices")
@@ -473,6 +504,7 @@ model Refund {
   amount    Float    @default(0.00)
   createdAt DateTime @default(now()) @map("created_at")
   createdBy String   @map("created_by")
+  updatedBy String?  @map("updated_by")
   Debts     Debts    @relation(fields: [debtId], references: [id])
 
   @@map("refunds")
@@ -488,6 +520,7 @@ model Session {
   createdAt            DateTime           @default(now()) @map("created_at")
   updatedAt            DateTime           @default(now()) @updatedAt @map("updated_at")
   createdBy            String             @map("created_by")
+  updatedBy            String?            @map("updated_by")
   assignmentSchedule   AssignmentSchedule @relation(fields: [assignmentScheduleId], references: [id])
 
   @@map("sessions")
@@ -503,6 +536,7 @@ model AccessRecord {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
   createdBy   String    @map("created_by")
+  updatedBy   String?   @map("updated_by")
   branch      Branch    @relation(fields: [branchId], references: [id])
   user        User      @relation(fields: [userId], references: [id])
 
@@ -516,6 +550,7 @@ model Document {
   createdAt     DateTime               @default(now()) @map("created_at")
   updatedAt     DateTime               @default(now()) @updatedAt @map("updated_at")
   createdBy     String                 @map("created_by")
+  updatedBy     String?                @map("updated_by")
   transmissions DocumentTransmission[]
 
   @@map("documents")
@@ -532,6 +567,7 @@ model DocumentTransmission {
   readAt     DateTime?          @map("read_at")
   archivedAt DateTime?          @map("archived_at")
   createdBy  String             @map("created_by")
+  updatedBy  String?            @map("updated_by")
   document   Document           @relation(fields: [documentId], references: [id])
 
   @@map("documentTransmissions")

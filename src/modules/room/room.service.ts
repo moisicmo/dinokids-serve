@@ -155,6 +155,7 @@ export class RoomService {
               day: schedule.day,
               start: schedule.start,
               end: schedule.end,
+              color: schedule.color,
               // active: schedule.active ?? true,
             },
           });
@@ -166,6 +167,7 @@ export class RoomService {
               day: schedule.day!,
               start: schedule.start,
               end: schedule.end,
+              color: schedule.color,
               capacity: schedule.capacity!,
               createdBy: email,
               // active: schedule.active ?? true,

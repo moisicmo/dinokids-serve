@@ -1,4 +1,4 @@
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 import { TypeAction } from '@/generated/prisma/enums';
 import { SetMetadata } from '@nestjs/common';
 

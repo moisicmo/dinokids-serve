@@ -3,28 +3,28 @@ import { ArrayMaxSize, ArrayMinSize, IsArray, IsNumber, IsString, IsUUID } from 
 
 
 export class BaseRoomDto {
-  @IsString()
+  @IsUUID()
   @ApiProperty({
     example: 'branch123',
     description: 'Identificador de la sucursal',
   })
   branchId: string;
 
-  @IsString()
+  @IsUUID()
   @ApiProperty({
     example: 'teacher123',
     description: 'Identificador del profesor',
   })
   teacherId: string;
 
-  @IsString()
+  @IsUUID()
   @ApiProperty({
     example: 'teacher123',
     description: 'Identificador del auxiliar',
   })
   assistantId: string;
 
-  @IsString()
+  @IsUUID()
   @ApiProperty({
     example: 'specialty123',
     description: 'Identificador de la especialidad',

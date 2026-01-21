@@ -2,11 +2,11 @@ import { CreateScheduleDto } from "@/modules/schedule/dto/create-schedule.dto";
 import { ApiProperty } from "@nestjs/swagger";
 import { DayOfWeek } from "@/generated/prisma/client";
 import { Type } from "class-transformer";
-import { IsBoolean, IsEnum, IsOptional, IsString, IsUUID, ValidateNested } from "class-validator";
+import { IsBoolean, IsEnum, IsOptional, IsUUID, ValidateNested } from "class-validator";
 
 
 class CreateScheduleDtoWithId extends CreateScheduleDto {
-  @IsString()
+  @IsUUID()
   @ApiProperty({
     example: 'schedule123',
     description: 'Identificador único del horario',

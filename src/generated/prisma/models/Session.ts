@@ -34,6 +34,7 @@ export type SessionMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SessionMaxAggregateOutputType = {
@@ -46,6 +47,7 @@ export type SessionMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SessionCountAggregateOutputType = {
@@ -58,6 +60,7 @@ export type SessionCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -72,6 +75,7 @@ export type SessionMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type SessionMaxAggregateInputType = {
@@ -84,6 +88,7 @@ export type SessionMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type SessionCountAggregateInputType = {
@@ -96,6 +101,7 @@ export type SessionCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -181,6 +187,7 @@ export type SessionGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: SessionCountAggregateOutputType | null
   _min: SessionMinAggregateOutputType | null
   _max: SessionMaxAggregateOutputType | null
@@ -214,6 +221,7 @@ export type SessionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   createdBy?: Prisma.StringFilter<"Session"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Session"> | string | null
   assignmentSchedule?: Prisma.XOR<Prisma.AssignmentScheduleScalarRelationFilter, Prisma.AssignmentScheduleWhereInput>
 }
 
@@ -227,6 +235,7 @@ export type SessionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   assignmentSchedule?: Prisma.AssignmentScheduleOrderByWithRelationInput
 }
 
@@ -243,6 +252,7 @@ export type SessionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   createdBy?: Prisma.StringFilter<"Session"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Session"> | string | null
   assignmentSchedule?: Prisma.XOR<Prisma.AssignmentScheduleScalarRelationFilter, Prisma.AssignmentScheduleWhereInput>
 }, "id">
 
@@ -256,6 +266,7 @@ export type SessionOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SessionCountOrderByAggregateInput
   _max?: Prisma.SessionMaxOrderByAggregateInput
   _min?: Prisma.SessionMinOrderByAggregateInput
@@ -274,6 +285,7 @@ export type SessionScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Session"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Session"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Session"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Session"> | string | null
 }
 
 export type SessionCreateInput = {
@@ -285,6 +297,7 @@ export type SessionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentSchedule: Prisma.AssignmentScheduleCreateNestedOneWithoutSessionsInput
 }
 
@@ -298,6 +311,7 @@ export type SessionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionUpdateInput = {
@@ -309,6 +323,7 @@ export type SessionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentSchedule?: Prisma.AssignmentScheduleUpdateOneRequiredWithoutSessionsNestedInput
 }
 
@@ -322,6 +337,7 @@ export type SessionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionCreateManyInput = {
@@ -334,6 +350,7 @@ export type SessionCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionUpdateManyMutationInput = {
@@ -345,6 +362,7 @@ export type SessionUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionUncheckedUpdateManyInput = {
@@ -357,6 +375,7 @@ export type SessionUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionListRelationFilter = {
@@ -379,6 +398,7 @@ export type SessionCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SessionMaxOrderByAggregateInput = {
@@ -391,6 +411,7 @@ export type SessionMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SessionMinOrderByAggregateInput = {
@@ -403,6 +424,7 @@ export type SessionMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SessionCreateNestedManyWithoutAssignmentScheduleInput = {
@@ -460,6 +482,7 @@ export type SessionCreateWithoutAssignmentScheduleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionUncheckedCreateWithoutAssignmentScheduleInput = {
@@ -471,6 +494,7 @@ export type SessionUncheckedCreateWithoutAssignmentScheduleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionCreateOrConnectWithoutAssignmentScheduleInput = {
@@ -512,6 +536,7 @@ export type SessionScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   createdBy?: Prisma.StringFilter<"Session"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Session"> | string | null
 }
 
 export type SessionCreateManyAssignmentScheduleInput = {
@@ -523,6 +548,7 @@ export type SessionCreateManyAssignmentScheduleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SessionUpdateWithoutAssignmentScheduleInput = {
@@ -534,6 +560,7 @@ export type SessionUpdateWithoutAssignmentScheduleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionUncheckedUpdateWithoutAssignmentScheduleInput = {
@@ -545,6 +572,7 @@ export type SessionUncheckedUpdateWithoutAssignmentScheduleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SessionUncheckedUpdateManyWithoutAssignmentScheduleInput = {
@@ -556,6 +584,7 @@ export type SessionUncheckedUpdateManyWithoutAssignmentScheduleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -570,6 +599,7 @@ export type SessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   assignmentSchedule?: boolean | Prisma.AssignmentScheduleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["session"]>
 
@@ -583,6 +613,7 @@ export type SessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   assignmentSchedule?: boolean | Prisma.AssignmentScheduleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["session"]>
 
@@ -596,6 +627,7 @@ export type SessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   assignmentSchedule?: boolean | Prisma.AssignmentScheduleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["session"]>
 
@@ -609,9 +641,10 @@ export type SessionSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentScheduleId" | "date" | "status" | "observation" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["session"]>
+export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentScheduleId" | "date" | "status" | "observation" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["session"]>
 export type SessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignmentSchedule?: boolean | Prisma.AssignmentScheduleDefaultArgs<ExtArgs>
 }
@@ -637,6 +670,7 @@ export type $SessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["session"]>
   composites: {}
 }
@@ -1070,6 +1104,7 @@ export interface SessionFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Session", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Session", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Session", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Session", 'String'>
 }
     
 

@@ -32,6 +32,7 @@ export type WeeklyPlanningObjectiveMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type WeeklyPlanningObjectiveMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type WeeklyPlanningObjectiveMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type WeeklyPlanningObjectiveCountAggregateOutputType = {
@@ -52,6 +54,7 @@ export type WeeklyPlanningObjectiveCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -64,6 +67,7 @@ export type WeeklyPlanningObjectiveMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type WeeklyPlanningObjectiveMaxAggregateInputType = {
@@ -74,6 +78,7 @@ export type WeeklyPlanningObjectiveMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type WeeklyPlanningObjectiveCountAggregateInputType = {
@@ -84,6 +89,7 @@ export type WeeklyPlanningObjectiveCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -167,6 +173,7 @@ export type WeeklyPlanningObjectiveGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: WeeklyPlanningObjectiveCountAggregateOutputType | null
   _min: WeeklyPlanningObjectiveMinAggregateOutputType | null
   _max: WeeklyPlanningObjectiveMaxAggregateOutputType | null
@@ -198,6 +205,7 @@ export type WeeklyPlanningObjectiveWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"WeeklyPlanningObjective"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WeeklyPlanningObjective"> | Date | string
   createdBy?: Prisma.StringFilter<"WeeklyPlanningObjective"> | string
+  updatedBy?: Prisma.StringNullableFilter<"WeeklyPlanningObjective"> | string | null
   weeklyWeek?: Prisma.XOR<Prisma.WeeklyPlanningScalarRelationFilter, Prisma.WeeklyPlanningWhereInput>
 }
 
@@ -209,6 +217,7 @@ export type WeeklyPlanningObjectiveOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   weeklyWeek?: Prisma.WeeklyPlanningOrderByWithRelationInput
 }
 
@@ -223,6 +232,7 @@ export type WeeklyPlanningObjectiveWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"WeeklyPlanningObjective"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WeeklyPlanningObjective"> | Date | string
   createdBy?: Prisma.StringFilter<"WeeklyPlanningObjective"> | string
+  updatedBy?: Prisma.StringNullableFilter<"WeeklyPlanningObjective"> | string | null
   weeklyWeek?: Prisma.XOR<Prisma.WeeklyPlanningScalarRelationFilter, Prisma.WeeklyPlanningWhereInput>
 }, "id">
 
@@ -234,6 +244,7 @@ export type WeeklyPlanningObjectiveOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.WeeklyPlanningObjectiveCountOrderByAggregateInput
   _max?: Prisma.WeeklyPlanningObjectiveMaxOrderByAggregateInput
   _min?: Prisma.WeeklyPlanningObjectiveMinOrderByAggregateInput
@@ -250,6 +261,7 @@ export type WeeklyPlanningObjectiveScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WeeklyPlanningObjective"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WeeklyPlanningObjective"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"WeeklyPlanningObjective"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"WeeklyPlanningObjective"> | string | null
 }
 
 export type WeeklyPlanningObjectiveCreateInput = {
@@ -259,6 +271,7 @@ export type WeeklyPlanningObjectiveCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   weeklyWeek: Prisma.WeeklyPlanningCreateNestedOneWithoutObjectivesInput
 }
 
@@ -270,6 +283,7 @@ export type WeeklyPlanningObjectiveUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type WeeklyPlanningObjectiveUpdateInput = {
@@ -279,6 +293,7 @@ export type WeeklyPlanningObjectiveUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weeklyWeek?: Prisma.WeeklyPlanningUpdateOneRequiredWithoutObjectivesNestedInput
 }
 
@@ -290,6 +305,7 @@ export type WeeklyPlanningObjectiveUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WeeklyPlanningObjectiveCreateManyInput = {
@@ -300,6 +316,7 @@ export type WeeklyPlanningObjectiveCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type WeeklyPlanningObjectiveUpdateManyMutationInput = {
@@ -309,6 +326,7 @@ export type WeeklyPlanningObjectiveUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WeeklyPlanningObjectiveUncheckedUpdateManyInput = {
@@ -319,6 +337,7 @@ export type WeeklyPlanningObjectiveUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WeeklyPlanningObjectiveListRelationFilter = {
@@ -339,6 +358,7 @@ export type WeeklyPlanningObjectiveCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type WeeklyPlanningObjectiveMaxOrderByAggregateInput = {
@@ -349,6 +369,7 @@ export type WeeklyPlanningObjectiveMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type WeeklyPlanningObjectiveMinOrderByAggregateInput = {
@@ -359,6 +380,7 @@ export type WeeklyPlanningObjectiveMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type WeeklyPlanningObjectiveCreateNestedManyWithoutWeeklyWeekInput = {
@@ -410,6 +432,7 @@ export type WeeklyPlanningObjectiveCreateWithoutWeeklyWeekInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type WeeklyPlanningObjectiveUncheckedCreateWithoutWeeklyWeekInput = {
@@ -419,6 +442,7 @@ export type WeeklyPlanningObjectiveUncheckedCreateWithoutWeeklyWeekInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type WeeklyPlanningObjectiveCreateOrConnectWithoutWeeklyWeekInput = {
@@ -458,6 +482,7 @@ export type WeeklyPlanningObjectiveScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"WeeklyPlanningObjective"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WeeklyPlanningObjective"> | Date | string
   createdBy?: Prisma.StringFilter<"WeeklyPlanningObjective"> | string
+  updatedBy?: Prisma.StringNullableFilter<"WeeklyPlanningObjective"> | string | null
 }
 
 export type WeeklyPlanningObjectiveCreateManyWeeklyWeekInput = {
@@ -467,6 +492,7 @@ export type WeeklyPlanningObjectiveCreateManyWeeklyWeekInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type WeeklyPlanningObjectiveUpdateWithoutWeeklyWeekInput = {
@@ -476,6 +502,7 @@ export type WeeklyPlanningObjectiveUpdateWithoutWeeklyWeekInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WeeklyPlanningObjectiveUncheckedUpdateWithoutWeeklyWeekInput = {
@@ -485,6 +512,7 @@ export type WeeklyPlanningObjectiveUncheckedUpdateWithoutWeeklyWeekInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type WeeklyPlanningObjectiveUncheckedUpdateManyWithoutWeeklyWeekInput = {
@@ -494,6 +522,7 @@ export type WeeklyPlanningObjectiveUncheckedUpdateManyWithoutWeeklyWeekInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -506,6 +535,7 @@ export type WeeklyPlanningObjectiveSelect<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   weeklyWeek?: boolean | Prisma.WeeklyPlanningDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weeklyPlanningObjective"]>
 
@@ -517,6 +547,7 @@ export type WeeklyPlanningObjectiveSelectCreateManyAndReturn<ExtArgs extends run
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   weeklyWeek?: boolean | Prisma.WeeklyPlanningDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weeklyPlanningObjective"]>
 
@@ -528,6 +559,7 @@ export type WeeklyPlanningObjectiveSelectUpdateManyAndReturn<ExtArgs extends run
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   weeklyWeek?: boolean | Prisma.WeeklyPlanningDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weeklyPlanningObjective"]>
 
@@ -539,9 +571,10 @@ export type WeeklyPlanningObjectiveSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type WeeklyPlanningObjectiveOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "weeklyWeekId" | "smartObjective" | "answer" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["weeklyPlanningObjective"]>
+export type WeeklyPlanningObjectiveOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "weeklyWeekId" | "smartObjective" | "answer" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["weeklyPlanningObjective"]>
 export type WeeklyPlanningObjectiveInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   weeklyWeek?: boolean | Prisma.WeeklyPlanningDefaultArgs<ExtArgs>
 }
@@ -565,6 +598,7 @@ export type $WeeklyPlanningObjectivePayload<ExtArgs extends runtime.Types.Extens
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["weeklyPlanningObjective"]>
   composites: {}
 }
@@ -996,6 +1030,7 @@ export interface WeeklyPlanningObjectiveFieldRefs {
   readonly createdAt: Prisma.FieldRef<"WeeklyPlanningObjective", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WeeklyPlanningObjective", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"WeeklyPlanningObjective", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"WeeklyPlanningObjective", 'String'>
 }
     
 

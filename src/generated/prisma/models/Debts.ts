@@ -46,6 +46,7 @@ export type DebtsMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type DebtsMaxAggregateOutputType = {
@@ -58,6 +59,7 @@ export type DebtsMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type DebtsCountAggregateOutputType = {
@@ -70,6 +72,7 @@ export type DebtsCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -94,6 +97,7 @@ export type DebtsMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type DebtsMaxAggregateInputType = {
@@ -106,6 +110,7 @@ export type DebtsMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type DebtsCountAggregateInputType = {
@@ -118,6 +123,7 @@ export type DebtsCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -217,6 +223,7 @@ export type DebtsGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: DebtsCountAggregateOutputType | null
   _avg: DebtsAvgAggregateOutputType | null
   _sum: DebtsSumAggregateOutputType | null
@@ -252,6 +259,7 @@ export type DebtsWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Debts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Debts"> | Date | string
   createdBy?: Prisma.StringFilter<"Debts"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Debts"> | string | null
   inscription?: Prisma.XOR<Prisma.InscriptionNullableScalarRelationFilter, Prisma.InscriptionWhereInput> | null
   payments?: Prisma.PaymentListRelationFilter
   Refund?: Prisma.XOR<Prisma.RefundNullableScalarRelationFilter, Prisma.RefundWhereInput> | null
@@ -267,6 +275,7 @@ export type DebtsOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   inscription?: Prisma.InscriptionOrderByWithRelationInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
   Refund?: Prisma.RefundOrderByWithRelationInput
@@ -285,6 +294,7 @@ export type DebtsWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Debts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Debts"> | Date | string
   createdBy?: Prisma.StringFilter<"Debts"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Debts"> | string | null
   inscription?: Prisma.XOR<Prisma.InscriptionNullableScalarRelationFilter, Prisma.InscriptionWhereInput> | null
   payments?: Prisma.PaymentListRelationFilter
   Refund?: Prisma.XOR<Prisma.RefundNullableScalarRelationFilter, Prisma.RefundWhereInput> | null
@@ -300,6 +310,7 @@ export type DebtsOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DebtsCountOrderByAggregateInput
   _avg?: Prisma.DebtsAvgOrderByAggregateInput
   _max?: Prisma.DebtsMaxOrderByAggregateInput
@@ -320,6 +331,7 @@ export type DebtsScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Debts"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Debts"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Debts"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Debts"> | string | null
 }
 
 export type DebtsCreateInput = {
@@ -331,6 +343,7 @@ export type DebtsCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   inscription?: Prisma.InscriptionCreateNestedOneWithoutDebtsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutDebtInput
   Refund?: Prisma.RefundCreateNestedOneWithoutDebtsInput
@@ -346,6 +359,7 @@ export type DebtsUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutDebtInput
   Refund?: Prisma.RefundUncheckedCreateNestedOneWithoutDebtsInput
 }
@@ -359,6 +373,7 @@ export type DebtsUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inscription?: Prisma.InscriptionUpdateOneWithoutDebtsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutDebtNestedInput
   Refund?: Prisma.RefundUpdateOneWithoutDebtsNestedInput
@@ -374,6 +389,7 @@ export type DebtsUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutDebtNestedInput
   Refund?: Prisma.RefundUncheckedUpdateOneWithoutDebtsNestedInput
 }
@@ -388,6 +404,7 @@ export type DebtsCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type DebtsUpdateManyMutationInput = {
@@ -399,6 +416,7 @@ export type DebtsUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DebtsUncheckedUpdateManyInput = {
@@ -411,6 +429,7 @@ export type DebtsUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DebtsListRelationFilter = {
@@ -433,6 +452,7 @@ export type DebtsCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DebtsAvgOrderByAggregateInput = {
@@ -450,6 +470,7 @@ export type DebtsMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DebtsMinOrderByAggregateInput = {
@@ -462,6 +483,7 @@ export type DebtsMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DebtsSumOrderByAggregateInput = {
@@ -561,6 +583,7 @@ export type DebtsCreateWithoutInscriptionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   payments?: Prisma.PaymentCreateNestedManyWithoutDebtInput
   Refund?: Prisma.RefundCreateNestedOneWithoutDebtsInput
 }
@@ -574,6 +597,7 @@ export type DebtsUncheckedCreateWithoutInscriptionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutDebtInput
   Refund?: Prisma.RefundUncheckedCreateNestedOneWithoutDebtsInput
 }
@@ -617,6 +641,7 @@ export type DebtsScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Debts"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Debts"> | Date | string
   createdBy?: Prisma.StringFilter<"Debts"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Debts"> | string | null
 }
 
 export type DebtsCreateWithoutPaymentsInput = {
@@ -628,6 +653,7 @@ export type DebtsCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   inscription?: Prisma.InscriptionCreateNestedOneWithoutDebtsInput
   Refund?: Prisma.RefundCreateNestedOneWithoutDebtsInput
 }
@@ -642,6 +668,7 @@ export type DebtsUncheckedCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   Refund?: Prisma.RefundUncheckedCreateNestedOneWithoutDebtsInput
 }
 
@@ -670,6 +697,7 @@ export type DebtsUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inscription?: Prisma.InscriptionUpdateOneWithoutDebtsNestedInput
   Refund?: Prisma.RefundUpdateOneWithoutDebtsNestedInput
 }
@@ -684,6 +712,7 @@ export type DebtsUncheckedUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Refund?: Prisma.RefundUncheckedUpdateOneWithoutDebtsNestedInput
 }
 
@@ -696,6 +725,7 @@ export type DebtsCreateWithoutRefundInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   inscription?: Prisma.InscriptionCreateNestedOneWithoutDebtsInput
   payments?: Prisma.PaymentCreateNestedManyWithoutDebtInput
 }
@@ -710,6 +740,7 @@ export type DebtsUncheckedCreateWithoutRefundInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutDebtInput
 }
 
@@ -738,6 +769,7 @@ export type DebtsUpdateWithoutRefundInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   inscription?: Prisma.InscriptionUpdateOneWithoutDebtsNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutDebtNestedInput
 }
@@ -752,6 +784,7 @@ export type DebtsUncheckedUpdateWithoutRefundInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutDebtNestedInput
 }
 
@@ -764,6 +797,7 @@ export type DebtsCreateManyInscriptionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type DebtsUpdateWithoutInscriptionInput = {
@@ -775,6 +809,7 @@ export type DebtsUpdateWithoutInscriptionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payments?: Prisma.PaymentUpdateManyWithoutDebtNestedInput
   Refund?: Prisma.RefundUpdateOneWithoutDebtsNestedInput
 }
@@ -788,6 +823,7 @@ export type DebtsUncheckedUpdateWithoutInscriptionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutDebtNestedInput
   Refund?: Prisma.RefundUncheckedUpdateOneWithoutDebtsNestedInput
 }
@@ -801,6 +837,7 @@ export type DebtsUncheckedUpdateManyWithoutInscriptionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -844,6 +881,7 @@ export type DebtsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   inscription?: boolean | Prisma.Debts$inscriptionArgs<ExtArgs>
   payments?: boolean | Prisma.Debts$paymentsArgs<ExtArgs>
   Refund?: boolean | Prisma.Debts$RefundArgs<ExtArgs>
@@ -860,6 +898,7 @@ export type DebtsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   inscription?: boolean | Prisma.Debts$inscriptionArgs<ExtArgs>
 }, ExtArgs["result"]["debts"]>
 
@@ -873,6 +912,7 @@ export type DebtsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   inscription?: boolean | Prisma.Debts$inscriptionArgs<ExtArgs>
 }, ExtArgs["result"]["debts"]>
 
@@ -886,9 +926,10 @@ export type DebtsSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type DebtsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "inscriptionId" | "totalAmount" | "remainingBalance" | "type" | "dueDate" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["debts"]>
+export type DebtsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "inscriptionId" | "totalAmount" | "remainingBalance" | "type" | "dueDate" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["debts"]>
 export type DebtsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   inscription?: boolean | Prisma.Debts$inscriptionArgs<ExtArgs>
   payments?: boolean | Prisma.Debts$paymentsArgs<ExtArgs>
@@ -919,6 +960,7 @@ export type $DebtsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["debts"]>
   composites: {}
 }
@@ -1354,6 +1396,7 @@ export interface DebtsFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Debts", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Debts", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Debts", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Debts", 'String'>
 }
     
 

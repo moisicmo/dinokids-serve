@@ -31,6 +31,7 @@ export type TutorMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type TutorMaxAggregateOutputType = {
@@ -40,6 +41,7 @@ export type TutorMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type TutorCountAggregateOutputType = {
@@ -49,6 +51,7 @@ export type TutorCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -60,6 +63,7 @@ export type TutorMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type TutorMaxAggregateInputType = {
@@ -69,6 +73,7 @@ export type TutorMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type TutorCountAggregateInputType = {
@@ -78,6 +83,7 @@ export type TutorCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -160,6 +166,7 @@ export type TutorGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: TutorCountAggregateOutputType | null
   _min: TutorMinAggregateOutputType | null
   _max: TutorMaxAggregateOutputType | null
@@ -190,6 +197,7 @@ export type TutorWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Tutor"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tutor"> | Date | string
   createdBy?: Prisma.StringFilter<"Tutor"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Tutor"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   students?: Prisma.StudentListRelationFilter
 }
@@ -201,6 +209,7 @@ export type TutorOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   students?: Prisma.StudentOrderByRelationAggregateInput
 }
@@ -215,6 +224,7 @@ export type TutorWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Tutor"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tutor"> | Date | string
   createdBy?: Prisma.StringFilter<"Tutor"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Tutor"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   students?: Prisma.StudentListRelationFilter
 }, "id" | "userId">
@@ -226,6 +236,7 @@ export type TutorOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.TutorCountOrderByAggregateInput
   _max?: Prisma.TutorMaxOrderByAggregateInput
   _min?: Prisma.TutorMinOrderByAggregateInput
@@ -241,6 +252,7 @@ export type TutorScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Tutor"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Tutor"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Tutor"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Tutor"> | string | null
 }
 
 export type TutorCreateInput = {
@@ -249,6 +261,7 @@ export type TutorCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   user: Prisma.UserCreateNestedOneWithoutTutorInput
   students?: Prisma.StudentCreateNestedManyWithoutTutorsInput
 }
@@ -260,6 +273,7 @@ export type TutorUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutTutorsInput
 }
 
@@ -269,6 +283,7 @@ export type TutorUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutTutorNestedInput
   students?: Prisma.StudentUpdateManyWithoutTutorsNestedInput
 }
@@ -280,6 +295,7 @@ export type TutorUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students?: Prisma.StudentUncheckedUpdateManyWithoutTutorsNestedInput
 }
 
@@ -290,6 +306,7 @@ export type TutorCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type TutorUpdateManyMutationInput = {
@@ -298,6 +315,7 @@ export type TutorUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TutorUncheckedUpdateManyInput = {
@@ -307,6 +325,7 @@ export type TutorUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TutorNullableScalarRelationFilter = {
@@ -331,6 +350,7 @@ export type TutorCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TutorMaxOrderByAggregateInput = {
@@ -340,6 +360,7 @@ export type TutorMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TutorMinOrderByAggregateInput = {
@@ -349,6 +370,7 @@ export type TutorMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type TutorCreateNestedOneWithoutUserInput = {
@@ -427,6 +449,7 @@ export type TutorCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   students?: Prisma.StudentCreateNestedManyWithoutTutorsInput
 }
 
@@ -436,6 +459,7 @@ export type TutorUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutTutorsInput
 }
 
@@ -461,6 +485,7 @@ export type TutorUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students?: Prisma.StudentUpdateManyWithoutTutorsNestedInput
 }
 
@@ -470,6 +495,7 @@ export type TutorUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   students?: Prisma.StudentUncheckedUpdateManyWithoutTutorsNestedInput
 }
 
@@ -479,6 +505,7 @@ export type TutorCreateWithoutStudentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   user: Prisma.UserCreateNestedOneWithoutTutorInput
 }
 
@@ -489,6 +516,7 @@ export type TutorUncheckedCreateWithoutStudentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type TutorCreateOrConnectWithoutStudentsInput = {
@@ -522,6 +550,7 @@ export type TutorScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Tutor"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tutor"> | Date | string
   createdBy?: Prisma.StringFilter<"Tutor"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Tutor"> | string | null
 }
 
 export type TutorUpdateWithoutStudentsInput = {
@@ -530,6 +559,7 @@ export type TutorUpdateWithoutStudentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutTutorNestedInput
 }
 
@@ -540,6 +570,7 @@ export type TutorUncheckedUpdateWithoutStudentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type TutorUncheckedUpdateManyWithoutStudentsInput = {
@@ -549,6 +580,7 @@ export type TutorUncheckedUpdateManyWithoutStudentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -589,6 +621,7 @@ export type TutorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   students?: boolean | Prisma.Tutor$studentsArgs<ExtArgs>
   _count?: boolean | Prisma.TutorCountOutputTypeDefaultArgs<ExtArgs>
@@ -601,6 +634,7 @@ export type TutorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tutor"]>
 
@@ -611,6 +645,7 @@ export type TutorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tutor"]>
 
@@ -621,9 +656,10 @@ export type TutorSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type TutorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["tutor"]>
+export type TutorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["tutor"]>
 export type TutorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   students?: boolean | Prisma.Tutor$studentsArgs<ExtArgs>
@@ -649,6 +685,7 @@ export type $TutorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["tutor"]>
   composites: {}
 }
@@ -1080,6 +1117,7 @@ export interface TutorFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Tutor", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Tutor", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Tutor", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Tutor", 'String'>
 }
     
 

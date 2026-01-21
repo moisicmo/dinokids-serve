@@ -46,6 +46,7 @@ export type BranchSpecialtyMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type BranchSpecialtyMaxAggregateOutputType = {
@@ -58,6 +59,7 @@ export type BranchSpecialtyMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type BranchSpecialtyCountAggregateOutputType = {
@@ -70,6 +72,7 @@ export type BranchSpecialtyCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -94,6 +97,7 @@ export type BranchSpecialtyMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type BranchSpecialtyMaxAggregateInputType = {
@@ -106,6 +110,7 @@ export type BranchSpecialtyMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type BranchSpecialtyCountAggregateInputType = {
@@ -118,6 +123,7 @@ export type BranchSpecialtyCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -217,6 +223,7 @@ export type BranchSpecialtyGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: BranchSpecialtyCountAggregateOutputType | null
   _avg: BranchSpecialtyAvgAggregateOutputType | null
   _sum: BranchSpecialtySumAggregateOutputType | null
@@ -252,6 +259,7 @@ export type BranchSpecialtyWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"BranchSpecialty"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BranchSpecialty"> | Date | string
   createdBy?: Prisma.StringFilter<"BranchSpecialty"> | string
+  updatedBy?: Prisma.StringNullableFilter<"BranchSpecialty"> | string | null
   branch?: Prisma.XOR<Prisma.BranchScalarRelationFilter, Prisma.BranchWhereInput>
   specialty?: Prisma.XOR<Prisma.SpecialtyScalarRelationFilter, Prisma.SpecialtyWhereInput>
 }
@@ -266,6 +274,7 @@ export type BranchSpecialtyOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   branch?: Prisma.BranchOrderByWithRelationInput
   specialty?: Prisma.SpecialtyOrderByWithRelationInput
 }
@@ -284,6 +293,7 @@ export type BranchSpecialtyWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"BranchSpecialty"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BranchSpecialty"> | Date | string
   createdBy?: Prisma.StringFilter<"BranchSpecialty"> | string
+  updatedBy?: Prisma.StringNullableFilter<"BranchSpecialty"> | string | null
   branch?: Prisma.XOR<Prisma.BranchScalarRelationFilter, Prisma.BranchWhereInput>
   specialty?: Prisma.XOR<Prisma.SpecialtyScalarRelationFilter, Prisma.SpecialtyWhereInput>
 }, "id" | "branchId_specialtyId">
@@ -298,6 +308,7 @@ export type BranchSpecialtyOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.BranchSpecialtyCountOrderByAggregateInput
   _avg?: Prisma.BranchSpecialtyAvgOrderByAggregateInput
   _max?: Prisma.BranchSpecialtyMaxOrderByAggregateInput
@@ -318,6 +329,7 @@ export type BranchSpecialtyScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"BranchSpecialty"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"BranchSpecialty"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"BranchSpecialty"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"BranchSpecialty"> | string | null
 }
 
 export type BranchSpecialtyCreateInput = {
@@ -328,6 +340,7 @@ export type BranchSpecialtyCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutBranchSpecialtiesInput
   specialty: Prisma.SpecialtyCreateNestedOneWithoutBranchSpecialtiesInput
 }
@@ -342,6 +355,7 @@ export type BranchSpecialtyUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type BranchSpecialtyUpdateInput = {
@@ -352,6 +366,7 @@ export type BranchSpecialtyUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutBranchSpecialtiesNestedInput
   specialty?: Prisma.SpecialtyUpdateOneRequiredWithoutBranchSpecialtiesNestedInput
 }
@@ -366,6 +381,7 @@ export type BranchSpecialtyUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchSpecialtyCreateManyInput = {
@@ -378,6 +394,7 @@ export type BranchSpecialtyCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type BranchSpecialtyUpdateManyMutationInput = {
@@ -388,6 +405,7 @@ export type BranchSpecialtyUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchSpecialtyUncheckedUpdateManyInput = {
@@ -400,6 +418,7 @@ export type BranchSpecialtyUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchSpecialtyListRelationFilter = {
@@ -427,6 +446,7 @@ export type BranchSpecialtyCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type BranchSpecialtyAvgOrderByAggregateInput = {
@@ -444,6 +464,7 @@ export type BranchSpecialtyMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type BranchSpecialtyMinOrderByAggregateInput = {
@@ -456,6 +477,7 @@ export type BranchSpecialtyMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type BranchSpecialtySumOrderByAggregateInput = {
@@ -563,6 +585,7 @@ export type BranchSpecialtyCreateWithoutBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   specialty: Prisma.SpecialtyCreateNestedOneWithoutBranchSpecialtiesInput
 }
 
@@ -575,6 +598,7 @@ export type BranchSpecialtyUncheckedCreateWithoutBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type BranchSpecialtyCreateOrConnectWithoutBranchInput = {
@@ -616,6 +640,7 @@ export type BranchSpecialtyScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"BranchSpecialty"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BranchSpecialty"> | Date | string
   createdBy?: Prisma.StringFilter<"BranchSpecialty"> | string
+  updatedBy?: Prisma.StringNullableFilter<"BranchSpecialty"> | string | null
 }
 
 export type BranchSpecialtyCreateWithoutSpecialtyInput = {
@@ -626,6 +651,7 @@ export type BranchSpecialtyCreateWithoutSpecialtyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutBranchSpecialtiesInput
 }
 
@@ -638,6 +664,7 @@ export type BranchSpecialtyUncheckedCreateWithoutSpecialtyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type BranchSpecialtyCreateOrConnectWithoutSpecialtyInput = {
@@ -675,6 +702,7 @@ export type BranchSpecialtyCreateManyBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type BranchSpecialtyUpdateWithoutBranchInput = {
@@ -685,6 +713,7 @@ export type BranchSpecialtyUpdateWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   specialty?: Prisma.SpecialtyUpdateOneRequiredWithoutBranchSpecialtiesNestedInput
 }
 
@@ -697,6 +726,7 @@ export type BranchSpecialtyUncheckedUpdateWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchSpecialtyUncheckedUpdateManyWithoutBranchInput = {
@@ -708,6 +738,7 @@ export type BranchSpecialtyUncheckedUpdateManyWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchSpecialtyCreateManySpecialtyInput = {
@@ -719,6 +750,7 @@ export type BranchSpecialtyCreateManySpecialtyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type BranchSpecialtyUpdateWithoutSpecialtyInput = {
@@ -729,6 +761,7 @@ export type BranchSpecialtyUpdateWithoutSpecialtyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutBranchSpecialtiesNestedInput
 }
 
@@ -741,6 +774,7 @@ export type BranchSpecialtyUncheckedUpdateWithoutSpecialtyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchSpecialtyUncheckedUpdateManyWithoutSpecialtyInput = {
@@ -752,6 +786,7 @@ export type BranchSpecialtyUncheckedUpdateManyWithoutSpecialtyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -766,6 +801,7 @@ export type BranchSpecialtySelect<ExtArgs extends runtime.Types.Extensions.Inter
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   specialty?: boolean | Prisma.SpecialtyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["branchSpecialty"]>
@@ -780,6 +816,7 @@ export type BranchSpecialtySelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   specialty?: boolean | Prisma.SpecialtyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["branchSpecialty"]>
@@ -794,6 +831,7 @@ export type BranchSpecialtySelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   specialty?: boolean | Prisma.SpecialtyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["branchSpecialty"]>
@@ -808,9 +846,10 @@ export type BranchSpecialtySelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type BranchSpecialtyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "branchId" | "specialtyId" | "estimatedSessionCost" | "numberSessions" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["branchSpecialty"]>
+export type BranchSpecialtyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "branchId" | "specialtyId" | "estimatedSessionCost" | "numberSessions" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["branchSpecialty"]>
 export type BranchSpecialtyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   specialty?: boolean | Prisma.SpecialtyDefaultArgs<ExtArgs>
@@ -840,6 +879,7 @@ export type $BranchSpecialtyPayload<ExtArgs extends runtime.Types.Extensions.Int
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["branchSpecialty"]>
   composites: {}
 }
@@ -1274,6 +1314,7 @@ export interface BranchSpecialtyFieldRefs {
   readonly createdAt: Prisma.FieldRef<"BranchSpecialty", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"BranchSpecialty", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"BranchSpecialty", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"BranchSpecialty", 'String'>
 }
     
 

@@ -41,10 +41,12 @@ export type ScheduleMinAggregateOutputType = {
   day: $Enums.DayOfWeek | null
   start: Date | null
   end: Date | null
+  color: string | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type ScheduleMaxAggregateOutputType = {
@@ -54,10 +56,12 @@ export type ScheduleMaxAggregateOutputType = {
   day: $Enums.DayOfWeek | null
   start: Date | null
   end: Date | null
+  color: string | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type ScheduleCountAggregateOutputType = {
@@ -67,10 +71,12 @@ export type ScheduleCountAggregateOutputType = {
   day: number
   start: number
   end: number
+  color: number
   active: number
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -90,10 +96,12 @@ export type ScheduleMinAggregateInputType = {
   day?: true
   start?: true
   end?: true
+  color?: true
   active?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type ScheduleMaxAggregateInputType = {
@@ -103,10 +111,12 @@ export type ScheduleMaxAggregateInputType = {
   day?: true
   start?: true
   end?: true
+  color?: true
   active?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type ScheduleCountAggregateInputType = {
@@ -116,10 +126,12 @@ export type ScheduleCountAggregateInputType = {
   day?: true
   start?: true
   end?: true
+  color?: true
   active?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -216,10 +228,12 @@ export type ScheduleGroupByOutputType = {
   day: $Enums.DayOfWeek
   start: Date
   end: Date
+  color: string | null
   active: boolean
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: ScheduleCountAggregateOutputType | null
   _avg: ScheduleAvgAggregateOutputType | null
   _sum: ScheduleSumAggregateOutputType | null
@@ -252,10 +266,12 @@ export type ScheduleWhereInput = {
   day?: Prisma.EnumDayOfWeekFilter<"Schedule"> | $Enums.DayOfWeek
   start?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   end?: Prisma.DateTimeFilter<"Schedule"> | Date | string
+  color?: Prisma.StringNullableFilter<"Schedule"> | string | null
   active?: Prisma.BoolFilter<"Schedule"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   createdBy?: Prisma.StringFilter<"Schedule"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Schedule"> | string | null
   room?: Prisma.XOR<Prisma.RoomScalarRelationFilter, Prisma.RoomWhereInput>
   assignmentSchedules?: Prisma.AssignmentScheduleListRelationFilter
 }
@@ -267,10 +283,12 @@ export type ScheduleOrderByWithRelationInput = {
   day?: Prisma.SortOrder
   start?: Prisma.SortOrder
   end?: Prisma.SortOrder
+  color?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   room?: Prisma.RoomOrderByWithRelationInput
   assignmentSchedules?: Prisma.AssignmentScheduleOrderByRelationAggregateInput
 }
@@ -285,10 +303,12 @@ export type ScheduleWhereUniqueInput = Prisma.AtLeast<{
   day?: Prisma.EnumDayOfWeekFilter<"Schedule"> | $Enums.DayOfWeek
   start?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   end?: Prisma.DateTimeFilter<"Schedule"> | Date | string
+  color?: Prisma.StringNullableFilter<"Schedule"> | string | null
   active?: Prisma.BoolFilter<"Schedule"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   createdBy?: Prisma.StringFilter<"Schedule"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Schedule"> | string | null
   room?: Prisma.XOR<Prisma.RoomScalarRelationFilter, Prisma.RoomWhereInput>
   assignmentSchedules?: Prisma.AssignmentScheduleListRelationFilter
 }, "id">
@@ -300,10 +320,12 @@ export type ScheduleOrderByWithAggregationInput = {
   day?: Prisma.SortOrder
   start?: Prisma.SortOrder
   end?: Prisma.SortOrder
+  color?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ScheduleCountOrderByAggregateInput
   _avg?: Prisma.ScheduleAvgOrderByAggregateInput
   _max?: Prisma.ScheduleMaxOrderByAggregateInput
@@ -321,10 +343,12 @@ export type ScheduleScalarWhereWithAggregatesInput = {
   day?: Prisma.EnumDayOfWeekWithAggregatesFilter<"Schedule"> | $Enums.DayOfWeek
   start?: Prisma.DateTimeWithAggregatesFilter<"Schedule"> | Date | string
   end?: Prisma.DateTimeWithAggregatesFilter<"Schedule"> | Date | string
+  color?: Prisma.StringNullableWithAggregatesFilter<"Schedule"> | string | null
   active?: Prisma.BoolWithAggregatesFilter<"Schedule"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Schedule"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Schedule"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Schedule"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Schedule"> | string | null
 }
 
 export type ScheduleCreateInput = {
@@ -333,10 +357,12 @@ export type ScheduleCreateInput = {
   day: $Enums.DayOfWeek
   start?: Date | string
   end?: Date | string
+  color?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   room: Prisma.RoomCreateNestedOneWithoutSchedulesInput
   assignmentSchedules?: Prisma.AssignmentScheduleCreateNestedManyWithoutScheduleInput
 }
@@ -348,10 +374,12 @@ export type ScheduleUncheckedCreateInput = {
   day: $Enums.DayOfWeek
   start?: Date | string
   end?: Date | string
+  color?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentSchedules?: Prisma.AssignmentScheduleUncheckedCreateNestedManyWithoutScheduleInput
 }
 
@@ -361,10 +389,12 @@ export type ScheduleUpdateInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   room?: Prisma.RoomUpdateOneRequiredWithoutSchedulesNestedInput
   assignmentSchedules?: Prisma.AssignmentScheduleUpdateManyWithoutScheduleNestedInput
 }
@@ -376,10 +406,12 @@ export type ScheduleUncheckedUpdateInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentSchedules?: Prisma.AssignmentScheduleUncheckedUpdateManyWithoutScheduleNestedInput
 }
 
@@ -390,10 +422,12 @@ export type ScheduleCreateManyInput = {
   day: $Enums.DayOfWeek
   start?: Date | string
   end?: Date | string
+  color?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type ScheduleUpdateManyMutationInput = {
@@ -402,10 +436,12 @@ export type ScheduleUpdateManyMutationInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ScheduleUncheckedUpdateManyInput = {
@@ -415,10 +451,12 @@ export type ScheduleUncheckedUpdateManyInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ScheduleListRelationFilter = {
@@ -438,10 +476,12 @@ export type ScheduleCountOrderByAggregateInput = {
   day?: Prisma.SortOrder
   start?: Prisma.SortOrder
   end?: Prisma.SortOrder
+  color?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type ScheduleAvgOrderByAggregateInput = {
@@ -455,10 +495,12 @@ export type ScheduleMaxOrderByAggregateInput = {
   day?: Prisma.SortOrder
   start?: Prisma.SortOrder
   end?: Prisma.SortOrder
+  color?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type ScheduleMinOrderByAggregateInput = {
@@ -468,10 +510,12 @@ export type ScheduleMinOrderByAggregateInput = {
   day?: Prisma.SortOrder
   start?: Prisma.SortOrder
   end?: Prisma.SortOrder
+  color?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type ScheduleSumOrderByAggregateInput = {
@@ -549,10 +593,12 @@ export type ScheduleCreateWithoutRoomInput = {
   day: $Enums.DayOfWeek
   start?: Date | string
   end?: Date | string
+  color?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentSchedules?: Prisma.AssignmentScheduleCreateNestedManyWithoutScheduleInput
 }
 
@@ -562,10 +608,12 @@ export type ScheduleUncheckedCreateWithoutRoomInput = {
   day: $Enums.DayOfWeek
   start?: Date | string
   end?: Date | string
+  color?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentSchedules?: Prisma.AssignmentScheduleUncheckedCreateNestedManyWithoutScheduleInput
 }
 
@@ -605,10 +653,12 @@ export type ScheduleScalarWhereInput = {
   day?: Prisma.EnumDayOfWeekFilter<"Schedule"> | $Enums.DayOfWeek
   start?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   end?: Prisma.DateTimeFilter<"Schedule"> | Date | string
+  color?: Prisma.StringNullableFilter<"Schedule"> | string | null
   active?: Prisma.BoolFilter<"Schedule"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Schedule"> | Date | string
   createdBy?: Prisma.StringFilter<"Schedule"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Schedule"> | string | null
 }
 
 export type ScheduleCreateWithoutAssignmentSchedulesInput = {
@@ -617,10 +667,12 @@ export type ScheduleCreateWithoutAssignmentSchedulesInput = {
   day: $Enums.DayOfWeek
   start?: Date | string
   end?: Date | string
+  color?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   room: Prisma.RoomCreateNestedOneWithoutSchedulesInput
 }
 
@@ -631,10 +683,12 @@ export type ScheduleUncheckedCreateWithoutAssignmentSchedulesInput = {
   day: $Enums.DayOfWeek
   start?: Date | string
   end?: Date | string
+  color?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type ScheduleCreateOrConnectWithoutAssignmentSchedulesInput = {
@@ -659,10 +713,12 @@ export type ScheduleUpdateWithoutAssignmentSchedulesInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   room?: Prisma.RoomUpdateOneRequiredWithoutSchedulesNestedInput
 }
 
@@ -673,10 +729,12 @@ export type ScheduleUncheckedUpdateWithoutAssignmentSchedulesInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ScheduleCreateManyRoomInput = {
@@ -685,10 +743,12 @@ export type ScheduleCreateManyRoomInput = {
   day: $Enums.DayOfWeek
   start?: Date | string
   end?: Date | string
+  color?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type ScheduleUpdateWithoutRoomInput = {
@@ -697,10 +757,12 @@ export type ScheduleUpdateWithoutRoomInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentSchedules?: Prisma.AssignmentScheduleUpdateManyWithoutScheduleNestedInput
 }
 
@@ -710,10 +772,12 @@ export type ScheduleUncheckedUpdateWithoutRoomInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentSchedules?: Prisma.AssignmentScheduleUncheckedUpdateManyWithoutScheduleNestedInput
 }
 
@@ -723,10 +787,12 @@ export type ScheduleUncheckedUpdateManyWithoutRoomInput = {
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
   start?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   end?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -767,10 +833,12 @@ export type ScheduleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   day?: boolean
   start?: boolean
   end?: boolean
+  color?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
   assignmentSchedules?: boolean | Prisma.Schedule$assignmentSchedulesArgs<ExtArgs>
   _count?: boolean | Prisma.ScheduleCountOutputTypeDefaultArgs<ExtArgs>
@@ -783,10 +851,12 @@ export type ScheduleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   day?: boolean
   start?: boolean
   end?: boolean
+  color?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["schedule"]>
 
@@ -797,10 +867,12 @@ export type ScheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   day?: boolean
   start?: boolean
   end?: boolean
+  color?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["schedule"]>
 
@@ -811,13 +883,15 @@ export type ScheduleSelectScalar = {
   day?: boolean
   start?: boolean
   end?: boolean
+  color?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type ScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roomId" | "capacity" | "day" | "start" | "end" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["schedule"]>
+export type ScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "roomId" | "capacity" | "day" | "start" | "end" | "color" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["schedule"]>
 export type ScheduleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   room?: boolean | Prisma.RoomDefaultArgs<ExtArgs>
   assignmentSchedules?: boolean | Prisma.Schedule$assignmentSchedulesArgs<ExtArgs>
@@ -843,10 +917,12 @@ export type $SchedulePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     day: $Enums.DayOfWeek
     start: Date
     end: Date
+    color: string | null
     active: boolean
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["schedule"]>
   composites: {}
 }
@@ -1278,10 +1354,12 @@ export interface ScheduleFieldRefs {
   readonly day: Prisma.FieldRef<"Schedule", 'DayOfWeek'>
   readonly start: Prisma.FieldRef<"Schedule", 'DateTime'>
   readonly end: Prisma.FieldRef<"Schedule", 'DateTime'>
+  readonly color: Prisma.FieldRef<"Schedule", 'String'>
   readonly active: Prisma.FieldRef<"Schedule", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Schedule", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Schedule", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Schedule", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Schedule", 'String'>
 }
     
 

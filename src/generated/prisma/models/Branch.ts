@@ -32,6 +32,7 @@ export type BranchMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type BranchMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type BranchMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type BranchCountAggregateOutputType = {
@@ -53,6 +55,7 @@ export type BranchCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -65,6 +68,7 @@ export type BranchMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type BranchMaxAggregateInputType = {
@@ -75,6 +79,7 @@ export type BranchMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type BranchCountAggregateInputType = {
@@ -86,6 +91,7 @@ export type BranchCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -170,6 +176,7 @@ export type BranchGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: BranchCountAggregateOutputType | null
   _min: BranchMinAggregateOutputType | null
   _max: BranchMaxAggregateOutputType | null
@@ -202,6 +209,7 @@ export type BranchWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Branch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Branch"> | Date | string
   createdBy?: Prisma.StringFilter<"Branch"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Branch"> | string | null
   rooms?: Prisma.RoomListRelationFilter
   staffs?: Prisma.StaffListRelationFilter
   teachers?: Prisma.TeacherListRelationFilter
@@ -219,6 +227,7 @@ export type BranchOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   rooms?: Prisma.RoomOrderByRelationAggregateInput
   staffs?: Prisma.StaffOrderByRelationAggregateInput
   teachers?: Prisma.TeacherOrderByRelationAggregateInput
@@ -229,23 +238,24 @@ export type BranchOrderByWithRelationInput = {
 
 export type BranchWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name?: string
   AND?: Prisma.BranchWhereInput | Prisma.BranchWhereInput[]
   OR?: Prisma.BranchWhereInput[]
   NOT?: Prisma.BranchWhereInput | Prisma.BranchWhereInput[]
   addressId?: Prisma.UuidFilter<"Branch"> | string
-  name?: Prisma.StringFilter<"Branch"> | string
   phone?: Prisma.StringNullableListFilter<"Branch">
   active?: Prisma.BoolFilter<"Branch"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Branch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Branch"> | Date | string
   createdBy?: Prisma.StringFilter<"Branch"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Branch"> | string | null
   rooms?: Prisma.RoomListRelationFilter
   staffs?: Prisma.StaffListRelationFilter
   teachers?: Prisma.TeacherListRelationFilter
   branchSpecialties?: Prisma.BranchSpecialtyListRelationFilter
   accessRecords?: Prisma.AccessRecordListRelationFilter
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
-}, "id">
+}, "id" | "name">
 
 export type BranchOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -256,6 +266,7 @@ export type BranchOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.BranchCountOrderByAggregateInput
   _max?: Prisma.BranchMaxOrderByAggregateInput
   _min?: Prisma.BranchMinOrderByAggregateInput
@@ -273,6 +284,7 @@ export type BranchScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Branch"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Branch"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Branch"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Branch"> | string | null
 }
 
 export type BranchCreateInput = {
@@ -283,6 +295,7 @@ export type BranchCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
@@ -300,6 +313,7 @@ export type BranchUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
@@ -315,6 +329,7 @@ export type BranchUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
@@ -332,6 +347,7 @@ export type BranchUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUncheckedUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
@@ -348,6 +364,7 @@ export type BranchCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type BranchUpdateManyMutationInput = {
@@ -358,6 +375,7 @@ export type BranchUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchUncheckedUpdateManyInput = {
@@ -369,6 +387,7 @@ export type BranchUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StringNullableListFilter<$PrismaModel = never> = {
@@ -388,6 +407,7 @@ export type BranchCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type BranchMaxOrderByAggregateInput = {
@@ -398,6 +418,7 @@ export type BranchMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type BranchMinOrderByAggregateInput = {
@@ -408,6 +429,7 @@ export type BranchMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type BranchListRelationFilter = {
@@ -602,6 +624,7 @@ export type BranchCreateWithoutStaffsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomCreateNestedManyWithoutBranchInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
@@ -618,6 +641,7 @@ export type BranchUncheckedCreateWithoutStaffsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutBranchInput
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
@@ -657,6 +681,7 @@ export type BranchScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Branch"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Branch"> | Date | string
   createdBy?: Prisma.StringFilter<"Branch"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Branch"> | string | null
 }
 
 export type BranchCreateWithoutAddressInput = {
@@ -667,6 +692,7 @@ export type BranchCreateWithoutAddressInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
@@ -682,6 +708,7 @@ export type BranchUncheckedCreateWithoutAddressInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
@@ -723,6 +750,7 @@ export type BranchCreateWithoutTeachersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
@@ -739,6 +767,7 @@ export type BranchUncheckedCreateWithoutTeachersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
@@ -774,6 +803,7 @@ export type BranchCreateWithoutBranchSpecialtiesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
@@ -790,6 +820,7 @@ export type BranchUncheckedCreateWithoutBranchSpecialtiesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
@@ -820,6 +851,7 @@ export type BranchUpdateWithoutBranchSpecialtiesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
@@ -836,6 +868,7 @@ export type BranchUncheckedUpdateWithoutBranchSpecialtiesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUncheckedUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
@@ -850,6 +883,7 @@ export type BranchCreateWithoutRoomsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
@@ -866,6 +900,7 @@ export type BranchUncheckedCreateWithoutRoomsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
@@ -896,6 +931,7 @@ export type BranchUpdateWithoutRoomsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
@@ -912,6 +948,7 @@ export type BranchUncheckedUpdateWithoutRoomsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
@@ -926,6 +963,7 @@ export type BranchCreateWithoutAccessRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
@@ -942,6 +980,7 @@ export type BranchUncheckedCreateWithoutAccessRecordsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutBranchInput
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
@@ -972,6 +1011,7 @@ export type BranchUpdateWithoutAccessRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
@@ -988,6 +1028,7 @@ export type BranchUncheckedUpdateWithoutAccessRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUncheckedUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
@@ -1002,6 +1043,7 @@ export type BranchUpdateWithoutStaffsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUpdateManyWithoutBranchNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
@@ -1018,6 +1060,7 @@ export type BranchUncheckedUpdateWithoutStaffsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUncheckedUpdateManyWithoutBranchNestedInput
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
@@ -1033,6 +1076,7 @@ export type BranchUncheckedUpdateManyWithoutStaffsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchCreateManyAddressInput = {
@@ -1043,6 +1087,7 @@ export type BranchCreateManyAddressInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type BranchUpdateWithoutAddressInput = {
@@ -1053,6 +1098,7 @@ export type BranchUpdateWithoutAddressInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
@@ -1068,6 +1114,7 @@ export type BranchUncheckedUpdateWithoutAddressInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUncheckedUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
@@ -1083,6 +1130,7 @@ export type BranchUncheckedUpdateManyWithoutAddressInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BranchUpdateWithoutTeachersInput = {
@@ -1093,6 +1141,7 @@ export type BranchUpdateWithoutTeachersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
@@ -1109,6 +1158,7 @@ export type BranchUncheckedUpdateWithoutTeachersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUncheckedUpdateManyWithoutBranchNestedInput
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
@@ -1124,6 +1174,7 @@ export type BranchUncheckedUpdateManyWithoutTeachersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1202,6 +1253,7 @@ export type BranchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   rooms?: boolean | Prisma.Branch$roomsArgs<ExtArgs>
   staffs?: boolean | Prisma.Branch$staffsArgs<ExtArgs>
   teachers?: boolean | Prisma.Branch$teachersArgs<ExtArgs>
@@ -1220,6 +1272,7 @@ export type BranchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["branch"]>
 
@@ -1232,6 +1285,7 @@ export type BranchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["branch"]>
 
@@ -1244,9 +1298,10 @@ export type BranchSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type BranchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "addressId" | "name" | "phone" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["branch"]>
+export type BranchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "addressId" | "name" | "phone" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["branch"]>
 export type BranchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   rooms?: boolean | Prisma.Branch$roomsArgs<ExtArgs>
   staffs?: boolean | Prisma.Branch$staffsArgs<ExtArgs>
@@ -1282,6 +1337,7 @@ export type $BranchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["branch"]>
   composites: {}
 }
@@ -1719,6 +1775,7 @@ export interface BranchFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Branch", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Branch", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Branch", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Branch", 'String'>
 }
     
 

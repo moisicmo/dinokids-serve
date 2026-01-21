@@ -30,6 +30,7 @@ export class TeacherService {
     return await this.prisma.user.create({
       data: {
         password: hashedPassword,
+        createdBy: email,
         address: {
           create: {
             city,
@@ -55,7 +56,7 @@ export class TeacherService {
     });
   }
 
-  async findAll( paginationDto: PaginationDto ): Promise<PaginationResult<TeacherType>> {
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<TeacherType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 

@@ -3,7 +3,7 @@ import { ReportService } from './report.service';
 import { TypeAction } from '@/generated/prisma/client';
 import { checkAbilities } from '@/decorator';
 import { PaginationDto } from '@/common';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 @Controller('report')
 export class ReportController {
   constructor(private readonly reportService: ReportService) { }

@@ -34,6 +34,7 @@ export type InscriptionMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type InscriptionMaxAggregateOutputType = {
@@ -46,6 +47,7 @@ export type InscriptionMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type InscriptionCountAggregateOutputType = {
@@ -58,6 +60,7 @@ export type InscriptionCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -72,6 +75,7 @@ export type InscriptionMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type InscriptionMaxAggregateInputType = {
@@ -84,6 +88,7 @@ export type InscriptionMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type InscriptionCountAggregateInputType = {
@@ -96,6 +101,7 @@ export type InscriptionCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -181,6 +187,7 @@ export type InscriptionGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: InscriptionCountAggregateOutputType | null
   _min: InscriptionMinAggregateOutputType | null
   _max: InscriptionMaxAggregateOutputType | null
@@ -214,6 +221,7 @@ export type InscriptionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Inscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Inscription"> | Date | string
   createdBy?: Prisma.StringFilter<"Inscription"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Inscription"> | string | null
   student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
   booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
   prices?: Prisma.PriceListRelationFilter
@@ -231,6 +239,7 @@ export type InscriptionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
   booking?: Prisma.BookingOrderByWithRelationInput
   prices?: Prisma.PriceOrderByRelationAggregateInput
@@ -251,6 +260,7 @@ export type InscriptionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Inscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Inscription"> | Date | string
   createdBy?: Prisma.StringFilter<"Inscription"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Inscription"> | string | null
   student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
   booking?: Prisma.XOR<Prisma.BookingNullableScalarRelationFilter, Prisma.BookingWhereInput> | null
   prices?: Prisma.PriceListRelationFilter
@@ -268,6 +278,7 @@ export type InscriptionOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.InscriptionCountOrderByAggregateInput
   _max?: Prisma.InscriptionMaxOrderByAggregateInput
   _min?: Prisma.InscriptionMinOrderByAggregateInput
@@ -286,6 +297,7 @@ export type InscriptionScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Inscription"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Inscription"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Inscription"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Inscription"> | string | null
 }
 
 export type InscriptionCreateInput = {
@@ -296,6 +308,7 @@ export type InscriptionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   student?: Prisma.StudentCreateNestedOneWithoutInscriptionsInput
   booking?: Prisma.BookingCreateNestedOneWithoutInscriptionInput
   prices?: Prisma.PriceCreateNestedManyWithoutInscriptionInput
@@ -313,6 +326,7 @@ export type InscriptionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   prices?: Prisma.PriceUncheckedCreateNestedManyWithoutInscriptionInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutInscriptionInput
   debts?: Prisma.DebtsUncheckedCreateNestedManyWithoutInscriptionInput
@@ -326,6 +340,7 @@ export type InscriptionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneWithoutInscriptionsNestedInput
   booking?: Prisma.BookingUpdateOneWithoutInscriptionNestedInput
   prices?: Prisma.PriceUpdateManyWithoutInscriptionNestedInput
@@ -343,6 +358,7 @@ export type InscriptionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prices?: Prisma.PriceUncheckedUpdateManyWithoutInscriptionNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutInscriptionNestedInput
   debts?: Prisma.DebtsUncheckedUpdateManyWithoutInscriptionNestedInput
@@ -358,6 +374,7 @@ export type InscriptionCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type InscriptionUpdateManyMutationInput = {
@@ -368,6 +385,7 @@ export type InscriptionUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type InscriptionUncheckedUpdateManyInput = {
@@ -380,6 +398,7 @@ export type InscriptionUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type InscriptionListRelationFilter = {
@@ -412,6 +431,7 @@ export type InscriptionCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type InscriptionMaxOrderByAggregateInput = {
@@ -424,6 +444,7 @@ export type InscriptionMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type InscriptionMinOrderByAggregateInput = {
@@ -436,6 +457,7 @@ export type InscriptionMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type InscriptionCreateNestedManyWithoutStudentInput = {
@@ -570,6 +592,7 @@ export type InscriptionCreateWithoutStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   booking?: Prisma.BookingCreateNestedOneWithoutInscriptionInput
   prices?: Prisma.PriceCreateNestedManyWithoutInscriptionInput
   assignmentRooms?: Prisma.AssignmentRoomCreateNestedManyWithoutInscriptionInput
@@ -585,6 +608,7 @@ export type InscriptionUncheckedCreateWithoutStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   prices?: Prisma.PriceUncheckedCreateNestedManyWithoutInscriptionInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutInscriptionInput
   debts?: Prisma.DebtsUncheckedCreateNestedManyWithoutInscriptionInput
@@ -629,6 +653,7 @@ export type InscriptionScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Inscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Inscription"> | Date | string
   createdBy?: Prisma.StringFilter<"Inscription"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Inscription"> | string | null
 }
 
 export type InscriptionCreateWithoutAssignmentRoomsInput = {
@@ -639,6 +664,7 @@ export type InscriptionCreateWithoutAssignmentRoomsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   student?: Prisma.StudentCreateNestedOneWithoutInscriptionsInput
   booking?: Prisma.BookingCreateNestedOneWithoutInscriptionInput
   prices?: Prisma.PriceCreateNestedManyWithoutInscriptionInput
@@ -655,6 +681,7 @@ export type InscriptionUncheckedCreateWithoutAssignmentRoomsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   prices?: Prisma.PriceUncheckedCreateNestedManyWithoutInscriptionInput
   debts?: Prisma.DebtsUncheckedCreateNestedManyWithoutInscriptionInput
 }
@@ -683,6 +710,7 @@ export type InscriptionUpdateWithoutAssignmentRoomsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneWithoutInscriptionsNestedInput
   booking?: Prisma.BookingUpdateOneWithoutInscriptionNestedInput
   prices?: Prisma.PriceUpdateManyWithoutInscriptionNestedInput
@@ -699,6 +727,7 @@ export type InscriptionUncheckedUpdateWithoutAssignmentRoomsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prices?: Prisma.PriceUncheckedUpdateManyWithoutInscriptionNestedInput
   debts?: Prisma.DebtsUncheckedUpdateManyWithoutInscriptionNestedInput
 }
@@ -711,6 +740,7 @@ export type InscriptionCreateWithoutPricesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   student?: Prisma.StudentCreateNestedOneWithoutInscriptionsInput
   booking?: Prisma.BookingCreateNestedOneWithoutInscriptionInput
   assignmentRooms?: Prisma.AssignmentRoomCreateNestedManyWithoutInscriptionInput
@@ -727,6 +757,7 @@ export type InscriptionUncheckedCreateWithoutPricesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutInscriptionInput
   debts?: Prisma.DebtsUncheckedCreateNestedManyWithoutInscriptionInput
 }
@@ -755,6 +786,7 @@ export type InscriptionUpdateWithoutPricesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneWithoutInscriptionsNestedInput
   booking?: Prisma.BookingUpdateOneWithoutInscriptionNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUpdateManyWithoutInscriptionNestedInput
@@ -771,6 +803,7 @@ export type InscriptionUncheckedUpdateWithoutPricesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutInscriptionNestedInput
   debts?: Prisma.DebtsUncheckedUpdateManyWithoutInscriptionNestedInput
 }
@@ -783,6 +816,7 @@ export type InscriptionCreateWithoutBookingInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   student?: Prisma.StudentCreateNestedOneWithoutInscriptionsInput
   prices?: Prisma.PriceCreateNestedManyWithoutInscriptionInput
   assignmentRooms?: Prisma.AssignmentRoomCreateNestedManyWithoutInscriptionInput
@@ -798,6 +832,7 @@ export type InscriptionUncheckedCreateWithoutBookingInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   prices?: Prisma.PriceUncheckedCreateNestedManyWithoutInscriptionInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutInscriptionInput
   debts?: Prisma.DebtsUncheckedCreateNestedManyWithoutInscriptionInput
@@ -827,6 +862,7 @@ export type InscriptionUpdateWithoutBookingInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneWithoutInscriptionsNestedInput
   prices?: Prisma.PriceUpdateManyWithoutInscriptionNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUpdateManyWithoutInscriptionNestedInput
@@ -842,6 +878,7 @@ export type InscriptionUncheckedUpdateWithoutBookingInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prices?: Prisma.PriceUncheckedUpdateManyWithoutInscriptionNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutInscriptionNestedInput
   debts?: Prisma.DebtsUncheckedUpdateManyWithoutInscriptionNestedInput
@@ -855,6 +892,7 @@ export type InscriptionCreateWithoutDebtsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   student?: Prisma.StudentCreateNestedOneWithoutInscriptionsInput
   booking?: Prisma.BookingCreateNestedOneWithoutInscriptionInput
   prices?: Prisma.PriceCreateNestedManyWithoutInscriptionInput
@@ -871,6 +909,7 @@ export type InscriptionUncheckedCreateWithoutDebtsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   prices?: Prisma.PriceUncheckedCreateNestedManyWithoutInscriptionInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutInscriptionInput
 }
@@ -899,6 +938,7 @@ export type InscriptionUpdateWithoutDebtsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneWithoutInscriptionsNestedInput
   booking?: Prisma.BookingUpdateOneWithoutInscriptionNestedInput
   prices?: Prisma.PriceUpdateManyWithoutInscriptionNestedInput
@@ -915,6 +955,7 @@ export type InscriptionUncheckedUpdateWithoutDebtsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prices?: Prisma.PriceUncheckedUpdateManyWithoutInscriptionNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutInscriptionNestedInput
 }
@@ -928,6 +969,7 @@ export type InscriptionCreateManyStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type InscriptionUpdateWithoutStudentInput = {
@@ -938,6 +980,7 @@ export type InscriptionUpdateWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   booking?: Prisma.BookingUpdateOneWithoutInscriptionNestedInput
   prices?: Prisma.PriceUpdateManyWithoutInscriptionNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUpdateManyWithoutInscriptionNestedInput
@@ -953,6 +996,7 @@ export type InscriptionUncheckedUpdateWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prices?: Prisma.PriceUncheckedUpdateManyWithoutInscriptionNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutInscriptionNestedInput
   debts?: Prisma.DebtsUncheckedUpdateManyWithoutInscriptionNestedInput
@@ -967,6 +1011,7 @@ export type InscriptionUncheckedUpdateManyWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1028,6 +1073,7 @@ export type InscriptionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.Inscription$studentArgs<ExtArgs>
   booking?: boolean | Prisma.Inscription$bookingArgs<ExtArgs>
   prices?: boolean | Prisma.Inscription$pricesArgs<ExtArgs>
@@ -1046,6 +1092,7 @@ export type InscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.Inscription$studentArgs<ExtArgs>
   booking?: boolean | Prisma.Inscription$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["inscription"]>
@@ -1060,6 +1107,7 @@ export type InscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.Inscription$studentArgs<ExtArgs>
   booking?: boolean | Prisma.Inscription$bookingArgs<ExtArgs>
 }, ExtArgs["result"]["inscription"]>
@@ -1074,9 +1122,10 @@ export type InscriptionSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type InscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "bookingId" | "inscriptionType" | "url" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["inscription"]>
+export type InscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "bookingId" | "inscriptionType" | "url" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["inscription"]>
 export type InscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.Inscription$studentArgs<ExtArgs>
   booking?: boolean | Prisma.Inscription$bookingArgs<ExtArgs>
@@ -1113,6 +1162,7 @@ export type $InscriptionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["inscription"]>
   composites: {}
 }
@@ -1550,6 +1600,7 @@ export interface InscriptionFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Inscription", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Inscription", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Inscription", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Inscription", 'String'>
 }
     
 

@@ -35,6 +35,7 @@ export type RoomMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type RoomMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type RoomMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type RoomCountAggregateOutputType = {
@@ -62,6 +64,7 @@ export type RoomCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -77,6 +80,7 @@ export type RoomMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type RoomMaxAggregateInputType = {
@@ -90,6 +94,7 @@ export type RoomMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type RoomCountAggregateInputType = {
@@ -104,6 +109,7 @@ export type RoomCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -191,6 +197,7 @@ export type RoomGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: RoomCountAggregateOutputType | null
   _min: RoomMinAggregateOutputType | null
   _max: RoomMaxAggregateOutputType | null
@@ -226,6 +233,7 @@ export type RoomWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Room"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Room"> | Date | string
   createdBy?: Prisma.StringFilter<"Room"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Room"> | string | null
   branch?: Prisma.XOR<Prisma.BranchScalarRelationFilter, Prisma.BranchWhereInput>
   teacher?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
   assistant?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
@@ -246,6 +254,7 @@ export type RoomOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   branch?: Prisma.BranchOrderByWithRelationInput
   teacher?: Prisma.TeacherOrderByWithRelationInput
   assistant?: Prisma.TeacherOrderByWithRelationInput
@@ -269,6 +278,7 @@ export type RoomWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Room"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Room"> | Date | string
   createdBy?: Prisma.StringFilter<"Room"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Room"> | string | null
   branch?: Prisma.XOR<Prisma.BranchScalarRelationFilter, Prisma.BranchWhereInput>
   teacher?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
   assistant?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
@@ -289,6 +299,7 @@ export type RoomOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RoomCountOrderByAggregateInput
   _max?: Prisma.RoomMaxOrderByAggregateInput
   _min?: Prisma.RoomMinOrderByAggregateInput
@@ -309,6 +320,7 @@ export type RoomScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Room"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Room"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Room"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Room"> | string | null
 }
 
 export type RoomCreateInput = {
@@ -319,6 +331,7 @@ export type RoomCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutRoomsInput
   teacher: Prisma.TeacherCreateNestedOneWithoutMainRoomsInput
   assistant: Prisma.TeacherCreateNestedOneWithoutAssistedRoomsInput
@@ -339,6 +352,7 @@ export type RoomUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutRoomInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutRoomInput
 }
@@ -351,6 +365,7 @@ export type RoomUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutRoomsNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutMainRoomsNestedInput
   assistant?: Prisma.TeacherUpdateOneRequiredWithoutAssistedRoomsNestedInput
@@ -371,6 +386,7 @@ export type RoomUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutRoomNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutRoomNestedInput
 }
@@ -387,6 +403,7 @@ export type RoomCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RoomUpdateManyMutationInput = {
@@ -397,6 +414,7 @@ export type RoomUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RoomUncheckedUpdateManyInput = {
@@ -411,6 +429,7 @@ export type RoomUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RoomListRelationFilter = {
@@ -435,6 +454,7 @@ export type RoomCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type RoomMaxOrderByAggregateInput = {
@@ -448,6 +468,7 @@ export type RoomMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type RoomMinOrderByAggregateInput = {
@@ -461,6 +482,7 @@ export type RoomMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type RoomScalarRelationFilter = {
@@ -672,6 +694,7 @@ export type RoomCreateWithoutBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   teacher: Prisma.TeacherCreateNestedOneWithoutMainRoomsInput
   assistant: Prisma.TeacherCreateNestedOneWithoutAssistedRoomsInput
   specialty: Prisma.SpecialtyCreateNestedOneWithoutRoomsInput
@@ -690,6 +713,7 @@ export type RoomUncheckedCreateWithoutBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutRoomInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutRoomInput
 }
@@ -735,6 +759,7 @@ export type RoomScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Room"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Room"> | Date | string
   createdBy?: Prisma.StringFilter<"Room"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Room"> | string | null
 }
 
 export type RoomCreateWithoutTeacherInput = {
@@ -745,6 +770,7 @@ export type RoomCreateWithoutTeacherInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutRoomsInput
   assistant: Prisma.TeacherCreateNestedOneWithoutAssistedRoomsInput
   specialty: Prisma.SpecialtyCreateNestedOneWithoutRoomsInput
@@ -763,6 +789,7 @@ export type RoomUncheckedCreateWithoutTeacherInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutRoomInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutRoomInput
 }
@@ -785,6 +812,7 @@ export type RoomCreateWithoutAssistantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutRoomsInput
   teacher: Prisma.TeacherCreateNestedOneWithoutMainRoomsInput
   specialty: Prisma.SpecialtyCreateNestedOneWithoutRoomsInput
@@ -803,6 +831,7 @@ export type RoomUncheckedCreateWithoutAssistantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutRoomInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutRoomInput
 }
@@ -857,6 +886,7 @@ export type RoomCreateWithoutSpecialtyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutRoomsInput
   teacher: Prisma.TeacherCreateNestedOneWithoutMainRoomsInput
   assistant: Prisma.TeacherCreateNestedOneWithoutAssistedRoomsInput
@@ -875,6 +905,7 @@ export type RoomUncheckedCreateWithoutSpecialtyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutRoomInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutRoomInput
 }
@@ -913,6 +944,7 @@ export type RoomCreateWithoutAssignmentRoomsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutRoomsInput
   teacher: Prisma.TeacherCreateNestedOneWithoutMainRoomsInput
   assistant: Prisma.TeacherCreateNestedOneWithoutAssistedRoomsInput
@@ -932,6 +964,7 @@ export type RoomUncheckedCreateWithoutAssignmentRoomsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   schedules?: Prisma.ScheduleUncheckedCreateNestedManyWithoutRoomInput
 }
 
@@ -959,6 +992,7 @@ export type RoomUpdateWithoutAssignmentRoomsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutRoomsNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutMainRoomsNestedInput
   assistant?: Prisma.TeacherUpdateOneRequiredWithoutAssistedRoomsNestedInput
@@ -978,6 +1012,7 @@ export type RoomUncheckedUpdateWithoutAssignmentRoomsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutRoomNestedInput
 }
 
@@ -989,6 +1024,7 @@ export type RoomCreateWithoutSchedulesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutRoomsInput
   teacher: Prisma.TeacherCreateNestedOneWithoutMainRoomsInput
   assistant: Prisma.TeacherCreateNestedOneWithoutAssistedRoomsInput
@@ -1008,6 +1044,7 @@ export type RoomUncheckedCreateWithoutSchedulesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentRooms?: Prisma.AssignmentRoomUncheckedCreateNestedManyWithoutRoomInput
 }
 
@@ -1035,6 +1072,7 @@ export type RoomUpdateWithoutSchedulesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutRoomsNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutMainRoomsNestedInput
   assistant?: Prisma.TeacherUpdateOneRequiredWithoutAssistedRoomsNestedInput
@@ -1054,6 +1092,7 @@ export type RoomUncheckedUpdateWithoutSchedulesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutRoomNestedInput
 }
 
@@ -1068,6 +1107,7 @@ export type RoomCreateManyBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RoomUpdateWithoutBranchInput = {
@@ -1078,6 +1118,7 @@ export type RoomUpdateWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutMainRoomsNestedInput
   assistant?: Prisma.TeacherUpdateOneRequiredWithoutAssistedRoomsNestedInput
   specialty?: Prisma.SpecialtyUpdateOneRequiredWithoutRoomsNestedInput
@@ -1096,6 +1137,7 @@ export type RoomUncheckedUpdateWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutRoomNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutRoomNestedInput
 }
@@ -1111,6 +1153,7 @@ export type RoomUncheckedUpdateManyWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RoomCreateManyTeacherInput = {
@@ -1124,6 +1167,7 @@ export type RoomCreateManyTeacherInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RoomCreateManyAssistantInput = {
@@ -1137,6 +1181,7 @@ export type RoomCreateManyAssistantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RoomUpdateWithoutTeacherInput = {
@@ -1147,6 +1192,7 @@ export type RoomUpdateWithoutTeacherInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutRoomsNestedInput
   assistant?: Prisma.TeacherUpdateOneRequiredWithoutAssistedRoomsNestedInput
   specialty?: Prisma.SpecialtyUpdateOneRequiredWithoutRoomsNestedInput
@@ -1165,6 +1211,7 @@ export type RoomUncheckedUpdateWithoutTeacherInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutRoomNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutRoomNestedInput
 }
@@ -1180,6 +1227,7 @@ export type RoomUncheckedUpdateManyWithoutTeacherInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RoomUpdateWithoutAssistantInput = {
@@ -1190,6 +1238,7 @@ export type RoomUpdateWithoutAssistantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutRoomsNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutMainRoomsNestedInput
   specialty?: Prisma.SpecialtyUpdateOneRequiredWithoutRoomsNestedInput
@@ -1208,6 +1257,7 @@ export type RoomUncheckedUpdateWithoutAssistantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutRoomNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutRoomNestedInput
 }
@@ -1223,6 +1273,7 @@ export type RoomUncheckedUpdateManyWithoutAssistantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RoomCreateManySpecialtyInput = {
@@ -1236,6 +1287,7 @@ export type RoomCreateManySpecialtyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RoomUpdateWithoutSpecialtyInput = {
@@ -1246,6 +1298,7 @@ export type RoomUpdateWithoutSpecialtyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutRoomsNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutMainRoomsNestedInput
   assistant?: Prisma.TeacherUpdateOneRequiredWithoutAssistedRoomsNestedInput
@@ -1264,6 +1317,7 @@ export type RoomUncheckedUpdateWithoutSpecialtyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   schedules?: Prisma.ScheduleUncheckedUpdateManyWithoutRoomNestedInput
   assignmentRooms?: Prisma.AssignmentRoomUncheckedUpdateManyWithoutRoomNestedInput
 }
@@ -1279,6 +1333,7 @@ export type RoomUncheckedUpdateManyWithoutSpecialtyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1333,6 +1388,7 @@ export type RoomSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   assistant?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
@@ -1354,6 +1410,7 @@ export type RoomSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   assistant?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
@@ -1372,6 +1429,7 @@ export type RoomSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
   assistant?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
@@ -1390,9 +1448,10 @@ export type RoomSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type RoomOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "branchId" | "teacherId" | "assistantId" | "specialtyId" | "name" | "rangeYears" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["room"]>
+export type RoomOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "branchId" | "teacherId" | "assistantId" | "specialtyId" | "name" | "rangeYears" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["room"]>
 export type RoomInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
@@ -1437,6 +1496,7 @@ export type $RoomPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["room"]>
   composites: {}
 }
@@ -1877,6 +1937,7 @@ export interface RoomFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Room", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Room", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Room", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Room", 'String'>
 }
     
 

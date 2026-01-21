@@ -33,6 +33,7 @@ export type AssignmentScheduleMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type AssignmentScheduleMaxAggregateOutputType = {
@@ -44,6 +45,7 @@ export type AssignmentScheduleMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type AssignmentScheduleCountAggregateOutputType = {
@@ -55,6 +57,7 @@ export type AssignmentScheduleCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -68,6 +71,7 @@ export type AssignmentScheduleMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type AssignmentScheduleMaxAggregateInputType = {
@@ -79,6 +83,7 @@ export type AssignmentScheduleMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type AssignmentScheduleCountAggregateInputType = {
@@ -90,6 +95,7 @@ export type AssignmentScheduleCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -174,6 +180,7 @@ export type AssignmentScheduleGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: AssignmentScheduleCountAggregateOutputType | null
   _min: AssignmentScheduleMinAggregateOutputType | null
   _max: AssignmentScheduleMaxAggregateOutputType | null
@@ -206,6 +213,7 @@ export type AssignmentScheduleWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"AssignmentSchedule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssignmentSchedule"> | Date | string
   createdBy?: Prisma.StringFilter<"AssignmentSchedule"> | string
+  updatedBy?: Prisma.StringNullableFilter<"AssignmentSchedule"> | string | null
   assignmentRoom?: Prisma.XOR<Prisma.AssignmentRoomScalarRelationFilter, Prisma.AssignmentRoomWhereInput>
   schedule?: Prisma.XOR<Prisma.ScheduleScalarRelationFilter, Prisma.ScheduleWhereInput>
   sessions?: Prisma.SessionListRelationFilter
@@ -220,6 +228,7 @@ export type AssignmentScheduleOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   assignmentRoom?: Prisma.AssignmentRoomOrderByWithRelationInput
   schedule?: Prisma.ScheduleOrderByWithRelationInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
@@ -237,6 +246,7 @@ export type AssignmentScheduleWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"AssignmentSchedule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssignmentSchedule"> | Date | string
   createdBy?: Prisma.StringFilter<"AssignmentSchedule"> | string
+  updatedBy?: Prisma.StringNullableFilter<"AssignmentSchedule"> | string | null
   assignmentRoom?: Prisma.XOR<Prisma.AssignmentRoomScalarRelationFilter, Prisma.AssignmentRoomWhereInput>
   schedule?: Prisma.XOR<Prisma.ScheduleScalarRelationFilter, Prisma.ScheduleWhereInput>
   sessions?: Prisma.SessionListRelationFilter
@@ -251,6 +261,7 @@ export type AssignmentScheduleOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AssignmentScheduleCountOrderByAggregateInput
   _max?: Prisma.AssignmentScheduleMaxOrderByAggregateInput
   _min?: Prisma.AssignmentScheduleMinOrderByAggregateInput
@@ -268,6 +279,7 @@ export type AssignmentScheduleScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AssignmentSchedule"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AssignmentSchedule"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"AssignmentSchedule"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"AssignmentSchedule"> | string | null
 }
 
 export type AssignmentScheduleCreateInput = {
@@ -277,6 +289,7 @@ export type AssignmentScheduleCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentRoom: Prisma.AssignmentRoomCreateNestedOneWithoutAssignmentSchedulesInput
   schedule: Prisma.ScheduleCreateNestedOneWithoutAssignmentSchedulesInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAssignmentScheduleInput
@@ -291,6 +304,7 @@ export type AssignmentScheduleUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAssignmentScheduleInput
 }
 
@@ -301,6 +315,7 @@ export type AssignmentScheduleUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentRoom?: Prisma.AssignmentRoomUpdateOneRequiredWithoutAssignmentSchedulesNestedInput
   schedule?: Prisma.ScheduleUpdateOneRequiredWithoutAssignmentSchedulesNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAssignmentScheduleNestedInput
@@ -315,6 +330,7 @@ export type AssignmentScheduleUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAssignmentScheduleNestedInput
 }
 
@@ -327,6 +343,7 @@ export type AssignmentScheduleCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AssignmentScheduleUpdateManyMutationInput = {
@@ -336,6 +353,7 @@ export type AssignmentScheduleUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AssignmentScheduleUncheckedUpdateManyInput = {
@@ -347,6 +365,7 @@ export type AssignmentScheduleUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AssignmentScheduleListRelationFilter = {
@@ -368,6 +387,7 @@ export type AssignmentScheduleCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type AssignmentScheduleMaxOrderByAggregateInput = {
@@ -379,6 +399,7 @@ export type AssignmentScheduleMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type AssignmentScheduleMinOrderByAggregateInput = {
@@ -390,6 +411,7 @@ export type AssignmentScheduleMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type AssignmentScheduleScalarRelationFilter = {
@@ -502,6 +524,7 @@ export type AssignmentScheduleCreateWithoutAssignmentRoomInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   schedule: Prisma.ScheduleCreateNestedOneWithoutAssignmentSchedulesInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAssignmentScheduleInput
 }
@@ -514,6 +537,7 @@ export type AssignmentScheduleUncheckedCreateWithoutAssignmentRoomInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAssignmentScheduleInput
 }
 
@@ -555,6 +579,7 @@ export type AssignmentScheduleScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"AssignmentSchedule"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AssignmentSchedule"> | Date | string
   createdBy?: Prisma.StringFilter<"AssignmentSchedule"> | string
+  updatedBy?: Prisma.StringNullableFilter<"AssignmentSchedule"> | string | null
 }
 
 export type AssignmentScheduleCreateWithoutScheduleInput = {
@@ -564,6 +589,7 @@ export type AssignmentScheduleCreateWithoutScheduleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentRoom: Prisma.AssignmentRoomCreateNestedOneWithoutAssignmentSchedulesInput
   sessions?: Prisma.SessionCreateNestedManyWithoutAssignmentScheduleInput
 }
@@ -576,6 +602,7 @@ export type AssignmentScheduleUncheckedCreateWithoutScheduleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutAssignmentScheduleInput
 }
 
@@ -612,6 +639,7 @@ export type AssignmentScheduleCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   assignmentRoom: Prisma.AssignmentRoomCreateNestedOneWithoutAssignmentSchedulesInput
   schedule: Prisma.ScheduleCreateNestedOneWithoutAssignmentSchedulesInput
 }
@@ -625,6 +653,7 @@ export type AssignmentScheduleUncheckedCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AssignmentScheduleCreateOrConnectWithoutSessionsInput = {
@@ -650,6 +679,7 @@ export type AssignmentScheduleUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentRoom?: Prisma.AssignmentRoomUpdateOneRequiredWithoutAssignmentSchedulesNestedInput
   schedule?: Prisma.ScheduleUpdateOneRequiredWithoutAssignmentSchedulesNestedInput
 }
@@ -663,6 +693,7 @@ export type AssignmentScheduleUncheckedUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AssignmentScheduleCreateManyAssignmentRoomInput = {
@@ -673,6 +704,7 @@ export type AssignmentScheduleCreateManyAssignmentRoomInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AssignmentScheduleUpdateWithoutAssignmentRoomInput = {
@@ -682,6 +714,7 @@ export type AssignmentScheduleUpdateWithoutAssignmentRoomInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   schedule?: Prisma.ScheduleUpdateOneRequiredWithoutAssignmentSchedulesNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAssignmentScheduleNestedInput
 }
@@ -694,6 +727,7 @@ export type AssignmentScheduleUncheckedUpdateWithoutAssignmentRoomInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAssignmentScheduleNestedInput
 }
 
@@ -705,6 +739,7 @@ export type AssignmentScheduleUncheckedUpdateManyWithoutAssignmentRoomInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AssignmentScheduleCreateManyScheduleInput = {
@@ -715,6 +750,7 @@ export type AssignmentScheduleCreateManyScheduleInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AssignmentScheduleUpdateWithoutScheduleInput = {
@@ -724,6 +760,7 @@ export type AssignmentScheduleUpdateWithoutScheduleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignmentRoom?: Prisma.AssignmentRoomUpdateOneRequiredWithoutAssignmentSchedulesNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutAssignmentScheduleNestedInput
 }
@@ -736,6 +773,7 @@ export type AssignmentScheduleUncheckedUpdateWithoutScheduleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutAssignmentScheduleNestedInput
 }
 
@@ -747,6 +785,7 @@ export type AssignmentScheduleUncheckedUpdateManyWithoutScheduleInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -789,6 +828,7 @@ export type AssignmentScheduleSelect<ExtArgs extends runtime.Types.Extensions.In
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   assignmentRoom?: boolean | Prisma.AssignmentRoomDefaultArgs<ExtArgs>
   schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
   sessions?: boolean | Prisma.AssignmentSchedule$sessionsArgs<ExtArgs>
@@ -804,6 +844,7 @@ export type AssignmentScheduleSelectCreateManyAndReturn<ExtArgs extends runtime.
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   assignmentRoom?: boolean | Prisma.AssignmentRoomDefaultArgs<ExtArgs>
   schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assignmentSchedule"]>
@@ -817,6 +858,7 @@ export type AssignmentScheduleSelectUpdateManyAndReturn<ExtArgs extends runtime.
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   assignmentRoom?: boolean | Prisma.AssignmentRoomDefaultArgs<ExtArgs>
   schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assignmentSchedule"]>
@@ -830,9 +872,10 @@ export type AssignmentScheduleSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type AssignmentScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentRoomId" | "scheduleId" | "day" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["assignmentSchedule"]>
+export type AssignmentScheduleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assignmentRoomId" | "scheduleId" | "day" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["assignmentSchedule"]>
 export type AssignmentScheduleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignmentRoom?: boolean | Prisma.AssignmentRoomDefaultArgs<ExtArgs>
   schedule?: boolean | Prisma.ScheduleDefaultArgs<ExtArgs>
@@ -864,6 +907,7 @@ export type $AssignmentSchedulePayload<ExtArgs extends runtime.Types.Extensions.
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["assignmentSchedule"]>
   composites: {}
 }
@@ -1298,6 +1342,7 @@ export interface AssignmentScheduleFieldRefs {
   readonly createdAt: Prisma.FieldRef<"AssignmentSchedule", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AssignmentSchedule", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"AssignmentSchedule", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"AssignmentSchedule", 'String'>
 }
     
 

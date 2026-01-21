@@ -4,7 +4,7 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { PaginationDto } from '@/common';
 import { checkAbilities, CurrentUser } from '@/decorator';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 import { TypeAction } from '@/generated/prisma/enums';
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
 

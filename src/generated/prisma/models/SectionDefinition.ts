@@ -32,6 +32,7 @@ export type SectionDefinitionMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SectionDefinitionMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type SectionDefinitionMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SectionDefinitionCountAggregateOutputType = {
@@ -53,6 +55,7 @@ export type SectionDefinitionCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -65,6 +68,7 @@ export type SectionDefinitionMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type SectionDefinitionMaxAggregateInputType = {
@@ -75,6 +79,7 @@ export type SectionDefinitionMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type SectionDefinitionCountAggregateInputType = {
@@ -86,6 +91,7 @@ export type SectionDefinitionCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -170,6 +176,7 @@ export type SectionDefinitionGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: SectionDefinitionCountAggregateOutputType | null
   _min: SectionDefinitionMinAggregateOutputType | null
   _max: SectionDefinitionMaxAggregateOutputType | null
@@ -202,6 +209,7 @@ export type SectionDefinitionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"SectionDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SectionDefinition"> | Date | string
   createdBy?: Prisma.StringFilter<"SectionDefinition"> | string
+  updatedBy?: Prisma.StringNullableFilter<"SectionDefinition"> | string | null
   evaluation?: Prisma.XOR<Prisma.EvaluationPlanningScalarRelationFilter, Prisma.EvaluationPlanningWhereInput>
 }
 
@@ -214,6 +222,7 @@ export type SectionDefinitionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   evaluation?: Prisma.EvaluationPlanningOrderByWithRelationInput
 }
 
@@ -229,6 +238,7 @@ export type SectionDefinitionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"SectionDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SectionDefinition"> | Date | string
   createdBy?: Prisma.StringFilter<"SectionDefinition"> | string
+  updatedBy?: Prisma.StringNullableFilter<"SectionDefinition"> | string | null
   evaluation?: Prisma.XOR<Prisma.EvaluationPlanningScalarRelationFilter, Prisma.EvaluationPlanningWhereInput>
 }, "id">
 
@@ -241,6 +251,7 @@ export type SectionDefinitionOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SectionDefinitionCountOrderByAggregateInput
   _max?: Prisma.SectionDefinitionMaxOrderByAggregateInput
   _min?: Prisma.SectionDefinitionMinOrderByAggregateInput
@@ -258,6 +269,7 @@ export type SectionDefinitionScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SectionDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SectionDefinition"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"SectionDefinition"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"SectionDefinition"> | string | null
 }
 
 export type SectionDefinitionCreateInput = {
@@ -268,6 +280,7 @@ export type SectionDefinitionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   evaluation: Prisma.EvaluationPlanningCreateNestedOneWithoutSectionsInput
 }
 
@@ -280,6 +293,7 @@ export type SectionDefinitionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SectionDefinitionUpdateInput = {
@@ -290,6 +304,7 @@ export type SectionDefinitionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluation?: Prisma.EvaluationPlanningUpdateOneRequiredWithoutSectionsNestedInput
 }
 
@@ -302,6 +317,7 @@ export type SectionDefinitionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SectionDefinitionCreateManyInput = {
@@ -313,6 +329,7 @@ export type SectionDefinitionCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SectionDefinitionUpdateManyMutationInput = {
@@ -323,6 +340,7 @@ export type SectionDefinitionUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SectionDefinitionUncheckedUpdateManyInput = {
@@ -334,6 +352,7 @@ export type SectionDefinitionUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SectionDefinitionListRelationFilter = {
@@ -355,6 +374,7 @@ export type SectionDefinitionCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SectionDefinitionMaxOrderByAggregateInput = {
@@ -365,6 +385,7 @@ export type SectionDefinitionMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SectionDefinitionMinOrderByAggregateInput = {
@@ -375,6 +396,7 @@ export type SectionDefinitionMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SectionDefinitionCreateNestedManyWithoutEvaluationInput = {
@@ -427,6 +449,7 @@ export type SectionDefinitionCreateWithoutEvaluationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SectionDefinitionUncheckedCreateWithoutEvaluationInput = {
@@ -437,6 +460,7 @@ export type SectionDefinitionUncheckedCreateWithoutEvaluationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SectionDefinitionCreateOrConnectWithoutEvaluationInput = {
@@ -477,6 +501,7 @@ export type SectionDefinitionScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"SectionDefinition"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SectionDefinition"> | Date | string
   createdBy?: Prisma.StringFilter<"SectionDefinition"> | string
+  updatedBy?: Prisma.StringNullableFilter<"SectionDefinition"> | string | null
 }
 
 export type SectionDefinitionCreateManyEvaluationInput = {
@@ -487,6 +512,7 @@ export type SectionDefinitionCreateManyEvaluationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SectionDefinitionUpdateWithoutEvaluationInput = {
@@ -497,6 +523,7 @@ export type SectionDefinitionUpdateWithoutEvaluationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SectionDefinitionUncheckedUpdateWithoutEvaluationInput = {
@@ -507,6 +534,7 @@ export type SectionDefinitionUncheckedUpdateWithoutEvaluationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SectionDefinitionUncheckedUpdateManyWithoutEvaluationInput = {
@@ -517,6 +545,7 @@ export type SectionDefinitionUncheckedUpdateManyWithoutEvaluationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -530,6 +559,7 @@ export type SectionDefinitionSelect<ExtArgs extends runtime.Types.Extensions.Int
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   evaluation?: boolean | Prisma.EvaluationPlanningDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sectionDefinition"]>
 
@@ -542,6 +572,7 @@ export type SectionDefinitionSelectCreateManyAndReturn<ExtArgs extends runtime.T
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   evaluation?: boolean | Prisma.EvaluationPlanningDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sectionDefinition"]>
 
@@ -554,6 +585,7 @@ export type SectionDefinitionSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   evaluation?: boolean | Prisma.EvaluationPlanningDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["sectionDefinition"]>
 
@@ -566,9 +598,10 @@ export type SectionDefinitionSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type SectionDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "evaluationId" | "name" | "schema" | "isActive" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["sectionDefinition"]>
+export type SectionDefinitionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "evaluationId" | "name" | "schema" | "isActive" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["sectionDefinition"]>
 export type SectionDefinitionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   evaluation?: boolean | Prisma.EvaluationPlanningDefaultArgs<ExtArgs>
 }
@@ -593,6 +626,7 @@ export type $SectionDefinitionPayload<ExtArgs extends runtime.Types.Extensions.I
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["sectionDefinition"]>
   composites: {}
 }
@@ -1025,6 +1059,7 @@ export interface SectionDefinitionFieldRefs {
   readonly createdAt: Prisma.FieldRef<"SectionDefinition", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SectionDefinition", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"SectionDefinition", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"SectionDefinition", 'String'>
 }
     
 

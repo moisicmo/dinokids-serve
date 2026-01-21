@@ -39,13 +39,14 @@ export class BranchService {
     }
   }
 
-  async findAll( paginationDto: PaginationDto): Promise<PaginationResult<BranchType>> {
+  async findAll( paginationDto: PaginationDto, branchSelect: string): Promise<PaginationResult<BranchType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.BranchWhereInput = {
-        ...(keys ? { name: { contains: keys, mode: Prisma.QueryMode.insensitive } } : {}),
+        id: branchSelect,
+        ...(keys ? {name: { contains: keys, mode: Prisma.QueryMode.insensitive } } : {}),
       };
 
       // 🔹 Paginación

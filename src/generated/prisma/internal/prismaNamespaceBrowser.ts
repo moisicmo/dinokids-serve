@@ -117,7 +117,9 @@ export const UserScalarFieldEnum = {
   phone: 'phone',
   codeValidation: 'codeValidation',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -131,7 +133,8 @@ export const BranchScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type BranchScalarFieldEnum = (typeof BranchScalarFieldEnum)[keyof typeof BranchScalarFieldEnum]
@@ -145,7 +148,8 @@ export const StaffScalarFieldEnum = {
   superStaff: 'superStaff',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type StaffScalarFieldEnum = (typeof StaffScalarFieldEnum)[keyof typeof StaffScalarFieldEnum]
@@ -158,7 +162,8 @@ export const AddressScalarFieldEnum = {
   detail: 'detail',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
@@ -173,6 +178,7 @@ export const AuthSessionScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdBy: 'createdBy',
+  updatedBy: 'updatedBy',
   revokedAt: 'revokedAt'
 } as const
 
@@ -186,7 +192,8 @@ export const PermissionScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type PermissionScalarFieldEnum = (typeof PermissionScalarFieldEnum)[keyof typeof PermissionScalarFieldEnum]
@@ -198,7 +205,8 @@ export const RoleScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
@@ -216,7 +224,8 @@ export const StudentScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -230,7 +239,8 @@ export const SessionTrackingScalarFieldEnum = {
   observation: 'observation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type SessionTrackingScalarFieldEnum = (typeof SessionTrackingScalarFieldEnum)[keyof typeof SessionTrackingScalarFieldEnum]
@@ -244,7 +254,8 @@ export const WeeklyPlanningScalarFieldEnum = {
   isLocked: 'isLocked',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type WeeklyPlanningScalarFieldEnum = (typeof WeeklyPlanningScalarFieldEnum)[keyof typeof WeeklyPlanningScalarFieldEnum]
@@ -257,7 +268,8 @@ export const WeeklyPlanningObjectiveScalarFieldEnum = {
   answer: 'answer',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type WeeklyPlanningObjectiveScalarFieldEnum = (typeof WeeklyPlanningObjectiveScalarFieldEnum)[keyof typeof WeeklyPlanningObjectiveScalarFieldEnum]
@@ -269,7 +281,8 @@ export const EvaluationPlanningScalarFieldEnum = {
   evaluationDate: 'evaluationDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type EvaluationPlanningScalarFieldEnum = (typeof EvaluationPlanningScalarFieldEnum)[keyof typeof EvaluationPlanningScalarFieldEnum]
@@ -283,7 +296,8 @@ export const SectionDefinitionScalarFieldEnum = {
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type SectionDefinitionScalarFieldEnum = (typeof SectionDefinitionScalarFieldEnum)[keyof typeof SectionDefinitionScalarFieldEnum]
@@ -294,7 +308,8 @@ export const SchoolScalarFieldEnum = {
   name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type SchoolScalarFieldEnum = (typeof SchoolScalarFieldEnum)[keyof typeof SchoolScalarFieldEnum]
@@ -306,7 +321,8 @@ export const TutorScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type TutorScalarFieldEnum = (typeof TutorScalarFieldEnum)[keyof typeof TutorScalarFieldEnum]
@@ -321,7 +337,8 @@ export const TeacherScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
@@ -333,7 +350,8 @@ export const SpecialtyScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type SpecialtyScalarFieldEnum = (typeof SpecialtyScalarFieldEnum)[keyof typeof SpecialtyScalarFieldEnum]
@@ -348,7 +366,8 @@ export const BranchSpecialtyScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type BranchSpecialtyScalarFieldEnum = (typeof BranchSpecialtyScalarFieldEnum)[keyof typeof BranchSpecialtyScalarFieldEnum]
@@ -365,7 +384,8 @@ export const RoomScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
@@ -378,7 +398,8 @@ export const AssignmentRoomScalarFieldEnum = {
   start: 'start',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type AssignmentRoomScalarFieldEnum = (typeof AssignmentRoomScalarFieldEnum)[keyof typeof AssignmentRoomScalarFieldEnum]
@@ -391,10 +412,12 @@ export const ScheduleScalarFieldEnum = {
   day: 'day',
   start: 'start',
   end: 'end',
+  color: 'color',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typeof ScheduleScalarFieldEnum]
@@ -408,7 +431,8 @@ export const AssignmentScheduleScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type AssignmentScheduleScalarFieldEnum = (typeof AssignmentScheduleScalarFieldEnum)[keyof typeof AssignmentScheduleScalarFieldEnum]
@@ -422,7 +446,8 @@ export const PriceScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type PriceScalarFieldEnum = (typeof PriceScalarFieldEnum)[keyof typeof PriceScalarFieldEnum]
@@ -437,7 +462,8 @@ export const InscriptionScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type InscriptionScalarFieldEnum = (typeof InscriptionScalarFieldEnum)[keyof typeof InscriptionScalarFieldEnum]
@@ -452,7 +478,8 @@ export const BookingScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
@@ -467,7 +494,8 @@ export const DebtsScalarFieldEnum = {
   dueDate: 'dueDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type DebtsScalarFieldEnum = (typeof DebtsScalarFieldEnum)[keyof typeof DebtsScalarFieldEnum]
@@ -482,7 +510,8 @@ export const PaymentScalarFieldEnum = {
   payMethod: 'payMethod',
   active: 'active',
   createdAt: 'createdAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
@@ -496,7 +525,8 @@ export const InvoiceScalarFieldEnum = {
   buyerName: 'buyerName',
   active: 'active',
   createdAt: 'createdAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
@@ -508,7 +538,8 @@ export const RefundScalarFieldEnum = {
   reference: 'reference',
   amount: 'amount',
   createdAt: 'createdAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type RefundScalarFieldEnum = (typeof RefundScalarFieldEnum)[keyof typeof RefundScalarFieldEnum]
@@ -523,7 +554,8 @@ export const SessionScalarFieldEnum = {
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -538,7 +570,8 @@ export const AccessRecordScalarFieldEnum = {
   observation: 'observation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type AccessRecordScalarFieldEnum = (typeof AccessRecordScalarFieldEnum)[keyof typeof AccessRecordScalarFieldEnum]
@@ -550,7 +583,8 @@ export const DocumentScalarFieldEnum = {
   data: 'data',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
@@ -566,7 +600,8 @@ export const DocumentTransmissionScalarFieldEnum = {
   updatedAt: 'updatedAt',
   readAt: 'readAt',
   archivedAt: 'archivedAt',
-  createdBy: 'createdBy'
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
 } as const
 
 export type DocumentTransmissionScalarFieldEnum = (typeof DocumentTransmissionScalarFieldEnum)[keyof typeof DocumentTransmissionScalarFieldEnum]

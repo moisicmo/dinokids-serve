@@ -39,6 +39,8 @@ export type UserMinAggregateOutputType = {
   codeValidation: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -56,6 +58,8 @@ export type UserMaxAggregateOutputType = {
   codeValidation: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  createdBy: string | null
+  updatedBy: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -74,6 +78,8 @@ export type UserCountAggregateOutputType = {
   codeValidation: number
   createdAt: number
   updatedAt: number
+  createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -93,6 +99,8 @@ export type UserMinAggregateInputType = {
   codeValidation?: true
   createdAt?: true
   updatedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -110,6 +118,8 @@ export type UserMaxAggregateInputType = {
   codeValidation?: true
   createdAt?: true
   updatedAt?: true
+  createdBy?: true
+  updatedBy?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -128,6 +138,8 @@ export type UserCountAggregateInputType = {
   codeValidation?: true
   createdAt?: true
   updatedAt?: true
+  createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -219,6 +231,8 @@ export type UserGroupByOutputType = {
   codeValidation: string | null
   createdAt: Date
   updatedAt: Date
+  createdBy: string
+  updatedBy: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -258,6 +272,8 @@ export type UserWhereInput = {
   codeValidation?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  createdBy?: Prisma.StringFilter<"User"> | string
+  updatedBy?: Prisma.StringNullableFilter<"User"> | string | null
   staff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
   student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
   teacher?: Prisma.XOR<Prisma.TeacherNullableScalarRelationFilter, Prisma.TeacherWhereInput> | null
@@ -283,6 +299,8 @@ export type UserOrderByWithRelationInput = {
   codeValidation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   staff?: Prisma.StaffOrderByWithRelationInput
   student?: Prisma.StudentOrderByWithRelationInput
   teacher?: Prisma.TeacherOrderByWithRelationInput
@@ -311,6 +329,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   phone?: Prisma.JsonFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  createdBy?: Prisma.StringFilter<"User"> | string
+  updatedBy?: Prisma.StringNullableFilter<"User"> | string | null
   staff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
   student?: Prisma.XOR<Prisma.StudentNullableScalarRelationFilter, Prisma.StudentWhereInput> | null
   teacher?: Prisma.XOR<Prisma.TeacherNullableScalarRelationFilter, Prisma.TeacherWhereInput> | null
@@ -336,6 +356,8 @@ export type UserOrderByWithAggregationInput = {
   codeValidation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -360,6 +382,8 @@ export type UserScalarWhereWithAggregatesInput = {
   codeValidation?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  createdBy?: Prisma.StringWithAggregatesFilter<"User"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
@@ -377,6 +401,8 @@ export type UserCreateInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffCreateNestedOneWithoutUserInput
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
@@ -402,6 +428,8 @@ export type UserUncheckedCreateInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
@@ -425,6 +453,8 @@ export type UserUpdateInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
@@ -450,6 +480,8 @@ export type UserUncheckedUpdateInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
@@ -474,6 +506,8 @@ export type UserCreateManyInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -491,6 +525,8 @@ export type UserUpdateManyMutationInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -509,6 +545,8 @@ export type UserUncheckedUpdateManyInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -527,6 +565,8 @@ export type UserCountOrderByAggregateInput = {
   codeValidation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -544,6 +584,8 @@ export type UserMaxOrderByAggregateInput = {
   codeValidation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -561,6 +603,8 @@ export type UserMinOrderByAggregateInput = {
   codeValidation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -739,6 +783,8 @@ export type UserCreateWithoutStaffInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
   tutor?: Prisma.TutorCreateNestedOneWithoutUserInput
@@ -763,6 +809,8 @@ export type UserUncheckedCreateWithoutStaffInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
@@ -801,6 +849,8 @@ export type UserUpdateWithoutStaffInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
   tutor?: Prisma.TutorUpdateOneWithoutUserNestedInput
@@ -825,6 +875,8 @@ export type UserUncheckedUpdateWithoutStaffInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
@@ -847,6 +899,8 @@ export type UserCreateWithoutAddressInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffCreateNestedOneWithoutUserInput
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
@@ -870,6 +924,8 @@ export type UserUncheckedCreateWithoutAddressInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
@@ -923,6 +979,8 @@ export type UserScalarWhereInput = {
   codeValidation?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  createdBy?: Prisma.StringFilter<"User"> | string
+  updatedBy?: Prisma.StringNullableFilter<"User"> | string | null
 }
 
 export type UserCreateWithoutAuthSessionsInput = {
@@ -940,6 +998,8 @@ export type UserCreateWithoutAuthSessionsInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffCreateNestedOneWithoutUserInput
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
@@ -964,6 +1024,8 @@ export type UserUncheckedCreateWithoutAuthSessionsInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
@@ -1002,6 +1064,8 @@ export type UserUpdateWithoutAuthSessionsInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
@@ -1026,6 +1090,8 @@ export type UserUncheckedUpdateWithoutAuthSessionsInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
@@ -1048,6 +1114,8 @@ export type UserCreateWithoutStudentInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
   tutor?: Prisma.TutorCreateNestedOneWithoutUserInput
@@ -1072,6 +1140,8 @@ export type UserUncheckedCreateWithoutStudentInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
@@ -1110,6 +1180,8 @@ export type UserUpdateWithoutStudentInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
   tutor?: Prisma.TutorUpdateOneWithoutUserNestedInput
@@ -1134,6 +1206,8 @@ export type UserUncheckedUpdateWithoutStudentInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
@@ -1156,6 +1230,8 @@ export type UserCreateWithoutTutorInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffCreateNestedOneWithoutUserInput
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
@@ -1180,6 +1256,8 @@ export type UserUncheckedCreateWithoutTutorInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
@@ -1218,6 +1296,8 @@ export type UserUpdateWithoutTutorInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
@@ -1242,6 +1322,8 @@ export type UserUncheckedUpdateWithoutTutorInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
@@ -1264,6 +1346,8 @@ export type UserCreateWithoutTeacherInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffCreateNestedOneWithoutUserInput
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
   tutor?: Prisma.TutorCreateNestedOneWithoutUserInput
@@ -1288,6 +1372,8 @@ export type UserUncheckedCreateWithoutTeacherInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
@@ -1326,6 +1412,8 @@ export type UserUpdateWithoutTeacherInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
   tutor?: Prisma.TutorUpdateOneWithoutUserNestedInput
@@ -1350,6 +1438,8 @@ export type UserUncheckedUpdateWithoutTeacherInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
@@ -1372,6 +1462,8 @@ export type UserCreateWithoutAccessRecordsInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffCreateNestedOneWithoutUserInput
   student?: Prisma.StudentCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
@@ -1396,6 +1488,8 @@ export type UserUncheckedCreateWithoutAccessRecordsInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
   staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
   student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
@@ -1434,6 +1528,8 @@ export type UserUpdateWithoutAccessRecordsInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
@@ -1458,6 +1554,8 @@ export type UserUncheckedUpdateWithoutAccessRecordsInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
@@ -1480,6 +1578,8 @@ export type UserCreateManyAddressInput = {
   codeValidation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
 }
 
 export type UserUpdateWithoutAddressInput = {
@@ -1497,6 +1597,8 @@ export type UserUpdateWithoutAddressInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
@@ -1520,6 +1622,8 @@ export type UserUncheckedUpdateWithoutAddressInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
@@ -1543,6 +1647,8 @@ export type UserUncheckedUpdateManyWithoutAddressInput = {
   codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1601,6 +1707,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   codeValidation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   staff?: boolean | Prisma.User$staffArgs<ExtArgs>
   student?: boolean | Prisma.User$studentArgs<ExtArgs>
   teacher?: boolean | Prisma.User$teacherArgs<ExtArgs>
@@ -1627,6 +1735,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   codeValidation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   address?: boolean | Prisma.User$addressArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1646,6 +1756,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   codeValidation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
   address?: boolean | Prisma.User$addressArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1665,9 +1777,11 @@ export type UserSelectScalar = {
   codeValidation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "addressId" | "numberDocument" | "typeDocument" | "numberCard" | "name" | "lastName" | "email" | "emailValidated" | "image" | "password" | "phone" | "codeValidation" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "addressId" | "numberDocument" | "typeDocument" | "numberCard" | "name" | "lastName" | "email" | "emailValidated" | "image" | "password" | "phone" | "codeValidation" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   staff?: boolean | Prisma.User$staffArgs<ExtArgs>
   student?: boolean | Prisma.User$studentArgs<ExtArgs>
@@ -1712,6 +1826,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     codeValidation: string | null
     createdAt: Date
     updatedAt: Date
+    createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2157,6 +2273,8 @@ export interface UserFieldRefs {
   readonly codeValidation: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly createdBy: Prisma.FieldRef<"User", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"User", 'String'>
 }
     
 

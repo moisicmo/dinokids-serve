@@ -6,7 +6,7 @@ import { PaginationDto } from '@/common';
 
 import { checkAbilities, CurrentUser } from '@/decorator';
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 import { TypeAction } from '@/generated/prisma/enums';
 @Controller('tutor')
 export class TutorController {

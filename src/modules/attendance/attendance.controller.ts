@@ -3,7 +3,7 @@ import { AttendanceService } from './attendance.service';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { checkAbilities, CurrentUser } from '@/decorator';
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 import { TypeAction } from '@/generated/prisma/enums';
 
 @Controller('attendance')

@@ -35,6 +35,7 @@ export type DocumentTransmissionMinAggregateOutputType = {
   readAt: Date | null
   archivedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type DocumentTransmissionMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type DocumentTransmissionMaxAggregateOutputType = {
   readAt: Date | null
   archivedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type DocumentTransmissionCountAggregateOutputType = {
@@ -61,6 +63,7 @@ export type DocumentTransmissionCountAggregateOutputType = {
   readAt: number
   archivedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -76,6 +79,7 @@ export type DocumentTransmissionMinAggregateInputType = {
   readAt?: true
   archivedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type DocumentTransmissionMaxAggregateInputType = {
@@ -89,6 +93,7 @@ export type DocumentTransmissionMaxAggregateInputType = {
   readAt?: true
   archivedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type DocumentTransmissionCountAggregateInputType = {
@@ -102,6 +107,7 @@ export type DocumentTransmissionCountAggregateInputType = {
   readAt?: true
   archivedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -188,6 +194,7 @@ export type DocumentTransmissionGroupByOutputType = {
   readAt: Date | null
   archivedAt: Date | null
   createdBy: string
+  updatedBy: string | null
   _count: DocumentTransmissionCountAggregateOutputType | null
   _min: DocumentTransmissionMinAggregateOutputType | null
   _max: DocumentTransmissionMaxAggregateOutputType | null
@@ -222,6 +229,7 @@ export type DocumentTransmissionWhereInput = {
   readAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
   createdBy?: Prisma.StringFilter<"DocumentTransmission"> | string
+  updatedBy?: Prisma.StringNullableFilter<"DocumentTransmission"> | string | null
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
 }
 
@@ -236,6 +244,7 @@ export type DocumentTransmissionOrderByWithRelationInput = {
   readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   document?: Prisma.DocumentOrderByWithRelationInput
 }
 
@@ -253,6 +262,7 @@ export type DocumentTransmissionWhereUniqueInput = Prisma.AtLeast<{
   readAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
   createdBy?: Prisma.StringFilter<"DocumentTransmission"> | string
+  updatedBy?: Prisma.StringNullableFilter<"DocumentTransmission"> | string | null
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
 }, "id">
 
@@ -267,6 +277,7 @@ export type DocumentTransmissionOrderByWithAggregationInput = {
   readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.DocumentTransmissionCountOrderByAggregateInput
   _max?: Prisma.DocumentTransmissionMaxOrderByAggregateInput
   _min?: Prisma.DocumentTransmissionMinOrderByAggregateInput
@@ -286,6 +297,7 @@ export type DocumentTransmissionScalarWhereWithAggregatesInput = {
   readAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentTransmission"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentTransmission"> | Date | string | null
   createdBy?: Prisma.StringWithAggregatesFilter<"DocumentTransmission"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"DocumentTransmission"> | string | null
 }
 
 export type DocumentTransmissionCreateInput = {
@@ -298,6 +310,7 @@ export type DocumentTransmissionCreateInput = {
   readAt?: Date | string | null
   archivedAt?: Date | string | null
   createdBy: string
+  updatedBy?: string | null
   document: Prisma.DocumentCreateNestedOneWithoutTransmissionsInput
 }
 
@@ -312,6 +325,7 @@ export type DocumentTransmissionUncheckedCreateInput = {
   readAt?: Date | string | null
   archivedAt?: Date | string | null
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type DocumentTransmissionUpdateInput = {
@@ -324,6 +338,7 @@ export type DocumentTransmissionUpdateInput = {
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   document?: Prisma.DocumentUpdateOneRequiredWithoutTransmissionsNestedInput
 }
 
@@ -338,6 +353,7 @@ export type DocumentTransmissionUncheckedUpdateInput = {
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DocumentTransmissionCreateManyInput = {
@@ -351,6 +367,7 @@ export type DocumentTransmissionCreateManyInput = {
   readAt?: Date | string | null
   archivedAt?: Date | string | null
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type DocumentTransmissionUpdateManyMutationInput = {
@@ -363,6 +380,7 @@ export type DocumentTransmissionUpdateManyMutationInput = {
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DocumentTransmissionUncheckedUpdateManyInput = {
@@ -376,6 +394,7 @@ export type DocumentTransmissionUncheckedUpdateManyInput = {
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DocumentTransmissionListRelationFilter = {
@@ -399,6 +418,7 @@ export type DocumentTransmissionCountOrderByAggregateInput = {
   readAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DocumentTransmissionMaxOrderByAggregateInput = {
@@ -412,6 +432,7 @@ export type DocumentTransmissionMaxOrderByAggregateInput = {
   readAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DocumentTransmissionMinOrderByAggregateInput = {
@@ -425,6 +446,7 @@ export type DocumentTransmissionMinOrderByAggregateInput = {
   readAt?: Prisma.SortOrder
   archivedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type DocumentTransmissionCreateNestedManyWithoutDocumentInput = {
@@ -483,6 +505,7 @@ export type DocumentTransmissionCreateWithoutDocumentInput = {
   readAt?: Date | string | null
   archivedAt?: Date | string | null
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type DocumentTransmissionUncheckedCreateWithoutDocumentInput = {
@@ -495,6 +518,7 @@ export type DocumentTransmissionUncheckedCreateWithoutDocumentInput = {
   readAt?: Date | string | null
   archivedAt?: Date | string | null
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type DocumentTransmissionCreateOrConnectWithoutDocumentInput = {
@@ -537,6 +561,7 @@ export type DocumentTransmissionScalarWhereInput = {
   readAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
   archivedAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
   createdBy?: Prisma.StringFilter<"DocumentTransmission"> | string
+  updatedBy?: Prisma.StringNullableFilter<"DocumentTransmission"> | string | null
 }
 
 export type DocumentTransmissionCreateManyDocumentInput = {
@@ -549,6 +574,7 @@ export type DocumentTransmissionCreateManyDocumentInput = {
   readAt?: Date | string | null
   archivedAt?: Date | string | null
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type DocumentTransmissionUpdateWithoutDocumentInput = {
@@ -561,6 +587,7 @@ export type DocumentTransmissionUpdateWithoutDocumentInput = {
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DocumentTransmissionUncheckedUpdateWithoutDocumentInput = {
@@ -573,6 +600,7 @@ export type DocumentTransmissionUncheckedUpdateWithoutDocumentInput = {
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DocumentTransmissionUncheckedUpdateManyWithoutDocumentInput = {
@@ -585,6 +613,7 @@ export type DocumentTransmissionUncheckedUpdateManyWithoutDocumentInput = {
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -600,6 +629,7 @@ export type DocumentTransmissionSelect<ExtArgs extends runtime.Types.Extensions.
   readAt?: boolean
   archivedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentTransmission"]>
 
@@ -614,6 +644,7 @@ export type DocumentTransmissionSelectCreateManyAndReturn<ExtArgs extends runtim
   readAt?: boolean
   archivedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentTransmission"]>
 
@@ -628,6 +659,7 @@ export type DocumentTransmissionSelectUpdateManyAndReturn<ExtArgs extends runtim
   readAt?: boolean
   archivedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentTransmission"]>
 
@@ -642,9 +674,10 @@ export type DocumentTransmissionSelectScalar = {
   readAt?: boolean
   archivedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type DocumentTransmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentId" | "senderId" | "receiverId" | "status" | "createdAt" | "updatedAt" | "readAt" | "archivedAt" | "createdBy", ExtArgs["result"]["documentTransmission"]>
+export type DocumentTransmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentId" | "senderId" | "receiverId" | "status" | "createdAt" | "updatedAt" | "readAt" | "archivedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["documentTransmission"]>
 export type DocumentTransmissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
 }
@@ -671,6 +704,7 @@ export type $DocumentTransmissionPayload<ExtArgs extends runtime.Types.Extension
     readAt: Date | null
     archivedAt: Date | null
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["documentTransmission"]>
   composites: {}
 }
@@ -1105,6 +1139,7 @@ export interface DocumentTransmissionFieldRefs {
   readonly readAt: Prisma.FieldRef<"DocumentTransmission", 'DateTime'>
   readonly archivedAt: Prisma.FieldRef<"DocumentTransmission", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"DocumentTransmission", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"DocumentTransmission", 'String'>
 }
     
 

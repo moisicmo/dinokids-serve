@@ -47,6 +47,7 @@ export class StudentService {
         data: {
           ...userDto,
           password: hashedPassword,
+          createdBy: email,
           student: {
             create: {
               code: `STU-${userDto.numberDocument}`,
@@ -58,7 +59,7 @@ export class StudentService {
                 connect: tutorIds.map((userId) => ({ userId })),
               },
               schoolId: schoolRecord.id,
-            createdBy: email,
+              createdBy: email,
             },
           },
         },
@@ -79,7 +80,7 @@ export class StudentService {
   }
 
 
-  async findAll( paginationDto: PaginationDto): Promise<PaginationResult<StudentType>> {
+  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StudentType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
@@ -160,7 +161,7 @@ export class StudentService {
       : await this.prisma.school.create({
         data: {
           name: school,
-            createdBy: email,
+          createdBy: email,
         },
       });
 

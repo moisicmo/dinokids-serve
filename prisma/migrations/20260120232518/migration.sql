@@ -48,6 +48,8 @@ CREATE TABLE "users" (
     "code_validation" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -62,6 +64,7 @@ CREATE TABLE "branches" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "branches_pkey" PRIMARY KEY ("id")
 );
@@ -76,6 +79,7 @@ CREATE TABLE "staffs" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "staffs_pkey" PRIMARY KEY ("id")
 );
@@ -89,6 +93,7 @@ CREATE TABLE "addresses" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "addresses_pkey" PRIMARY KEY ("id")
 );
@@ -103,6 +108,7 @@ CREATE TABLE "auth_sessions" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
     "revoked_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "auth_sessions_pkey" PRIMARY KEY ("id")
@@ -117,6 +123,7 @@ CREATE TABLE "permissions" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "permissions_pkey" PRIMARY KEY ("id")
 );
@@ -129,6 +136,7 @@ CREATE TABLE "roles" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "roles_pkey" PRIMARY KEY ("id")
 );
@@ -147,6 +155,7 @@ CREATE TABLE "students" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "students_pkey" PRIMARY KEY ("id")
 );
@@ -161,6 +170,7 @@ CREATE TABLE "session_trackings" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "session_trackings_pkey" PRIMARY KEY ("id")
 );
@@ -175,6 +185,7 @@ CREATE TABLE "weekly_plannings" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "weekly_plannings_pkey" PRIMARY KEY ("id")
 );
@@ -188,6 +199,7 @@ CREATE TABLE "weekly_planning_objectives" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "weekly_planning_objectives_pkey" PRIMARY KEY ("id")
 );
@@ -200,6 +212,7 @@ CREATE TABLE "evaluation_plannings" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "evaluation_plannings_pkey" PRIMARY KEY ("id")
 );
@@ -214,6 +227,7 @@ CREATE TABLE "section_definitions" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "section_definitions_pkey" PRIMARY KEY ("id")
 );
@@ -225,6 +239,7 @@ CREATE TABLE "schools" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "schools_pkey" PRIMARY KEY ("id")
 );
@@ -237,6 +252,7 @@ CREATE TABLE "tutors" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "tutors_pkey" PRIMARY KEY ("id")
 );
@@ -252,6 +268,7 @@ CREATE TABLE "teachers" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "teachers_pkey" PRIMARY KEY ("id")
 );
@@ -264,6 +281,7 @@ CREATE TABLE "specialties" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "specialties_pkey" PRIMARY KEY ("id")
 );
@@ -279,6 +297,7 @@ CREATE TABLE "branch_specialties" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "branch_specialties_pkey" PRIMARY KEY ("id")
 );
@@ -296,6 +315,7 @@ CREATE TABLE "rooms" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "rooms_pkey" PRIMARY KEY ("id")
 );
@@ -309,6 +329,7 @@ CREATE TABLE "assignment_rooms" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "assignment_rooms_pkey" PRIMARY KEY ("id")
 );
@@ -321,10 +342,12 @@ CREATE TABLE "schedules" (
     "day" "DayOfWeek" NOT NULL,
     "start" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "end" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "color" VARCHAR,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "schedules_pkey" PRIMARY KEY ("id")
 );
@@ -339,6 +362,7 @@ CREATE TABLE "assignment_schedules" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "assignment_schedules_pkey" PRIMARY KEY ("id")
 );
@@ -353,6 +377,7 @@ CREATE TABLE "prices" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "prices_pkey" PRIMARY KEY ("id")
 );
@@ -368,6 +393,7 @@ CREATE TABLE "inscriptions" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "inscriptions_pkey" PRIMARY KEY ("id")
 );
@@ -383,6 +409,7 @@ CREATE TABLE "bookings" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "bookings_pkey" PRIMARY KEY ("id")
 );
@@ -398,6 +425,7 @@ CREATE TABLE "debts" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "debts_pkey" PRIMARY KEY ("id")
 );
@@ -413,6 +441,7 @@ CREATE TABLE "payments" (
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "payments_pkey" PRIMARY KEY ("id")
 );
@@ -427,6 +456,7 @@ CREATE TABLE "invoices" (
     "active" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "invoices_pkey" PRIMARY KEY ("id")
 );
@@ -439,6 +469,7 @@ CREATE TABLE "refunds" (
     "amount" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "refunds_pkey" PRIMARY KEY ("id")
 );
@@ -454,6 +485,7 @@ CREATE TABLE "sessions" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
 );
@@ -469,6 +501,7 @@ CREATE TABLE "access_records" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "access_records_pkey" PRIMARY KEY ("id")
 );
@@ -481,6 +514,7 @@ CREATE TABLE "documents" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "documents_pkey" PRIMARY KEY ("id")
 );
@@ -497,6 +531,7 @@ CREATE TABLE "documentTransmissions" (
     "read_at" TIMESTAMP(3),
     "archived_at" TIMESTAMP(3),
     "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
 
     CONSTRAINT "documentTransmissions_pkey" PRIMARY KEY ("id")
 );
@@ -543,13 +578,22 @@ CREATE UNIQUE INDEX "users_number_card_key" ON "users"("number_card");
 CREATE UNIQUE INDEX "users_code_validation_key" ON "users"("code_validation");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "branches_name_key" ON "branches"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "staffs_user_id_key" ON "staffs"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "addresses_city_zone_detail_key" ON "addresses"("city", "zone", "detail");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "auth_sessions_token_key" ON "auth_sessions"("token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "permissions_action_subject_key" ON "permissions"("action", "subject");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "roles_name_key" ON "roles"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "students_user_id_key" ON "students"("user_id");
@@ -565,6 +609,9 @@ CREATE UNIQUE INDEX "tutors_user_id_key" ON "tutors"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "teachers_user_id_key" ON "teachers"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "specialties_name_key" ON "specialties"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "branch_specialties_branch_id_specialty_id_key" ON "branch_specialties"("branch_id", "specialty_id");

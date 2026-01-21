@@ -31,6 +31,7 @@ export type EvaluationPlanningMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type EvaluationPlanningMaxAggregateOutputType = {
@@ -40,6 +41,7 @@ export type EvaluationPlanningMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type EvaluationPlanningCountAggregateOutputType = {
@@ -49,6 +51,7 @@ export type EvaluationPlanningCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -60,6 +63,7 @@ export type EvaluationPlanningMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type EvaluationPlanningMaxAggregateInputType = {
@@ -69,6 +73,7 @@ export type EvaluationPlanningMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type EvaluationPlanningCountAggregateInputType = {
@@ -78,6 +83,7 @@ export type EvaluationPlanningCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -160,6 +166,7 @@ export type EvaluationPlanningGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: EvaluationPlanningCountAggregateOutputType | null
   _min: EvaluationPlanningMinAggregateOutputType | null
   _max: EvaluationPlanningMaxAggregateOutputType | null
@@ -190,6 +197,7 @@ export type EvaluationPlanningWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"EvaluationPlanning"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"EvaluationPlanning"> | Date | string
   createdBy?: Prisma.StringFilter<"EvaluationPlanning"> | string
+  updatedBy?: Prisma.StringNullableFilter<"EvaluationPlanning"> | string | null
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   sections?: Prisma.SectionDefinitionListRelationFilter
 }
@@ -201,6 +209,7 @@ export type EvaluationPlanningOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
   sections?: Prisma.SectionDefinitionOrderByRelationAggregateInput
 }
@@ -215,6 +224,7 @@ export type EvaluationPlanningWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"EvaluationPlanning"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"EvaluationPlanning"> | Date | string
   createdBy?: Prisma.StringFilter<"EvaluationPlanning"> | string
+  updatedBy?: Prisma.StringNullableFilter<"EvaluationPlanning"> | string | null
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   sections?: Prisma.SectionDefinitionListRelationFilter
 }, "id">
@@ -226,6 +236,7 @@ export type EvaluationPlanningOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.EvaluationPlanningCountOrderByAggregateInput
   _max?: Prisma.EvaluationPlanningMaxOrderByAggregateInput
   _min?: Prisma.EvaluationPlanningMinOrderByAggregateInput
@@ -241,6 +252,7 @@ export type EvaluationPlanningScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"EvaluationPlanning"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"EvaluationPlanning"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"EvaluationPlanning"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"EvaluationPlanning"> | string | null
 }
 
 export type EvaluationPlanningCreateInput = {
@@ -249,6 +261,7 @@ export type EvaluationPlanningCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   student: Prisma.StudentCreateNestedOneWithoutEvaluationPlanningsInput
   sections?: Prisma.SectionDefinitionCreateNestedManyWithoutEvaluationInput
 }
@@ -260,6 +273,7 @@ export type EvaluationPlanningUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   sections?: Prisma.SectionDefinitionUncheckedCreateNestedManyWithoutEvaluationInput
 }
 
@@ -269,6 +283,7 @@ export type EvaluationPlanningUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneRequiredWithoutEvaluationPlanningsNestedInput
   sections?: Prisma.SectionDefinitionUpdateManyWithoutEvaluationNestedInput
 }
@@ -280,6 +295,7 @@ export type EvaluationPlanningUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sections?: Prisma.SectionDefinitionUncheckedUpdateManyWithoutEvaluationNestedInput
 }
 
@@ -290,6 +306,7 @@ export type EvaluationPlanningCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type EvaluationPlanningUpdateManyMutationInput = {
@@ -298,6 +315,7 @@ export type EvaluationPlanningUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type EvaluationPlanningUncheckedUpdateManyInput = {
@@ -307,6 +325,7 @@ export type EvaluationPlanningUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type EvaluationPlanningListRelationFilter = {
@@ -326,6 +345,7 @@ export type EvaluationPlanningCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type EvaluationPlanningMaxOrderByAggregateInput = {
@@ -335,6 +355,7 @@ export type EvaluationPlanningMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type EvaluationPlanningMinOrderByAggregateInput = {
@@ -344,6 +365,7 @@ export type EvaluationPlanningMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type EvaluationPlanningScalarRelationFilter = {
@@ -413,6 +435,7 @@ export type EvaluationPlanningCreateWithoutStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   sections?: Prisma.SectionDefinitionCreateNestedManyWithoutEvaluationInput
 }
 
@@ -422,6 +445,7 @@ export type EvaluationPlanningUncheckedCreateWithoutStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   sections?: Prisma.SectionDefinitionUncheckedCreateNestedManyWithoutEvaluationInput
 }
 
@@ -461,6 +485,7 @@ export type EvaluationPlanningScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"EvaluationPlanning"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"EvaluationPlanning"> | Date | string
   createdBy?: Prisma.StringFilter<"EvaluationPlanning"> | string
+  updatedBy?: Prisma.StringNullableFilter<"EvaluationPlanning"> | string | null
 }
 
 export type EvaluationPlanningCreateWithoutSectionsInput = {
@@ -469,6 +494,7 @@ export type EvaluationPlanningCreateWithoutSectionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   student: Prisma.StudentCreateNestedOneWithoutEvaluationPlanningsInput
 }
 
@@ -479,6 +505,7 @@ export type EvaluationPlanningUncheckedCreateWithoutSectionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type EvaluationPlanningCreateOrConnectWithoutSectionsInput = {
@@ -503,6 +530,7 @@ export type EvaluationPlanningUpdateWithoutSectionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   student?: Prisma.StudentUpdateOneRequiredWithoutEvaluationPlanningsNestedInput
 }
 
@@ -513,6 +541,7 @@ export type EvaluationPlanningUncheckedUpdateWithoutSectionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type EvaluationPlanningCreateManyStudentInput = {
@@ -521,6 +550,7 @@ export type EvaluationPlanningCreateManyStudentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type EvaluationPlanningUpdateWithoutStudentInput = {
@@ -529,6 +559,7 @@ export type EvaluationPlanningUpdateWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sections?: Prisma.SectionDefinitionUpdateManyWithoutEvaluationNestedInput
 }
 
@@ -538,6 +569,7 @@ export type EvaluationPlanningUncheckedUpdateWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sections?: Prisma.SectionDefinitionUncheckedUpdateManyWithoutEvaluationNestedInput
 }
 
@@ -547,6 +579,7 @@ export type EvaluationPlanningUncheckedUpdateManyWithoutStudentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -587,6 +620,7 @@ export type EvaluationPlanningSelect<ExtArgs extends runtime.Types.Extensions.In
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   sections?: boolean | Prisma.EvaluationPlanning$sectionsArgs<ExtArgs>
   _count?: boolean | Prisma.EvaluationPlanningCountOutputTypeDefaultArgs<ExtArgs>
@@ -599,6 +633,7 @@ export type EvaluationPlanningSelectCreateManyAndReturn<ExtArgs extends runtime.
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["evaluationPlanning"]>
 
@@ -609,6 +644,7 @@ export type EvaluationPlanningSelectUpdateManyAndReturn<ExtArgs extends runtime.
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["evaluationPlanning"]>
 
@@ -619,9 +655,10 @@ export type EvaluationPlanningSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type EvaluationPlanningOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "evaluationDate" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["evaluationPlanning"]>
+export type EvaluationPlanningOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "evaluationDate" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["evaluationPlanning"]>
 export type EvaluationPlanningInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   sections?: boolean | Prisma.EvaluationPlanning$sectionsArgs<ExtArgs>
@@ -647,6 +684,7 @@ export type $EvaluationPlanningPayload<ExtArgs extends runtime.Types.Extensions.
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["evaluationPlanning"]>
   composites: {}
 }
@@ -1078,6 +1116,7 @@ export interface EvaluationPlanningFieldRefs {
   readonly createdAt: Prisma.FieldRef<"EvaluationPlanning", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"EvaluationPlanning", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"EvaluationPlanning", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"EvaluationPlanning", 'String'>
 }
     
 

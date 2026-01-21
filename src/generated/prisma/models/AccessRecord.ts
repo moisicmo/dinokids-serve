@@ -34,6 +34,7 @@ export type AccessRecordMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type AccessRecordMaxAggregateOutputType = {
@@ -46,6 +47,7 @@ export type AccessRecordMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type AccessRecordCountAggregateOutputType = {
@@ -58,6 +60,7 @@ export type AccessRecordCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -72,6 +75,7 @@ export type AccessRecordMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type AccessRecordMaxAggregateInputType = {
@@ -84,6 +88,7 @@ export type AccessRecordMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type AccessRecordCountAggregateInputType = {
@@ -96,6 +101,7 @@ export type AccessRecordCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -181,6 +187,7 @@ export type AccessRecordGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: AccessRecordCountAggregateOutputType | null
   _min: AccessRecordMinAggregateOutputType | null
   _max: AccessRecordMaxAggregateOutputType | null
@@ -214,6 +221,7 @@ export type AccessRecordWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"AccessRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AccessRecord"> | Date | string
   createdBy?: Prisma.StringFilter<"AccessRecord"> | string
+  updatedBy?: Prisma.StringNullableFilter<"AccessRecord"> | string | null
   branch?: Prisma.XOR<Prisma.BranchScalarRelationFilter, Prisma.BranchWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -228,6 +236,7 @@ export type AccessRecordOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   branch?: Prisma.BranchOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -245,6 +254,7 @@ export type AccessRecordWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"AccessRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AccessRecord"> | Date | string
   createdBy?: Prisma.StringFilter<"AccessRecord"> | string
+  updatedBy?: Prisma.StringNullableFilter<"AccessRecord"> | string | null
   branch?: Prisma.XOR<Prisma.BranchScalarRelationFilter, Prisma.BranchWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
@@ -259,6 +269,7 @@ export type AccessRecordOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AccessRecordCountOrderByAggregateInput
   _max?: Prisma.AccessRecordMaxOrderByAggregateInput
   _min?: Prisma.AccessRecordMinOrderByAggregateInput
@@ -277,6 +288,7 @@ export type AccessRecordScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AccessRecord"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AccessRecord"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"AccessRecord"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"AccessRecord"> | string | null
 }
 
 export type AccessRecordCreateInput = {
@@ -287,6 +299,7 @@ export type AccessRecordCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutAccessRecordsInput
   user: Prisma.UserCreateNestedOneWithoutAccessRecordsInput
 }
@@ -301,6 +314,7 @@ export type AccessRecordUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AccessRecordUpdateInput = {
@@ -311,6 +325,7 @@ export type AccessRecordUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutAccessRecordsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutAccessRecordsNestedInput
 }
@@ -325,6 +340,7 @@ export type AccessRecordUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AccessRecordCreateManyInput = {
@@ -337,6 +353,7 @@ export type AccessRecordCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AccessRecordUpdateManyMutationInput = {
@@ -347,6 +364,7 @@ export type AccessRecordUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AccessRecordUncheckedUpdateManyInput = {
@@ -359,6 +377,7 @@ export type AccessRecordUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AccessRecordListRelationFilter = {
@@ -381,6 +400,7 @@ export type AccessRecordCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type AccessRecordMaxOrderByAggregateInput = {
@@ -393,6 +413,7 @@ export type AccessRecordMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type AccessRecordMinOrderByAggregateInput = {
@@ -405,6 +426,7 @@ export type AccessRecordMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type AccessRecordCreateNestedManyWithoutUserInput = {
@@ -499,6 +521,7 @@ export type AccessRecordCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branch: Prisma.BranchCreateNestedOneWithoutAccessRecordsInput
 }
 
@@ -511,6 +534,7 @@ export type AccessRecordUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AccessRecordCreateOrConnectWithoutUserInput = {
@@ -552,6 +576,7 @@ export type AccessRecordScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"AccessRecord"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"AccessRecord"> | Date | string
   createdBy?: Prisma.StringFilter<"AccessRecord"> | string
+  updatedBy?: Prisma.StringNullableFilter<"AccessRecord"> | string | null
 }
 
 export type AccessRecordCreateWithoutBranchInput = {
@@ -562,6 +587,7 @@ export type AccessRecordCreateWithoutBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   user: Prisma.UserCreateNestedOneWithoutAccessRecordsInput
 }
 
@@ -574,6 +600,7 @@ export type AccessRecordUncheckedCreateWithoutBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AccessRecordCreateOrConnectWithoutBranchInput = {
@@ -611,6 +638,7 @@ export type AccessRecordCreateManyUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AccessRecordUpdateWithoutUserInput = {
@@ -621,6 +649,7 @@ export type AccessRecordUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branch?: Prisma.BranchUpdateOneRequiredWithoutAccessRecordsNestedInput
 }
 
@@ -633,6 +662,7 @@ export type AccessRecordUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AccessRecordUncheckedUpdateManyWithoutUserInput = {
@@ -644,6 +674,7 @@ export type AccessRecordUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AccessRecordCreateManyBranchInput = {
@@ -655,6 +686,7 @@ export type AccessRecordCreateManyBranchInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type AccessRecordUpdateWithoutBranchInput = {
@@ -665,6 +697,7 @@ export type AccessRecordUpdateWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAccessRecordsNestedInput
 }
 
@@ -677,6 +710,7 @@ export type AccessRecordUncheckedUpdateWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AccessRecordUncheckedUpdateManyWithoutBranchInput = {
@@ -688,6 +722,7 @@ export type AccessRecordUncheckedUpdateManyWithoutBranchInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -702,6 +737,7 @@ export type AccessRecordSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["accessRecord"]>
@@ -716,6 +752,7 @@ export type AccessRecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["accessRecord"]>
@@ -730,6 +767,7 @@ export type AccessRecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["accessRecord"]>
@@ -744,9 +782,10 @@ export type AccessRecordSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type AccessRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "branchId" | "userId" | "checkIn" | "checkOut" | "observation" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["accessRecord"]>
+export type AccessRecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "branchId" | "userId" | "checkIn" | "checkOut" | "observation" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["accessRecord"]>
 export type AccessRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   branch?: boolean | Prisma.BranchDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -776,6 +815,7 @@ export type $AccessRecordPayload<ExtArgs extends runtime.Types.Extensions.Intern
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["accessRecord"]>
   composites: {}
 }
@@ -1210,6 +1250,7 @@ export interface AccessRecordFieldRefs {
   readonly createdAt: Prisma.FieldRef<"AccessRecord", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"AccessRecord", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"AccessRecord", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"AccessRecord", 'String'>
 }
     
 

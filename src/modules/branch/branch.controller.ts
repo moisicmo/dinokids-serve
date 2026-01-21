@@ -3,10 +3,10 @@ import { BranchService } from './branch.service';
 import { CreateBranchDto } from './dto/create-branch.dto';
 import { UpdateBranchDto } from './dto/update-branch.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities, CurrentUser } from '@/decorator';
+import { checkAbilities, CurrentUser, RequestInfo } from '@/decorator';
 import { TypeAction } from "@/generated/prisma/client";
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 @Controller('branch')
 export class BranchController {
   constructor(private readonly branchService: BranchService) { }
@@ -19,8 +19,8 @@ export class BranchController {
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.branch })
-  findAll( @Query() paginationDto: PaginationDto ) {
-    return this.branchService.findAll(paginationDto);
+  findAll( @Query() paginationDto: PaginationDto, @RequestInfo() requestInfo: RequestInfo ) {
+    return this.branchService.findAll(paginationDto, requestInfo.branchSelect);
   }
 
   @Get(':id')

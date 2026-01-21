@@ -4,7 +4,7 @@ import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { PaginationDto } from '@/common';
 import { checkAbilities } from '@/decorator';
 import { TypeAction } from "@/generated/prisma/client";
-import { TypeSubject } from '@/common/subjects';
+import { TypeSubject } from '@/common/enums';
 @Controller('schedule')
 export class ScheduleController {
   constructor(private readonly scheduleService: ScheduleService) { }

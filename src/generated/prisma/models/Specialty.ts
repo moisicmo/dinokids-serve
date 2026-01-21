@@ -31,6 +31,7 @@ export type SpecialtyMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SpecialtyMaxAggregateOutputType = {
@@ -40,6 +41,7 @@ export type SpecialtyMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type SpecialtyCountAggregateOutputType = {
@@ -49,6 +51,7 @@ export type SpecialtyCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -60,6 +63,7 @@ export type SpecialtyMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type SpecialtyMaxAggregateInputType = {
@@ -69,6 +73,7 @@ export type SpecialtyMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type SpecialtyCountAggregateInputType = {
@@ -78,6 +83,7 @@ export type SpecialtyCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -160,6 +166,7 @@ export type SpecialtyGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: SpecialtyCountAggregateOutputType | null
   _min: SpecialtyMinAggregateOutputType | null
   _max: SpecialtyMaxAggregateOutputType | null
@@ -190,6 +197,7 @@ export type SpecialtyWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Specialty"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Specialty"> | Date | string
   createdBy?: Prisma.StringFilter<"Specialty"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Specialty"> | string | null
   branchSpecialties?: Prisma.BranchSpecialtyListRelationFilter
   rooms?: Prisma.RoomListRelationFilter
 }
@@ -201,23 +209,25 @@ export type SpecialtyOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   branchSpecialties?: Prisma.BranchSpecialtyOrderByRelationAggregateInput
   rooms?: Prisma.RoomOrderByRelationAggregateInput
 }
 
 export type SpecialtyWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  name?: string
   AND?: Prisma.SpecialtyWhereInput | Prisma.SpecialtyWhereInput[]
   OR?: Prisma.SpecialtyWhereInput[]
   NOT?: Prisma.SpecialtyWhereInput | Prisma.SpecialtyWhereInput[]
-  name?: Prisma.StringFilter<"Specialty"> | string
   active?: Prisma.BoolFilter<"Specialty"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Specialty"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Specialty"> | Date | string
   createdBy?: Prisma.StringFilter<"Specialty"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Specialty"> | string | null
   branchSpecialties?: Prisma.BranchSpecialtyListRelationFilter
   rooms?: Prisma.RoomListRelationFilter
-}, "id">
+}, "id" | "name">
 
 export type SpecialtyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -226,6 +236,7 @@ export type SpecialtyOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SpecialtyCountOrderByAggregateInput
   _max?: Prisma.SpecialtyMaxOrderByAggregateInput
   _min?: Prisma.SpecialtyMinOrderByAggregateInput
@@ -241,6 +252,7 @@ export type SpecialtyScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Specialty"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Specialty"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Specialty"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Specialty"> | string | null
 }
 
 export type SpecialtyCreateInput = {
@@ -250,6 +262,7 @@ export type SpecialtyCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutSpecialtyInput
   rooms?: Prisma.RoomCreateNestedManyWithoutSpecialtyInput
 }
@@ -261,6 +274,7 @@ export type SpecialtyUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutSpecialtyInput
   rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutSpecialtyInput
 }
@@ -272,6 +286,7 @@ export type SpecialtyUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutSpecialtyNestedInput
   rooms?: Prisma.RoomUpdateManyWithoutSpecialtyNestedInput
 }
@@ -283,6 +298,7 @@ export type SpecialtyUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutSpecialtyNestedInput
   rooms?: Prisma.RoomUncheckedUpdateManyWithoutSpecialtyNestedInput
 }
@@ -294,6 +310,7 @@ export type SpecialtyCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type SpecialtyUpdateManyMutationInput = {
@@ -303,6 +320,7 @@ export type SpecialtyUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SpecialtyUncheckedUpdateManyInput = {
@@ -312,6 +330,7 @@ export type SpecialtyUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SpecialtyCountOrderByAggregateInput = {
@@ -321,6 +340,7 @@ export type SpecialtyCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SpecialtyMaxOrderByAggregateInput = {
@@ -330,6 +350,7 @@ export type SpecialtyMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SpecialtyMinOrderByAggregateInput = {
@@ -339,6 +360,7 @@ export type SpecialtyMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type SpecialtyScalarRelationFilter = {
@@ -381,6 +403,7 @@ export type SpecialtyCreateWithoutBranchSpecialtiesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomCreateNestedManyWithoutSpecialtyInput
 }
 
@@ -391,6 +414,7 @@ export type SpecialtyUncheckedCreateWithoutBranchSpecialtiesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutSpecialtyInput
 }
 
@@ -417,6 +441,7 @@ export type SpecialtyUpdateWithoutBranchSpecialtiesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUpdateManyWithoutSpecialtyNestedInput
 }
 
@@ -427,6 +452,7 @@ export type SpecialtyUncheckedUpdateWithoutBranchSpecialtiesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rooms?: Prisma.RoomUncheckedUpdateManyWithoutSpecialtyNestedInput
 }
 
@@ -437,6 +463,7 @@ export type SpecialtyCreateWithoutRoomsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutSpecialtyInput
 }
 
@@ -447,6 +474,7 @@ export type SpecialtyUncheckedCreateWithoutRoomsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutSpecialtyInput
 }
 
@@ -473,6 +501,7 @@ export type SpecialtyUpdateWithoutRoomsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutSpecialtyNestedInput
 }
 
@@ -483,6 +512,7 @@ export type SpecialtyUncheckedUpdateWithoutRoomsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutSpecialtyNestedInput
 }
 
@@ -533,6 +563,7 @@ export type SpecialtySelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   branchSpecialties?: boolean | Prisma.Specialty$branchSpecialtiesArgs<ExtArgs>
   rooms?: boolean | Prisma.Specialty$roomsArgs<ExtArgs>
   _count?: boolean | Prisma.SpecialtyCountOutputTypeDefaultArgs<ExtArgs>
@@ -545,6 +576,7 @@ export type SpecialtySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }, ExtArgs["result"]["specialty"]>
 
 export type SpecialtySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -554,6 +586,7 @@ export type SpecialtySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }, ExtArgs["result"]["specialty"]>
 
 export type SpecialtySelectScalar = {
@@ -563,9 +596,10 @@ export type SpecialtySelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type SpecialtyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "active" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["specialty"]>
+export type SpecialtyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["specialty"]>
 export type SpecialtyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   branchSpecialties?: boolean | Prisma.Specialty$branchSpecialtiesArgs<ExtArgs>
   rooms?: boolean | Prisma.Specialty$roomsArgs<ExtArgs>
@@ -587,6 +621,7 @@ export type $SpecialtyPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     createdAt: Date
     updatedAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["specialty"]>
   composites: {}
 }
@@ -1018,6 +1053,7 @@ export interface SpecialtyFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Specialty", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Specialty", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Specialty", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Specialty", 'String'>
 }
     
 

@@ -41,6 +41,7 @@ export type RefundMinAggregateOutputType = {
   amount: number | null
   createdAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type RefundMaxAggregateOutputType = {
@@ -50,6 +51,7 @@ export type RefundMaxAggregateOutputType = {
   amount: number | null
   createdAt: Date | null
   createdBy: string | null
+  updatedBy: string | null
 }
 
 export type RefundCountAggregateOutputType = {
@@ -59,6 +61,7 @@ export type RefundCountAggregateOutputType = {
   amount: number
   createdAt: number
   createdBy: number
+  updatedBy: number
   _all: number
 }
 
@@ -78,6 +81,7 @@ export type RefundMinAggregateInputType = {
   amount?: true
   createdAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type RefundMaxAggregateInputType = {
@@ -87,6 +91,7 @@ export type RefundMaxAggregateInputType = {
   amount?: true
   createdAt?: true
   createdBy?: true
+  updatedBy?: true
 }
 
 export type RefundCountAggregateInputType = {
@@ -96,6 +101,7 @@ export type RefundCountAggregateInputType = {
   amount?: true
   createdAt?: true
   createdBy?: true
+  updatedBy?: true
   _all?: true
 }
 
@@ -192,6 +198,7 @@ export type RefundGroupByOutputType = {
   amount: number
   createdAt: Date
   createdBy: string
+  updatedBy: string | null
   _count: RefundCountAggregateOutputType | null
   _avg: RefundAvgAggregateOutputType | null
   _sum: RefundSumAggregateOutputType | null
@@ -224,6 +231,7 @@ export type RefundWhereInput = {
   amount?: Prisma.FloatFilter<"Refund"> | number
   createdAt?: Prisma.DateTimeFilter<"Refund"> | Date | string
   createdBy?: Prisma.StringFilter<"Refund"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Refund"> | string | null
   Debts?: Prisma.XOR<Prisma.DebtsScalarRelationFilter, Prisma.DebtsWhereInput>
 }
 
@@ -234,6 +242,7 @@ export type RefundOrderByWithRelationInput = {
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   Debts?: Prisma.DebtsOrderByWithRelationInput
 }
 
@@ -247,6 +256,7 @@ export type RefundWhereUniqueInput = Prisma.AtLeast<{
   amount?: Prisma.FloatFilter<"Refund"> | number
   createdAt?: Prisma.DateTimeFilter<"Refund"> | Date | string
   createdBy?: Prisma.StringFilter<"Refund"> | string
+  updatedBy?: Prisma.StringNullableFilter<"Refund"> | string | null
   Debts?: Prisma.XOR<Prisma.DebtsScalarRelationFilter, Prisma.DebtsWhereInput>
 }, "id" | "debtId">
 
@@ -257,6 +267,7 @@ export type RefundOrderByWithAggregationInput = {
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RefundCountOrderByAggregateInput
   _avg?: Prisma.RefundAvgOrderByAggregateInput
   _max?: Prisma.RefundMaxOrderByAggregateInput
@@ -274,6 +285,7 @@ export type RefundScalarWhereWithAggregatesInput = {
   amount?: Prisma.FloatWithAggregatesFilter<"Refund"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Refund"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Refund"> | string
+  updatedBy?: Prisma.StringNullableWithAggregatesFilter<"Refund"> | string | null
 }
 
 export type RefundCreateInput = {
@@ -282,6 +294,7 @@ export type RefundCreateInput = {
   amount?: number
   createdAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
   Debts: Prisma.DebtsCreateNestedOneWithoutRefundInput
 }
 
@@ -292,6 +305,7 @@ export type RefundUncheckedCreateInput = {
   amount?: number
   createdAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RefundUpdateInput = {
@@ -300,6 +314,7 @@ export type RefundUpdateInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   Debts?: Prisma.DebtsUpdateOneRequiredWithoutRefundNestedInput
 }
 
@@ -310,6 +325,7 @@ export type RefundUncheckedUpdateInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RefundCreateManyInput = {
@@ -319,6 +335,7 @@ export type RefundCreateManyInput = {
   amount?: number
   createdAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RefundUpdateManyMutationInput = {
@@ -327,6 +344,7 @@ export type RefundUpdateManyMutationInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RefundUncheckedUpdateManyInput = {
@@ -336,6 +354,7 @@ export type RefundUncheckedUpdateManyInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RefundNullableScalarRelationFilter = {
@@ -350,6 +369,7 @@ export type RefundCountOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type RefundAvgOrderByAggregateInput = {
@@ -363,6 +383,7 @@ export type RefundMaxOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type RefundMinOrderByAggregateInput = {
@@ -372,6 +393,7 @@ export type RefundMinOrderByAggregateInput = {
   amount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
+  updatedBy?: Prisma.SortOrder
 }
 
 export type RefundSumOrderByAggregateInput = {
@@ -416,6 +438,7 @@ export type RefundCreateWithoutDebtsInput = {
   amount?: number
   createdAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RefundUncheckedCreateWithoutDebtsInput = {
@@ -424,6 +447,7 @@ export type RefundUncheckedCreateWithoutDebtsInput = {
   amount?: number
   createdAt?: Date | string
   createdBy: string
+  updatedBy?: string | null
 }
 
 export type RefundCreateOrConnectWithoutDebtsInput = {
@@ -448,6 +472,7 @@ export type RefundUpdateWithoutDebtsInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RefundUncheckedUpdateWithoutDebtsInput = {
@@ -456,6 +481,7 @@ export type RefundUncheckedUpdateWithoutDebtsInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -467,6 +493,7 @@ export type RefundSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   amount?: boolean
   createdAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   Debts?: boolean | Prisma.DebtsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["refund"]>
 
@@ -477,6 +504,7 @@ export type RefundSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   amount?: boolean
   createdAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   Debts?: boolean | Prisma.DebtsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["refund"]>
 
@@ -487,6 +515,7 @@ export type RefundSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   amount?: boolean
   createdAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
   Debts?: boolean | Prisma.DebtsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["refund"]>
 
@@ -497,9 +526,10 @@ export type RefundSelectScalar = {
   amount?: boolean
   createdAt?: boolean
   createdBy?: boolean
+  updatedBy?: boolean
 }
 
-export type RefundOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "debtId" | "reference" | "amount" | "createdAt" | "createdBy", ExtArgs["result"]["refund"]>
+export type RefundOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "debtId" | "reference" | "amount" | "createdAt" | "createdBy" | "updatedBy", ExtArgs["result"]["refund"]>
 export type RefundInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Debts?: boolean | Prisma.DebtsDefaultArgs<ExtArgs>
 }
@@ -522,6 +552,7 @@ export type $RefundPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     amount: number
     createdAt: Date
     createdBy: string
+    updatedBy: string | null
   }, ExtArgs["result"]["refund"]>
   composites: {}
 }
@@ -952,6 +983,7 @@ export interface RefundFieldRefs {
   readonly amount: Prisma.FieldRef<"Refund", 'Float'>
   readonly createdAt: Prisma.FieldRef<"Refund", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Refund", 'String'>
+  readonly updatedBy: Prisma.FieldRef<"Refund", 'String'>
 }
     
 
