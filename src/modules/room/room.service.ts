@@ -47,7 +47,7 @@ export class RoomService {
     return result;
   }
 
-  async findAll(paginationDto: PaginationDto,): Promise<PaginationResult<RoomType>> {
+  async findAll(paginationDto: PaginationDto, branchSelect: string): Promise<PaginationResult<RoomType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
@@ -55,6 +55,7 @@ export class RoomService {
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.RoomWhereInput = {
         active: true,
+        branchId: branchSelect,
         ...(keys
           ? {
             OR: [

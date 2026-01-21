@@ -1,27 +1,25 @@
 import { BranchSelect } from "@/modules/branch/entities/branch.entity";
 import { Prisma } from "@/generated/prisma/client";
 
-export type SpecialtyType = Prisma.SpecialtyGetPayload<{
-  select: typeof SpecialtySelect;
+export type BranchSpecialtyType = Prisma.BranchSpecialtyGetPayload<{
+  select: typeof BranchSpecialtySelect;
 }>;
 
-
-export const SpecialtySelect = {
+export const  SpecialtySelect = {
   id: true,
-  branchSpecialties: {
-    select: {
-      numberSessions: true,
-      estimatedSessionCost: true,
-      specialty: {
-        select: {
-          id: true,
-          name: true,
-        }
-      },
-      branch: {
-        select: BranchSelect
-      }
-    }
+  name: true,
+};
+
+export const BranchSpecialtySelect = {
+  id: true,
+  numberSessions: true,
+  estimatedSessionCost: true,
+  specialty: {
+    select: SpecialtySelect,
+  },
+  branch: {
+    select: BranchSelect
   }
 };
+
 

@@ -19,8 +19,8 @@ export class BranchController {
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.branch })
-  findAll( @Query() paginationDto: PaginationDto, @RequestInfo() requestInfo: RequestInfo ) {
-    return this.branchService.findAll(paginationDto, requestInfo.branchSelect);
+  findAll(@Query() paginationDto: PaginationDto, @RequestInfo() requestInfo: RequestInfo, @CurrentUser() user: JwtPayload) {
+    return this.branchService.findAll(paginationDto, requestInfo.branchSelect, user.id);
   }
 
   @Get(':id')

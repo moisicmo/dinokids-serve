@@ -1,4 +1,4 @@
-import { UserEntity } from "@/common";
+import { UserSelect } from "@/common";
 import { Prisma } from "@/generated/prisma/client";
 import { BranchSelect } from "@/modules/branch/entities/branch.entity";
 
@@ -15,6 +15,6 @@ export const TeacherSelect = {
     select: BranchSelect
   },
   user: {
-    select: UserEntity,
+    select: UserSelect,
   }
 };

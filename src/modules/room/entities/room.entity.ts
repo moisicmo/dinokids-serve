@@ -1,13 +1,13 @@
-import { UserEntity } from "@/common";
+import { UserSelect } from "@/common";
 import { BookingEntity } from "@/modules/booking/entities/booking.entity";
 import { BranchSelect } from "@/modules/branch/entities/branch.entity";
 import { AssignmentSchedulesEntity } from "@/modules/inscription/entities/assignment-schedule.entity";
 import { PriceEntity } from "@/modules/inscription/entities/price.entity";
 import { ScheduleEntity } from "@/modules/schedule/entities/schedule.entity";
-import { SpecialtySelect } from "@/modules/specialty/entities/specialty.entity";
 import { StudentSelect } from "@/modules/student/entities/student.entity";
 import { TeacherSelect } from "@/modules/teacher/entities/teacher.entity";
 import { Prisma } from "@/generated/prisma/client";
+import { SpecialtySelect } from "@/modules/specialty/entities/specialty.entity";
 
 export type RoomType = Prisma.RoomGetPayload<{
   select: typeof RoomSelect;
@@ -31,7 +31,7 @@ export const RoomSelect = {
     select: {
       ...TeacherSelect,
       user: {
-        select: UserEntity,
+        select: UserSelect,
       }
     }
   },
@@ -39,7 +39,7 @@ export const RoomSelect = {
     select: {
       ...TeacherSelect,
       user: {
-        select: UserEntity,
+        select: UserSelect,
       }
     }
   },

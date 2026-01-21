@@ -3,7 +3,7 @@ import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities, CurrentUser } from '@/decorator';
+import { checkAbilities, CurrentUser, RequestInfo } from '@/decorator';
 import { TypeAction } from "@/generated/prisma/client";
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
 import { TypeSubject } from '@/common/enums';
@@ -19,8 +19,8 @@ export class RoomController {
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.room })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.roomService.findAll(paginationDto);
+  findAll(@Query() paginationDto: PaginationDto, @RequestInfo() requestInfo: RequestInfo) {
+    return this.roomService.findAll(paginationDto, requestInfo.branchSelect);
   }
 
   @Get(':id')

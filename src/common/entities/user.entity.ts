@@ -1,6 +1,6 @@
 import { AddressSelect } from "./address.select";
 
-export const UserEntity = {
+export const UserSelect = {
   id: true,
   numberDocument: true,
   typeDocument: true,

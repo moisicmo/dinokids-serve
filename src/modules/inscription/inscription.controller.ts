@@ -3,7 +3,7 @@ import { InscriptionService } from './inscription.service';
 import { CreateInscriptionDto } from './dto/create-inscription.dto';
 import { UpdateInscriptionDto } from './dto/update-inscription.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities, CurrentUser } from '@/decorator';
+import { checkAbilities, CurrentUser, RequestInfo } from '@/decorator';
 import { TypeAction } from "@/generated/prisma/client";
 import type { JwtPayload } from '../auth/entities/jwt-payload.interface';
 import { TypeSubject } from '@/common/enums';
@@ -19,8 +19,8 @@ export class InscriptionController {
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.inscription })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.inscriptionService.findAllByStudent(paginationDto);
+  findAll(@Query() paginationDto: PaginationDto, @RequestInfo() requestInfo: RequestInfo) {
+    return this.inscriptionService.findAllByStudent(paginationDto, requestInfo.branchSelect);
   }
   
   @Get('pdf/:id')

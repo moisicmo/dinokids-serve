@@ -3,7 +3,7 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { StudentSelect, StudentType } from './entities/student.entity';
+import { PaginationDto, PaginationResult, UserSelect } from '@/common'; import { StudentSelect, StudentType } from './entities/student.entity';
 import { Prisma } from '@/generated/prisma/client';
 @Injectable()
 
@@ -18,7 +18,7 @@ export class StudentService {
       if (userDto.numberDocument) {
         const userExists = await this.prisma.user.findUnique({
           where: { numberDocument: userDto.numberDocument },
-          select: UserEntity,
+          select: UserSelect,
         });
 
         if (userExists) {
@@ -63,7 +63,7 @@ export class StudentService {
             },
           },
         },
-        select: UserEntity,
+        select: UserSelect,
       });
 
     } catch (error) {
@@ -193,7 +193,7 @@ export class StudentService {
           },
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 
@@ -217,7 +217,7 @@ export class StudentService {
           },
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 }

@@ -29,7 +29,6 @@
     "src",
     "prisma/seed.ts",
     "prisma/triggers",
-    "prisma.config.ts",
-    "prisma/seed.permissions.ts"
+    "prisma.config.ts"
   ],
 }

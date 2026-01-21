@@ -3,7 +3,7 @@ import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities, CurrentUser } from '@/decorator';
+import { checkAbilities, CurrentUser, RequestInfo } from '@/decorator';
 import { TypeSubject } from '@/common/enums';
 import { TypeAction } from '@/generated/prisma/enums';
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
@@ -20,8 +20,8 @@ export class BookingController {
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.booking })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.bookingService.findAllByBooking(paginationDto);
+  findAll(@Query() paginationDto: PaginationDto, @RequestInfo() requestInfo: RequestInfo) {
+    return this.bookingService.findAllByBooking(paginationDto, requestInfo.branchSelect);
   }
 
   @Patch(':id')

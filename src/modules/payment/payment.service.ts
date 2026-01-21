@@ -100,13 +100,24 @@ export class PaymentService {
 
 
 
-  async findAll( paginationDto: PaginationDto) {
+  async findAll(paginationDto: PaginationDto, branchSelect: string) {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.PaymentWhereInput = {
         active: true,
+        debt:{
+          inscription:{
+            assignmentRooms: {
+              some: {
+                room:{
+                  branchId: branchSelect,
+                }
+              }
+            }
+          }
+        },
         ...(keys
           ? {}
           : {}),

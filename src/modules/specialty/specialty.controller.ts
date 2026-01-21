@@ -3,7 +3,7 @@ import { SpecialtyService } from './specialty.service';
 import { CreateSpecialtyDto } from './dto/create-specialty.dto';
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
 import { PaginationDto } from '@/common';
-import { checkAbilities, CurrentUser } from '@/decorator';
+import { checkAbilities, CurrentUser, RequestInfo } from '@/decorator';
 import { TypeAction } from "@/generated/prisma/client";
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
 import { TypeSubject } from '@/common/enums';
@@ -19,8 +19,8 @@ export class SpecialtyController {
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.specialty })
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.specialtyService.findAll(paginationDto);
+  findAll(@Query() paginationDto: PaginationDto, @RequestInfo() requestInfo: RequestInfo) {
+    return this.specialtyService.findAll(paginationDto, requestInfo.branchSelect);
   }
 
   @Get('/branch/:branchId')
@@ -38,8 +38,8 @@ export class SpecialtyController {
 
   @Patch(':id')
   @checkAbilities({ action: TypeAction.update, subject: TypeSubject.specialty })
-  update(@Param('id') id: string, @Body() updateSpecialtyDto: UpdateSpecialtyDto) {
-    return this.specialtyService.update(id, updateSpecialtyDto);
+  update(@CurrentUser() user: JwtPayload, @Param('id') id: string, @Body() updateSpecialtyDto: UpdateSpecialtyDto) {
+    return this.specialtyService.update(id, updateSpecialtyDto, user.email);
   }
 
   @Delete(':id')

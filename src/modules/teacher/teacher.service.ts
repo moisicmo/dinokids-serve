@@ -3,7 +3,7 @@ import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, PaginationResult, UserEntity } from '@/common';
+import { PaginationDto, PaginationResult, UserSelect } from '@/common';
 import { TeacherSelect, TeacherType } from './entities/teacher.entity';
 import { Prisma } from '@/generated/prisma/client';
 @Injectable()
@@ -17,7 +17,7 @@ export class TeacherService {
 
     const userExists = await this.prisma.user.findUnique({
       where: { numberDocument: userDto.numberDocument },
-      select: UserEntity,
+      select: UserSelect,
     });
 
     if (userExists) {
@@ -52,17 +52,22 @@ export class TeacherService {
         },
         ...userDto,
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginationResult<TeacherType>> {
+  async findAll(paginationDto: PaginationDto, branchSelect: string): Promise<PaginationResult<TeacherType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.TeacherWhereInput = {
         active: true,
+        branches: {
+          some: {
+            id: branchSelect
+          }
+        },
         ...(keys
           ? {
             user: {
@@ -108,7 +113,7 @@ export class TeacherService {
           isNot: null,
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
 
     if (!user) {
@@ -152,7 +157,7 @@ export class TeacherService {
         },
         ...userDto,
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 
@@ -175,7 +180,7 @@ export class TeacherService {
           },
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 }

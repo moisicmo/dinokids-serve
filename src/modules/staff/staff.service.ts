@@ -3,7 +3,7 @@ import { CreateStaffDto } from './dto/create-staff.dto';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, PaginationResult, UserEntity } from '@/common';
+import { PaginationDto, PaginationResult, UserSelect } from '@/common';
 import { StaffSelect, StaffType } from './entities/staff.entity';
 import { Prisma } from '@/generated/prisma/client';
 @Injectable()
@@ -16,7 +16,7 @@ export class StaffService {
 
     const userExists = await this.prisma.user.findUnique({
       where: { numberDocument: userDto.numberDocument },
-      select: UserEntity,
+      select: UserSelect,
     });
 
     if (userExists) {
@@ -41,7 +41,7 @@ export class StaffService {
           },
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 
@@ -95,7 +95,7 @@ export class StaffService {
           isNot: null,
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
 
     if (!user) {
@@ -131,7 +131,7 @@ export class StaffService {
           },
           ...userDto,
         },
-        select: UserEntity,
+        select: UserSelect,
       });
 
     } catch (error) {
@@ -162,7 +162,7 @@ export class StaffService {
           },
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 }

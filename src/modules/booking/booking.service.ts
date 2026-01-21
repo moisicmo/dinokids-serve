@@ -32,7 +32,7 @@ export class BookingService {
         const booking = await prisma.booking.create({
           data: {
             ...bookingDto,
-          createdBy: email,
+            createdBy: email,
           },
           select: BookingEntity,
         });
@@ -43,7 +43,7 @@ export class BookingService {
         const inscription = await prisma.inscription.create({
           data: {
             bookingId: booking.id,
-          createdBy: email,
+            createdBy: email,
           },
         });
 
@@ -56,7 +56,7 @@ export class BookingService {
             const assignmentRoom = await prisma.assignmentRoom.create({
               data: {
                 inscriptionId: inscription.id,
-          createdBy: email,
+                createdBy: email,
                 ...roomData,
               },
             });
@@ -69,7 +69,7 @@ export class BookingService {
                     assignmentRoomId: assignmentRoom.id,
                     scheduleId: scheduleDto.schedule.id,
                     day: scheduleDto.day,
-          createdBy: email,
+                    createdBy: email,
                   },
                 });
               }
@@ -124,10 +124,17 @@ export class BookingService {
     }
   }
 
-  async findAllByBooking(paginationDto: PaginationDto): Promise<PaginationResult<InscriptionType>> {
+  async findAllByBooking(paginationDto: PaginationDto, branchSelect: string): Promise<PaginationResult<InscriptionType>> {
     try {
       const inscriptionsByBooking = await this.inscriptionService.findAll(paginationDto, {
         booking: { isNot: null },
+        assignmentRooms: {
+          some: {
+            room: {
+              branchId: branchSelect
+            }
+          }
+        }
       });
 
       return inscriptionsByBooking;

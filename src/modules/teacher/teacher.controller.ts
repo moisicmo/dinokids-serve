@@ -4,7 +4,7 @@ import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { PaginationDto } from '@/common';
 
-import { checkAbilities, CurrentUser } from '@/decorator';
+import { checkAbilities, CurrentUser, RequestInfo } from '@/decorator';
 import type { JwtPayload } from '@/modules/auth/entities/jwt-payload.interface';
 import { TypeSubject } from '@/common/enums';
 import { TypeAction } from '@/generated/prisma/enums';
@@ -20,8 +20,8 @@ export class TeacherController {
 
   @Get()
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.teacher })
-  findAll( @Query() paginationDto: PaginationDto ) {
-    return this.teacherService.findAll(paginationDto);
+  findAll( @Query() paginationDto: PaginationDto,  @RequestInfo() requestInfo: RequestInfo ) {
+    return this.teacherService.findAll(paginationDto, requestInfo.branchSelect);
   }
 
   @Get(':id')

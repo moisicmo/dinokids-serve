@@ -41,10 +41,9 @@ export async function createDebtOnBookingTrigger() {
 
             -- Crear la factura
             INSERT INTO "invoices" (
-                code, staff_id, buyer_nit, buyer_name, created_by
+                code, buyer_nit, buyer_name, created_by
             ) VALUES (
                 substring(gen_random_uuid()::text from 1 for 16),
-                NEW.created_by_id,
                 booking.dni,
                 booking.name,
                 NEW.created_by

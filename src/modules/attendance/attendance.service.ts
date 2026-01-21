@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { PrismaService } from '@/prisma/prisma.service';
-import { UserEntity } from '@/common';
+import { UserSelect } from '@/common';
 import { startOfDay, endOfDay } from 'date-fns';
 import { StudentSelect } from '../student/entities/student.entity';
 import { InscriptionSelect } from '../inscription/entities/inscription.entity';
@@ -22,7 +22,7 @@ export class AttendanceService {
     const user = await this.prisma.user.findUnique({
       where: { numberCard },
       select: {
-        ...UserEntity,
+        ...UserSelect,
         student: {
           select: {
             ...StudentSelect,

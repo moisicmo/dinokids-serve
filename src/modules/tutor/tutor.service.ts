@@ -3,7 +3,7 @@ import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { PaginationDto, PaginationResult, UserEntity } from '@/common'; import { TutorSelect, TutorType } from './entities/tutor.entity';
+import { PaginationDto, PaginationResult, UserSelect } from '@/common'; import { TutorSelect, TutorType } from './entities/tutor.entity';
 import { Prisma } from '@/generated/prisma/client';
 @Injectable()
 
@@ -16,7 +16,7 @@ export class TutorService {
 
     const userExists = await this.prisma.user.findUnique({
       where: { numberDocument: userDto.numberDocument },
-      select: UserEntity,
+      select: UserSelect,
     });
 
     if (userExists) {
@@ -46,7 +46,7 @@ export class TutorService {
         },
         ...userDto,
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 
@@ -98,7 +98,7 @@ export class TutorService {
           isNot: null,
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
 
     if (!user) {
@@ -137,7 +137,7 @@ export class TutorService {
         },
         ...userDto,
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 
@@ -160,7 +160,7 @@ export class TutorService {
           },
         },
       },
-      select: UserEntity,
+      select: UserSelect,
     });
   }
 }

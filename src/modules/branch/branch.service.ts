@@ -5,6 +5,7 @@ import { BranchSelect, BranchType } from './entities/branch.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { Prisma } from '@/generated/prisma/client';
+import { StaffSelect } from '../staff/entities/staff.entity';
 
 @Injectable()
 export class BranchService {
@@ -39,15 +40,32 @@ export class BranchService {
     }
   }
 
-  async findAll( paginationDto: PaginationDto, branchSelect: string): Promise<PaginationResult<BranchType>> {
+  async findAll(paginationDto: PaginationDto, branchSelect: string, userId: string): Promise<PaginationResult<BranchType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
-
+      //
+      const staff = await this.prisma.staff.findFirst({
+        where: { userId: userId },
+        select: StaffSelect
+      });
+      if (!staff) {
+        throw new NotFoundException(`Staff for user id #${userId} not found`);
+      }
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.BranchWhereInput = {
-        id: branchSelect,
-        ...(keys ? {name: { contains: keys, mode: Prisma.QueryMode.insensitive } } : {}),
+        ...(staff.superStaff
+          ? {}
+          : { id: branchSelect }),
+        ...(keys
+          ? {
+            name: {
+              contains: keys,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          }
+          : {}),
       };
+
 
       // 🔹 Paginación
       const total = await this.prisma.branch.count({ where: whereClause });

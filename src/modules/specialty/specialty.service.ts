@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateSpecialtyDto } from './dto/create-specialty.dto';
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
-import { SpecialtySelect, SpecialtyType } from './entities/specialty.entity';
+import { BranchSpecialtyType, BranchSpecialtySelect, SpecialtySelect } from './entities/specialty.entity';
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { Prisma } from '@/generated/prisma/client';
@@ -22,7 +22,7 @@ export class SpecialtyService {
       },
       select: SpecialtySelect,
     });
-    await this.prisma.branchSpecialty.create({
+    const branchSpecialty = await this.prisma.branchSpecialty.create({
       data: {
         branchId,
         specialtyId: specialty.id,
@@ -31,38 +31,36 @@ export class SpecialtyService {
         createdBy: email,
       }
     })
-
-    return specialty;
+    return branchSpecialty;
   }
 
-  async findAll( paginationDto: PaginationDto): Promise<PaginationResult<SpecialtyType>> {
+  async findAll(paginationDto: PaginationDto, branchSelect: string): Promise<PaginationResult<BranchSpecialtyType>> {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
-      const whereClause: Prisma.SpecialtyWhereInput = {
+      const whereClause: Prisma.BranchSpecialtyWhereInput = {
         active: true,
+        branchId: branchSelect,
         ...(keys
           ? {
             OR: [
-              { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+              { specialty: { name: { contains: keys, mode: Prisma.QueryMode.insensitive } } },
             ],
           }
           : {}),
       };
-
-
       // 🔹 Paginación
-      const total = await this.prisma.specialty.count({ where: whereClause });
+      const total = await this.prisma.branchSpecialty.count({ where: whereClause });
       const lastPage = Math.ceil(total / limit);
 
       // 🔹 Consulta principal
-      const data = await this.prisma.specialty.findMany({
+      const data = await this.prisma.branchSpecialty.findMany({
         skip: (page - 1) * limit,
         take: limit,
         where: whereClause,
         orderBy: { createdAt: 'asc' },
-        select: SpecialtySelect,
+        select: BranchSpecialtySelect,
       });
 
       return { data, meta: { total, page, lastPage } };
@@ -85,16 +83,14 @@ export class SpecialtyService {
     });
     const lastPage = Math.ceil(totalPages / limit);
 
-    const data = await this.prisma.specialty.findMany({
+    const data = await this.prisma.branchSpecialty.findMany({
       skip: (page - 1) * limit,
       take: limit,
       where: {
         active: true,
-        branchSpecialties: {
-          some: { branchId }
-        }
+        branchId: branchId
       },
-      select: SpecialtySelect,
+      select: BranchSpecialtySelect,
     });
 
     return {
@@ -105,9 +101,9 @@ export class SpecialtyService {
 
 
   async findOne(id: string) {
-    const specialty = await this.prisma.specialty.findUnique({
+    const specialty = await this.prisma.branchSpecialty.findUnique({
       where: { id },
-      select: SpecialtySelect,
+      select: BranchSpecialtySelect,
     });
 
     if (!specialty) {
@@ -117,43 +113,63 @@ export class SpecialtyService {
     return specialty;
   }
 
-  async update(id: string, updateSpecialtyDto: UpdateSpecialtyDto) {
-    const { name, numberSessions, estimatedSessionCost, branchId } = updateSpecialtyDto;
-    if (!branchId) {
-      throw new BadRequestException('Es necesario el identificador de la sucursal');
-    }
-    await this.findOne(id);
+async update(
+  id: string, // ← branchSpecialty.id
+  updateSpecialtyDto: UpdateSpecialtyDto,
+  email: string,
+) {
+  const { name, numberSessions, estimatedSessionCost } =
+    updateSpecialtyDto;
 
-    const specialty = await this.prisma.specialty.update({
-      where: { id },
-      data: { name },
-      select: SpecialtySelect,
-    });
+  // 1️⃣ Obtener la relación con la especialidad
+  const branchSpecialty = await this.prisma.branchSpecialty.findUnique({
+    where: { id },
+    include: { specialty: true },
+  });
 
-    await this.prisma.branchSpecialty.update({
-      where: {
-        branchId_specialtyId: {
-          branchId,
-          specialtyId: id,
-        },
-      },
-      data: {
-        numberSessions,
-        estimatedSessionCost,
-      },
-    });
-
-    return specialty;
+  if (!branchSpecialty) {
+    throw new NotFoundException('Especialidad no encontrada en la sucursal');
   }
+
+  return this.prisma.$transaction(async (tx) => {
+    // 2️⃣ Actualizar SPECIALTY (nombre)
+    const specialty = await tx.specialty.update({
+      where: { id: branchSpecialty.specialtyId },
+      data: {
+        ...(name && { name }),
+        updatedBy: email,
+      },
+    });
+
+    // 3️⃣ Actualizar BRANCH_SPECIALTY
+    const updatedBranchSpecialty = await tx.branchSpecialty.update({
+      where: { id },
+      data: {
+        ...(numberSessions !== undefined && { numberSessions }),
+        ...(estimatedSessionCost !== undefined && {
+          estimatedSessionCost,
+        }),
+        updatedBy: email,
+      },
+    });
+
+    return {
+      specialty,
+      branchSpecialty: updatedBranchSpecialty,
+    };
+  });
+}
+
+
 
 
   async remove(id: string) {
     await this.findOne(id);
 
-    return this.prisma.specialty.update({
+    return this.prisma.branchSpecialty.update({
       where: { id },
       data: { active: false },
-      select: SpecialtySelect,
+      select: BranchSpecialtySelect,
     });
   }
 }

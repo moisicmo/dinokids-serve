@@ -12,14 +12,25 @@ export class DashboardService {
       where: { active: true },
     });
     const totalTeachers = await this.prisma.teacher.count({
-      where: { active: true },
-    });
-    const totalBranches = await this.prisma.branch.count({
-      where: { active: true },
+      where: {
+        active: true,
+        branches: {
+          some: { id: branchSelect }
+        }
+      },
     });
     const totalDebts = await this.prisma.debts.count({
       where: {
         remainingBalance: { gt: 0 },
+        inscription: {
+          assignmentRooms: {
+            some: {
+              room: {
+                branchId: branchSelect
+              }
+            }
+          },
+        }
       },
     });
 
@@ -28,6 +39,16 @@ export class DashboardService {
     });
 
     const inscriptions = await this.prisma.inscription.findMany({
+      where: {
+        active: true,
+        assignmentRooms: {
+          some: {
+            room: {
+              branchId: branchSelect
+            }
+          }
+        },
+      },
       select: { createdAt: true },
     });
 
@@ -59,7 +80,6 @@ export class DashboardService {
       metrics: {
         totalStudents,
         totalTeachers,
-        totalBranches,
         totalDebts,
         totalPayments,
       },

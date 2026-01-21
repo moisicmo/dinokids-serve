@@ -210,7 +210,7 @@ export class InscriptionService {
   // }
 
 
-  async findAllByStudent(paginationDto: PaginationDto): Promise<PaginationResult<InscriptionExtended>> {
+  async findAllByStudent(paginationDto: PaginationDto, branchSelect: string): Promise<PaginationResult<InscriptionExtended>> {
     try {
       const { page = 1, limit = 10 } = paginationDto;
 
@@ -223,6 +223,15 @@ export class InscriptionService {
       const whereClause: Prisma.InscriptionWhereInput = {
         AND: [
           whereCustom,
+          {
+            assignmentRooms: {
+              some: {
+                room: {
+                  branchId: branchSelect
+                }
+              }
+            }
+          }
         ],
       };
 
