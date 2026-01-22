@@ -59,11 +59,6 @@ export const ModelName = {
   Permission: 'Permission',
   Role: 'Role',
   Student: 'Student',
-  SessionTracking: 'SessionTracking',
-  WeeklyPlanning: 'WeeklyPlanning',
-  WeeklyPlanningObjective: 'WeeklyPlanningObjective',
-  EvaluationPlanning: 'EvaluationPlanning',
-  SectionDefinition: 'SectionDefinition',
   School: 'School',
   Tutor: 'Tutor',
   Teacher: 'Teacher',
@@ -222,6 +217,9 @@ export const StudentScalarFieldEnum = {
   grade: 'grade',
   educationLevel: 'educationLevel',
   active: 'active',
+  sessionTrackings: 'sessionTrackings',
+  weeklyPlannings: 'weeklyPlannings',
+  evaluationPlannings: 'evaluationPlannings',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdBy: 'createdBy',
@@ -229,78 +227,6 @@ export const StudentScalarFieldEnum = {
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
-
-
-export const SessionTrackingScalarFieldEnum = {
-  id: 'id',
-  studentId: 'studentId',
-  workArea: 'workArea',
-  developedActivity: 'developedActivity',
-  observation: 'observation',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type SessionTrackingScalarFieldEnum = (typeof SessionTrackingScalarFieldEnum)[keyof typeof SessionTrackingScalarFieldEnum]
-
-
-export const WeeklyPlanningScalarFieldEnum = {
-  id: 'id',
-  studentId: 'studentId',
-  weekNumber: 'weekNumber',
-  workArea: 'workArea',
-  isLocked: 'isLocked',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type WeeklyPlanningScalarFieldEnum = (typeof WeeklyPlanningScalarFieldEnum)[keyof typeof WeeklyPlanningScalarFieldEnum]
-
-
-export const WeeklyPlanningObjectiveScalarFieldEnum = {
-  id: 'id',
-  weeklyWeekId: 'weeklyWeekId',
-  smartObjective: 'smartObjective',
-  answer: 'answer',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type WeeklyPlanningObjectiveScalarFieldEnum = (typeof WeeklyPlanningObjectiveScalarFieldEnum)[keyof typeof WeeklyPlanningObjectiveScalarFieldEnum]
-
-
-export const EvaluationPlanningScalarFieldEnum = {
-  id: 'id',
-  studentId: 'studentId',
-  evaluationDate: 'evaluationDate',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type EvaluationPlanningScalarFieldEnum = (typeof EvaluationPlanningScalarFieldEnum)[keyof typeof EvaluationPlanningScalarFieldEnum]
-
-
-export const SectionDefinitionScalarFieldEnum = {
-  id: 'id',
-  evaluationId: 'evaluationId',
-  name: 'name',
-  schema: 'schema',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type SectionDefinitionScalarFieldEnum = (typeof SectionDefinitionScalarFieldEnum)[keyof typeof SectionDefinitionScalarFieldEnum]
 
 
 export const SchoolScalarFieldEnum = {
@@ -620,6 +546,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

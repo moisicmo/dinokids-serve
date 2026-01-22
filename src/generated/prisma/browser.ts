@@ -58,31 +58,6 @@ export type Role = Prisma.RoleModel
  */
 export type Student = Prisma.StudentModel
 /**
- * Model SessionTracking
- * 
- */
-export type SessionTracking = Prisma.SessionTrackingModel
-/**
- * Model WeeklyPlanning
- * 
- */
-export type WeeklyPlanning = Prisma.WeeklyPlanningModel
-/**
- * Model WeeklyPlanningObjective
- * 
- */
-export type WeeklyPlanningObjective = Prisma.WeeklyPlanningObjectiveModel
-/**
- * Model EvaluationPlanning
- * 
- */
-export type EvaluationPlanning = Prisma.EvaluationPlanningModel
-/**
- * Model SectionDefinition
- * 
- */
-export type SectionDefinition = Prisma.SectionDefinitionModel
-/**
  * Model School
  * 
  */

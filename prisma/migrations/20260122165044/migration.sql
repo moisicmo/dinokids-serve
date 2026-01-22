@@ -145,91 +145,22 @@ CREATE TABLE "roles" (
 CREATE TABLE "students" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "user_id" UUID NOT NULL,
-    "school_id" UUID NOT NULL,
+    "school_id" UUID,
     "code" TEXT NOT NULL,
     "birthdate" TIMESTAMP(3) NOT NULL,
     "gender" "Gender" NOT NULL,
     "grade" INTEGER,
     "education_level" "EducationLevel",
     "active" BOOLEAN NOT NULL DEFAULT true,
+    "session_trackingss" JSON,
+    "weekly_plannings" JSON,
+    "evaluation_plannings" JSON,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
     "updated_by" TEXT,
 
     CONSTRAINT "students_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "session_trackings" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "student_id" UUID NOT NULL,
-    "work_area" VARCHAR NOT NULL,
-    "developed_activity" VARCHAR NOT NULL,
-    "observation" VARCHAR,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "created_by" TEXT NOT NULL,
-    "updated_by" TEXT,
-
-    CONSTRAINT "session_trackings_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "weekly_plannings" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "student_id" UUID NOT NULL,
-    "weekNumber" INTEGER NOT NULL,
-    "work_area" VARCHAR NOT NULL,
-    "is_locked" BOOLEAN NOT NULL DEFAULT false,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "created_by" TEXT NOT NULL,
-    "updated_by" TEXT,
-
-    CONSTRAINT "weekly_plannings_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "weekly_planning_objectives" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "weekly_week_id" UUID NOT NULL,
-    "smartObjective" TEXT NOT NULL,
-    "answer" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "created_by" TEXT NOT NULL,
-    "updated_by" TEXT,
-
-    CONSTRAINT "weekly_planning_objectives_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "evaluation_plannings" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "student_id" UUID NOT NULL,
-    "evaluation_date" TIMESTAMP(3) NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "created_by" TEXT NOT NULL,
-    "updated_by" TEXT,
-
-    CONSTRAINT "evaluation_plannings_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "section_definitions" (
-    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "evaluation_id" UUID NOT NULL,
-    "name" TEXT NOT NULL,
-    "schema" JSONB NOT NULL,
-    "isActive" BOOLEAN NOT NULL DEFAULT true,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "created_by" TEXT NOT NULL,
-    "updated_by" TEXT,
-
-    CONSTRAINT "section_definitions_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -656,22 +587,7 @@ ALTER TABLE "auth_sessions" ADD CONSTRAINT "auth_sessions_user_id_fkey" FOREIGN 
 ALTER TABLE "students" ADD CONSTRAINT "students_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "students" ADD CONSTRAINT "students_school_id_fkey" FOREIGN KEY ("school_id") REFERENCES "schools"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "session_trackings" ADD CONSTRAINT "session_trackings_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "students"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "weekly_plannings" ADD CONSTRAINT "weekly_plannings_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "students"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "weekly_planning_objectives" ADD CONSTRAINT "weekly_planning_objectives_weekly_week_id_fkey" FOREIGN KEY ("weekly_week_id") REFERENCES "weekly_plannings"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "evaluation_plannings" ADD CONSTRAINT "evaluation_plannings_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "students"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "section_definitions" ADD CONSTRAINT "section_definitions_evaluation_id_fkey" FOREIGN KEY ("evaluation_id") REFERENCES "evaluation_plannings"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "students" ADD CONSTRAINT "students_school_id_fkey" FOREIGN KEY ("school_id") REFERENCES "schools"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tutors" ADD CONSTRAINT "tutors_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

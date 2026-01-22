@@ -392,11 +392,6 @@ export const ModelName = {
   Permission: 'Permission',
   Role: 'Role',
   Student: 'Student',
-  SessionTracking: 'SessionTracking',
-  WeeklyPlanning: 'WeeklyPlanning',
-  WeeklyPlanningObjective: 'WeeklyPlanningObjective',
-  EvaluationPlanning: 'EvaluationPlanning',
-  SectionDefinition: 'SectionDefinition',
   School: 'School',
   Tutor: 'Tutor',
   Teacher: 'Teacher',
@@ -432,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "branch" | "staff" | "address" | "authSession" | "permission" | "role" | "student" | "sessionTracking" | "weeklyPlanning" | "weeklyPlanningObjective" | "evaluationPlanning" | "sectionDefinition" | "school" | "tutor" | "teacher" | "specialty" | "branchSpecialty" | "room" | "assignmentRoom" | "schedule" | "assignmentSchedule" | "price" | "inscription" | "booking" | "debts" | "payment" | "invoice" | "refund" | "session" | "accessRecord" | "document" | "documentTransmission"
+    modelProps: "user" | "branch" | "staff" | "address" | "authSession" | "permission" | "role" | "student" | "school" | "tutor" | "teacher" | "specialty" | "branchSpecialty" | "room" | "assignmentRoom" | "schedule" | "assignmentSchedule" | "price" | "inscription" | "booking" | "debts" | "payment" | "invoice" | "refund" | "session" | "accessRecord" | "document" | "documentTransmission"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1025,376 +1020,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.StudentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.StudentCountAggregateOutputType> | number
-        }
-      }
-    }
-    SessionTracking: {
-      payload: Prisma.$SessionTrackingPayload<ExtArgs>
-      fields: Prisma.SessionTrackingFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.SessionTrackingFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.SessionTrackingFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>
-        }
-        findFirst: {
-          args: Prisma.SessionTrackingFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.SessionTrackingFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>
-        }
-        findMany: {
-          args: Prisma.SessionTrackingFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>[]
-        }
-        create: {
-          args: Prisma.SessionTrackingCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>
-        }
-        createMany: {
-          args: Prisma.SessionTrackingCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.SessionTrackingCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>[]
-        }
-        delete: {
-          args: Prisma.SessionTrackingDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>
-        }
-        update: {
-          args: Prisma.SessionTrackingUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>
-        }
-        deleteMany: {
-          args: Prisma.SessionTrackingDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.SessionTrackingUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.SessionTrackingUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>[]
-        }
-        upsert: {
-          args: Prisma.SessionTrackingUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionTrackingPayload>
-        }
-        aggregate: {
-          args: Prisma.SessionTrackingAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateSessionTracking>
-        }
-        groupBy: {
-          args: Prisma.SessionTrackingGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SessionTrackingGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.SessionTrackingCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SessionTrackingCountAggregateOutputType> | number
-        }
-      }
-    }
-    WeeklyPlanning: {
-      payload: Prisma.$WeeklyPlanningPayload<ExtArgs>
-      fields: Prisma.WeeklyPlanningFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.WeeklyPlanningFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.WeeklyPlanningFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>
-        }
-        findFirst: {
-          args: Prisma.WeeklyPlanningFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.WeeklyPlanningFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>
-        }
-        findMany: {
-          args: Prisma.WeeklyPlanningFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>[]
-        }
-        create: {
-          args: Prisma.WeeklyPlanningCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>
-        }
-        createMany: {
-          args: Prisma.WeeklyPlanningCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.WeeklyPlanningCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>[]
-        }
-        delete: {
-          args: Prisma.WeeklyPlanningDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>
-        }
-        update: {
-          args: Prisma.WeeklyPlanningUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>
-        }
-        deleteMany: {
-          args: Prisma.WeeklyPlanningDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.WeeklyPlanningUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.WeeklyPlanningUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>[]
-        }
-        upsert: {
-          args: Prisma.WeeklyPlanningUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningPayload>
-        }
-        aggregate: {
-          args: Prisma.WeeklyPlanningAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateWeeklyPlanning>
-        }
-        groupBy: {
-          args: Prisma.WeeklyPlanningGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WeeklyPlanningGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.WeeklyPlanningCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WeeklyPlanningCountAggregateOutputType> | number
-        }
-      }
-    }
-    WeeklyPlanningObjective: {
-      payload: Prisma.$WeeklyPlanningObjectivePayload<ExtArgs>
-      fields: Prisma.WeeklyPlanningObjectiveFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.WeeklyPlanningObjectiveFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.WeeklyPlanningObjectiveFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>
-        }
-        findFirst: {
-          args: Prisma.WeeklyPlanningObjectiveFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.WeeklyPlanningObjectiveFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>
-        }
-        findMany: {
-          args: Prisma.WeeklyPlanningObjectiveFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>[]
-        }
-        create: {
-          args: Prisma.WeeklyPlanningObjectiveCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>
-        }
-        createMany: {
-          args: Prisma.WeeklyPlanningObjectiveCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.WeeklyPlanningObjectiveCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>[]
-        }
-        delete: {
-          args: Prisma.WeeklyPlanningObjectiveDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>
-        }
-        update: {
-          args: Prisma.WeeklyPlanningObjectiveUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>
-        }
-        deleteMany: {
-          args: Prisma.WeeklyPlanningObjectiveDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.WeeklyPlanningObjectiveUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.WeeklyPlanningObjectiveUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>[]
-        }
-        upsert: {
-          args: Prisma.WeeklyPlanningObjectiveUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WeeklyPlanningObjectivePayload>
-        }
-        aggregate: {
-          args: Prisma.WeeklyPlanningObjectiveAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateWeeklyPlanningObjective>
-        }
-        groupBy: {
-          args: Prisma.WeeklyPlanningObjectiveGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WeeklyPlanningObjectiveGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.WeeklyPlanningObjectiveCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WeeklyPlanningObjectiveCountAggregateOutputType> | number
-        }
-      }
-    }
-    EvaluationPlanning: {
-      payload: Prisma.$EvaluationPlanningPayload<ExtArgs>
-      fields: Prisma.EvaluationPlanningFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.EvaluationPlanningFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.EvaluationPlanningFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>
-        }
-        findFirst: {
-          args: Prisma.EvaluationPlanningFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.EvaluationPlanningFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>
-        }
-        findMany: {
-          args: Prisma.EvaluationPlanningFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>[]
-        }
-        create: {
-          args: Prisma.EvaluationPlanningCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>
-        }
-        createMany: {
-          args: Prisma.EvaluationPlanningCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.EvaluationPlanningCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>[]
-        }
-        delete: {
-          args: Prisma.EvaluationPlanningDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>
-        }
-        update: {
-          args: Prisma.EvaluationPlanningUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>
-        }
-        deleteMany: {
-          args: Prisma.EvaluationPlanningDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.EvaluationPlanningUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.EvaluationPlanningUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>[]
-        }
-        upsert: {
-          args: Prisma.EvaluationPlanningUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvaluationPlanningPayload>
-        }
-        aggregate: {
-          args: Prisma.EvaluationPlanningAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateEvaluationPlanning>
-        }
-        groupBy: {
-          args: Prisma.EvaluationPlanningGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.EvaluationPlanningGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.EvaluationPlanningCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.EvaluationPlanningCountAggregateOutputType> | number
-        }
-      }
-    }
-    SectionDefinition: {
-      payload: Prisma.$SectionDefinitionPayload<ExtArgs>
-      fields: Prisma.SectionDefinitionFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.SectionDefinitionFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.SectionDefinitionFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>
-        }
-        findFirst: {
-          args: Prisma.SectionDefinitionFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.SectionDefinitionFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>
-        }
-        findMany: {
-          args: Prisma.SectionDefinitionFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>[]
-        }
-        create: {
-          args: Prisma.SectionDefinitionCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>
-        }
-        createMany: {
-          args: Prisma.SectionDefinitionCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.SectionDefinitionCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>[]
-        }
-        delete: {
-          args: Prisma.SectionDefinitionDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>
-        }
-        update: {
-          args: Prisma.SectionDefinitionUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>
-        }
-        deleteMany: {
-          args: Prisma.SectionDefinitionDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.SectionDefinitionUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.SectionDefinitionUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>[]
-        }
-        upsert: {
-          args: Prisma.SectionDefinitionUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SectionDefinitionPayload>
-        }
-        aggregate: {
-          args: Prisma.SectionDefinitionAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateSectionDefinition>
-        }
-        groupBy: {
-          args: Prisma.SectionDefinitionGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SectionDefinitionGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.SectionDefinitionCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SectionDefinitionCountAggregateOutputType> | number
         }
       }
     }
@@ -3037,6 +2662,9 @@ export const StudentScalarFieldEnum = {
   grade: 'grade',
   educationLevel: 'educationLevel',
   active: 'active',
+  sessionTrackings: 'sessionTrackings',
+  weeklyPlannings: 'weeklyPlannings',
+  evaluationPlannings: 'evaluationPlannings',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdBy: 'createdBy',
@@ -3044,78 +2672,6 @@ export const StudentScalarFieldEnum = {
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
-
-
-export const SessionTrackingScalarFieldEnum = {
-  id: 'id',
-  studentId: 'studentId',
-  workArea: 'workArea',
-  developedActivity: 'developedActivity',
-  observation: 'observation',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type SessionTrackingScalarFieldEnum = (typeof SessionTrackingScalarFieldEnum)[keyof typeof SessionTrackingScalarFieldEnum]
-
-
-export const WeeklyPlanningScalarFieldEnum = {
-  id: 'id',
-  studentId: 'studentId',
-  weekNumber: 'weekNumber',
-  workArea: 'workArea',
-  isLocked: 'isLocked',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type WeeklyPlanningScalarFieldEnum = (typeof WeeklyPlanningScalarFieldEnum)[keyof typeof WeeklyPlanningScalarFieldEnum]
-
-
-export const WeeklyPlanningObjectiveScalarFieldEnum = {
-  id: 'id',
-  weeklyWeekId: 'weeklyWeekId',
-  smartObjective: 'smartObjective',
-  answer: 'answer',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type WeeklyPlanningObjectiveScalarFieldEnum = (typeof WeeklyPlanningObjectiveScalarFieldEnum)[keyof typeof WeeklyPlanningObjectiveScalarFieldEnum]
-
-
-export const EvaluationPlanningScalarFieldEnum = {
-  id: 'id',
-  studentId: 'studentId',
-  evaluationDate: 'evaluationDate',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type EvaluationPlanningScalarFieldEnum = (typeof EvaluationPlanningScalarFieldEnum)[keyof typeof EvaluationPlanningScalarFieldEnum]
-
-
-export const SectionDefinitionScalarFieldEnum = {
-  id: 'id',
-  evaluationId: 'evaluationId',
-  name: 'name',
-  schema: 'schema',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy',
-  updatedBy: 'updatedBy'
-} as const
-
-export type SectionDefinitionScalarFieldEnum = (typeof SectionDefinitionScalarFieldEnum)[keyof typeof SectionDefinitionScalarFieldEnum]
 
 
 export const SchoolScalarFieldEnum = {
@@ -3435,6 +2991,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -3801,11 +3365,6 @@ export type GlobalOmitConfig = {
   permission?: Prisma.PermissionOmit
   role?: Prisma.RoleOmit
   student?: Prisma.StudentOmit
-  sessionTracking?: Prisma.SessionTrackingOmit
-  weeklyPlanning?: Prisma.WeeklyPlanningOmit
-  weeklyPlanningObjective?: Prisma.WeeklyPlanningObjectiveOmit
-  evaluationPlanning?: Prisma.EvaluationPlanningOmit
-  sectionDefinition?: Prisma.SectionDefinitionOmit
   school?: Prisma.SchoolOmit
   tutor?: Prisma.TutorOmit
   teacher?: Prisma.TeacherOmit

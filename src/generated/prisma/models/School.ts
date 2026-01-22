@@ -307,9 +307,9 @@ export type SchoolUncheckedUpdateManyInput = {
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type SchoolScalarRelationFilter = {
-  is?: Prisma.SchoolWhereInput
-  isNot?: Prisma.SchoolWhereInput
+export type SchoolNullableScalarRelationFilter = {
+  is?: Prisma.SchoolWhereInput | null
+  isNot?: Prisma.SchoolWhereInput | null
 }
 
 export type SchoolCountOrderByAggregateInput = {
@@ -345,10 +345,12 @@ export type SchoolCreateNestedOneWithoutStudentsInput = {
   connect?: Prisma.SchoolWhereUniqueInput
 }
 
-export type SchoolUpdateOneRequiredWithoutStudentsNestedInput = {
+export type SchoolUpdateOneWithoutStudentsNestedInput = {
   create?: Prisma.XOR<Prisma.SchoolCreateWithoutStudentsInput, Prisma.SchoolUncheckedCreateWithoutStudentsInput>
   connectOrCreate?: Prisma.SchoolCreateOrConnectWithoutStudentsInput
   upsert?: Prisma.SchoolUpsertWithoutStudentsInput
+  disconnect?: Prisma.SchoolWhereInput | boolean
+  delete?: Prisma.SchoolWhereInput | boolean
   connect?: Prisma.SchoolWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.SchoolUpdateToOneWithWhereWithoutStudentsInput, Prisma.SchoolUpdateWithoutStudentsInput>, Prisma.SchoolUncheckedUpdateWithoutStudentsInput>
 }

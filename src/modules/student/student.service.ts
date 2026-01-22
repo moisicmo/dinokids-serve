@@ -5,6 +5,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { PaginationDto, PaginationResult, UserSelect } from '@/common'; import { StudentSelect, StudentType } from './entities/student.entity';
 import { Prisma } from '@/generated/prisma/client';
+import { randomUUID } from 'crypto';
 @Injectable()
 
 export class StudentService {
@@ -13,7 +14,7 @@ export class StudentService {
 
   async create(email: string, createStudentDto: CreateStudentDto) {
     try {
-      const { birthdate, gender, school, grade, educationLevel, tutorIds, ...userDto } = createStudentDto;
+      const { birthdate, gender, school, grade, educationLevel, tutorIds, sessionTrackings, weeklyPlannings, evaluationPlannings, ...userDto } = createStudentDto;
 
       if (userDto.numberDocument) {
         const userExists = await this.prisma.user.findUnique({
@@ -27,21 +28,24 @@ export class StudentService {
       }
 
       // Buscar o crear colegio
-      const existingSchool = await this.prisma.school.findUnique({
+      let schoolRecord = await this.prisma.school.findUnique({
         where: { name: school },
       });
 
-      const schoolRecord = existingSchool
-        ? existingSchool
-        : await this.prisma.school.create({
+      if (!schoolRecord && school) {
+        schoolRecord = await this.prisma.school.create({
           data: {
             name: school,
             createdBy: email,
           },
         });
+      }
 
       const salt = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(userDto.email ?? 'withoutpassword', salt);
+      const studentCode = userDto.numberDocument
+        ? `STU-${userDto.numberDocument}`
+        : `STU-${randomUUID().slice(0, 8).toUpperCase()}`;
 
       return await this.prisma.user.create({
         data: {
@@ -50,7 +54,7 @@ export class StudentService {
           createdBy: email,
           student: {
             create: {
-              code: `STU-${userDto.numberDocument}`,
+              code: studentCode,
               birthdate,
               gender,
               grade,
@@ -58,10 +62,19 @@ export class StudentService {
               tutors: {
                 connect: tutorIds.map((userId) => ({ userId })),
               },
-              schoolId: schoolRecord.id,
+              ...(schoolRecord && {
+                school: {
+                  connect: { id: schoolRecord.id },
+                },
+              }),
+
+              sessionTrackings,
+              weeklyPlannings,
+              evaluationPlannings,
               createdBy: email,
             },
           },
+
         },
         select: UserSelect,
       });
@@ -78,7 +91,6 @@ export class StudentService {
       throw new InternalServerErrorException('Hubo un error al crear un estudiante');
     }
   }
-
 
   async findAll(paginationDto: PaginationDto): Promise<PaginationResult<StudentType>> {
     try {
@@ -137,7 +149,7 @@ export class StudentService {
   }
 
   async update(email: string, id: string, updateStudentDto: UpdateStudentDto) {
-    await this.findOne(id); // Verificas que el estudiante existe
+    await this.findOne(id);
 
     const {
       birthdate,
@@ -146,24 +158,36 @@ export class StudentService {
       grade,
       educationLevel,
       tutorIds,
+      sessionTrackings,
+      weeklyPlannings,
+      evaluationPlannings,
       ...userDto
     } = updateStudentDto;
-    if (!school) {
-      throw new InternalServerErrorException('Es necesario el colegio');
-    }
-    // Buscar o crear colegio por nombre
-    const existingSchool = await this.prisma.school.findUnique({
-      where: { name: school },
-    });
 
-    const schoolRecord = existingSchool
-      ? existingSchool
-      : await this.prisma.school.create({
-        data: {
-          name: school,
-          createdBy: email,
-        },
-      });
+    let schoolRecord: { id: string } | null = null;
+
+    if (school !== undefined) {
+      if (school === null || school === '') {
+        schoolRecord = null;
+      } else {
+        schoolRecord = await this.prisma.school.findUnique({
+          where: { name: school },
+        });
+
+        if (!schoolRecord) {
+          schoolRecord = await this.prisma.school.create({
+            data: {
+              name: school,
+              createdBy: email,
+            },
+          });
+        }
+      }
+    }
+
+    const studentCode = userDto.numberDocument
+      ? `STU-${userDto.numberDocument}`
+      : undefined;
 
     return this.prisma.user.update({
       where: {
@@ -178,17 +202,37 @@ export class StudentService {
           update: {
             where: { userId: id },
             data: {
-              code: `STU-${userDto.numberDocument}`,
+              ...(studentCode && { code: studentCode }),
+
               birthdate,
               gender,
               grade,
               educationLevel,
-              tutors: {
-                set: tutorIds?.map((userId) => ({ userId })) ?? [],
-              },
-              school: {
-                connect: { id: schoolRecord.id },
-              },
+
+              ...(tutorIds && {
+                tutors: {
+                  set: tutorIds.map((userId) => ({ userId })),
+                },
+              }),
+
+              ...(school !== undefined &&
+                (schoolRecord
+                  ? {
+                    school: {
+                      connect: { id: schoolRecord.id },
+                    },
+                  }
+                  : {
+                    school: {
+                      disconnect: true,
+                    },
+                  })),
+
+              sessionTrackings,
+              weeklyPlannings,
+              evaluationPlannings,
+
+              updatedBy: email,
             },
           },
         },
@@ -196,7 +240,6 @@ export class StudentService {
       select: UserSelect,
     });
   }
-
 
   async remove(id: string) {
     await this.findOne(id);

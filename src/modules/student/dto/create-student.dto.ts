@@ -28,7 +28,7 @@ export class CreateStudentDto extends CreateUserDto {
     example: 'San Calixto',
     description: 'Identificador de la escuela',
   })
-  school: string;
+  school?: string;
 
   @IsOptional()
   @IsNumber()
@@ -53,5 +53,34 @@ export class CreateStudentDto extends CreateUserDto {
     description: 'Lista de Identificadores de tutores',
   })
   tutorIds: string[];
+
+  @IsOptional()
+  @ApiProperty({
+    type: 'array',
+    description: 'Seguimiento de sesiones',
+    example: [
+      {
+        date: '2026-01-21',
+        area: 'Lenguaje',
+        activities: 'Ejercicios de pronunciación',
+        observations: 'Buena respuesta'
+      }
+    ],
+  })
+  sessionTrackings?: any[];
+
+  @IsOptional()
+  @ApiProperty({
+    type: 'array',
+    description: 'Planificaciones semanales',
+  })
+  weeklyPlannings?: any[];
+
+  @IsOptional()
+  @ApiProperty({
+    type: 'array',
+    description: 'Planificaciones de evaluación',
+  })
+  evaluationPlannings?: any[];
 
 }

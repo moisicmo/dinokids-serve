@@ -142,105 +142,28 @@ model Role {
 }
 
 model Student {
-  id                  String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId              String               @unique @map("user_id") @db.Uuid
-  schoolId            String               @map("school_id") @db.Uuid
-  code                String               @unique
+  id                  String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId              String          @unique @map("user_id") @db.Uuid
+  schoolId            String?         @map("school_id") @db.Uuid
+  code                String          @unique
   birthdate           DateTime
   gender              Gender
-  grade               Int?                 @db.Integer
-  educationLevel      EducationLevel?      @map("education_level")
-  active              Boolean              @default(true)
-  createdAt           DateTime             @default(now()) @map("created_at")
-  updatedAt           DateTime             @default(now()) @updatedAt @map("updated_at")
-  createdBy           String               @map("created_by")
-  updatedBy           String?              @map("updated_by")
-  user                User                 @relation(fields: [userId], references: [id])
+  grade               Int?            @db.Integer
+  educationLevel      EducationLevel? @map("education_level")
+  active              Boolean         @default(true)
+  sessionTrackings    Json?           @map("session_trackingss") @db.Json
+  weeklyPlannings     Json?           @map("weekly_plannings") @db.Json
+  evaluationPlannings Json?           @map("evaluation_plannings") @db.Json
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @default(now()) @updatedAt @map("updated_at")
+  createdBy           String          @map("created_by")
+  updatedBy           String?         @map("updated_by")
+  user                User            @relation(fields: [userId], references: [id])
   inscriptions        Inscription[]
   tutors              Tutor[]
-  weeklyPlannings     WeeklyPlanning[]
-  evaluationPlannings EvaluationPlanning[]
-  school              School               @relation(fields: [schoolId], references: [id])
-  sessionTrackings    SessionTracking[]
+  school              School?         @relation(fields: [schoolId], references: [id])
 
   @@map("students")
-}
-
-// seguimiento de sesion
-model SessionTracking {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  studentId         String   @map("student_id") @db.Uuid
-  workArea          String   @map("work_area") @db.VarChar
-  developedActivity String   @map("developed_activity") @db.VarChar
-  observation       String?  @db.VarChar
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at")
-  createdBy         String   @map("created_by")
-  updatedBy         String?  @map("updated_by")
-  student           Student  @relation(fields: [studentId], references: [userId])
-
-  @@map("session_trackings")
-}
-
-// planificacion semanal
-model WeeklyPlanning {
-  id         String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  studentId  String                    @map("student_id") @db.Uuid
-  weekNumber Int
-  workArea   String                    @map("work_area") @db.VarChar
-  isLocked   Boolean                   @default(false) @map("is_locked")
-  createdAt  DateTime                  @default(now()) @map("created_at")
-  updatedAt  DateTime                  @default(now()) @updatedAt @map("updated_at")
-  createdBy  String                    @map("created_by")
-  updatedBy  String?                   @map("updated_by")
-  student    Student                   @relation(fields: [studentId], references: [userId])
-  objectives WeeklyPlanningObjective[]
-
-  @@map("weekly_plannings")
-}
-
-model WeeklyPlanningObjective {
-  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  weeklyWeekId   String         @map("weekly_week_id") @db.Uuid
-  smartObjective String
-  answer         String
-  createdAt      DateTime       @default(now()) @map("created_at")
-  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
-  createdBy      String         @map("created_by")
-  updatedBy      String?        @map("updated_by")
-  weeklyWeek     WeeklyPlanning @relation(fields: [weeklyWeekId], references: [id])
-
-  @@map("weekly_planning_objectives")
-}
-
-// planificación de evaluación
-model EvaluationPlanning {
-  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  studentId      String              @map("student_id") @db.Uuid
-  evaluationDate DateTime            @map("evaluation_date")
-  createdAt      DateTime            @default(now()) @map("created_at")
-  updatedAt      DateTime            @default(now()) @updatedAt @map("updated_at")
-  createdBy      String              @map("created_by")
-  updatedBy      String?             @map("updated_by")
-  student        Student             @relation(fields: [studentId], references: [userId])
-  sections       SectionDefinition[]
-
-  @@map("evaluation_plannings")
-}
-
-model SectionDefinition {
-  id           String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  evaluationId String             @map("evaluation_id") @db.Uuid
-  name         String
-  schema       Json
-  isActive     Boolean            @default(true)
-  createdAt    DateTime           @default(now()) @map("created_at")
-  updatedAt    DateTime           @default(now()) @updatedAt @map("updated_at")
-  createdBy    String             @map("created_by")
-  updatedBy    String?            @map("updated_by")
-  evaluation   EvaluationPlanning @relation(fields: [evaluationId], references: [id])
-
-  @@map("section_definitions")
 }
 
 model School {

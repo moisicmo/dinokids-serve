@@ -13,6 +13,9 @@ export const StudentSelect = {
   school: true,
   grade: true,
   educationLevel: true,
+  sessionTrackings: true,
+  weeklyPlannings: true,
+  evaluationPlannings: true,
   tutors: {
     select: {
       ...TutorSelect,
