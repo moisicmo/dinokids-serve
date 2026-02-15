@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: dinokids-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: dinokids
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: dinokids_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: dinokids-backend
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgres://dinokids:password123@postgres:5432/dinokids_db
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
