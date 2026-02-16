@@ -20,8 +20,8 @@ services:
     restart: always
     ports:
       - "3001:3001"
-    environment:
-      DATABASE_URL: postgres://dinokids:password123@postgres:5432/dinokids_db
+    env_file:
+      - .env
     depends_on:
       - postgres
 
