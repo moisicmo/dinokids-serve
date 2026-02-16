@@ -1,50 +1,43 @@
-# ==============================
-# 🏗️ 1️⃣ BUILD STAGE
-# ==============================
-# Usamos Node 22 Alpine (ligero y seguro)
+# ----------------------------
+# 1️⃣ BUILD STAGE
+# ----------------------------
 FROM node:22-alpine AS builder
 
-# Directorio interno del contenedor
+# Activamos corepack (para usar yarn moderno)
+RUN corepack enable
+
 WORKDIR /app
 
-# Copiamos archivos necesarios para instalar dependencias
-# IMPORTANTE: usamos yarn porque tu proyecto usa yarn
+# Copiamos package.json y yarn.lock primero (mejor cache)
 COPY package.json yarn.lock ./
 
-# Instalamos TODAS las dependencias (incluye dev)
-# Necesarias para poder hacer el build (Nest CLI, TypeScript, etc.)
-RUN yarn install --frozen-lockfile
+# Instalamos dependencias
+RUN yarn install
 
-# Copiamos el resto del proyecto
+# Copiamos el resto del código
 COPY . .
 
-# Generamos el build (crea la carpeta dist)
+# Generamos el build de NestJS
 RUN yarn build
 
 
-# ==============================
-# 🚀 2️⃣ PRODUCTION STAGE
-# ==============================
-# Nueva imagen limpia para producción
+# ----------------------------
+# 2️⃣ PRODUCTION STAGE
+# ----------------------------
 FROM node:22-alpine
+
+RUN corepack enable
 
 WORKDIR /app
 
-# Copiamos solo package.json y yarn.lock
+# Copiamos package.json y yarn.lock
 COPY package.json yarn.lock ./
 
-# Instalamos SOLO dependencias de producción
-RUN yarn install --frozen-lockfile --production
+# Instalamos solo dependencias de producción
+RUN yarn install --production
 
-# Copiamos únicamente el build generado desde la etapa anterior
+# Copiamos solo el build generado
 COPY --from=builder /app/dist ./dist
 
-# Exponemos el puerto donde corre Nest
-EXPOSE 3001
-
-# Comando para iniciar la app
-# ⚠️ IMPORTANTE:
-# Si tu build genera dist/src/main.js cambia a:
-# CMD ["node", "dist/src/main.js"]
-# Si genera dist/main.js déjalo así:
+# Comando de arranque
 CMD ["node", "dist/main.js"]
