@@ -1,23 +1,22 @@
-# Usamos Node 22
-FROM node:22-alpine
+# ---- Build Stage ----
+FROM node:22-alpine AS builder
 
-# Crear directorio de app
 WORKDIR /app
 
-# Copiar package.json
-COPY package.json yarn.lock ./
+COPY package*.json ./
+RUN npm install
 
-# Instalar dependencias
-RUN yarn install --frozen-lockfile
-
-# Copiar todo
 COPY . .
+RUN npm run build
 
-# Build
-RUN yarn build
+# ---- Production Stage ----
+FROM node:22-alpine
 
-# Exponer puerto
-EXPOSE 3001
+WORKDIR /app
 
-# Ejecutar
+COPY package*.json ./
+RUN npm install --only=production
+
+COPY --from=builder /app/dist ./dist
+
 CMD ["node", "dist/main.js"]
