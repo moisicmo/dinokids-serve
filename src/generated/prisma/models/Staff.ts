@@ -27,7 +27,6 @@ export type AggregateStaff = {
 export type StaffMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  roleId: string | null
   active: boolean | null
   superStaff: boolean | null
   createdAt: Date | null
@@ -39,7 +38,6 @@ export type StaffMinAggregateOutputType = {
 export type StaffMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  roleId: string | null
   active: boolean | null
   superStaff: boolean | null
   createdAt: Date | null
@@ -51,7 +49,6 @@ export type StaffMaxAggregateOutputType = {
 export type StaffCountAggregateOutputType = {
   id: number
   userId: number
-  roleId: number
   active: number
   superStaff: number
   createdAt: number
@@ -65,7 +62,6 @@ export type StaffCountAggregateOutputType = {
 export type StaffMinAggregateInputType = {
   id?: true
   userId?: true
-  roleId?: true
   active?: true
   superStaff?: true
   createdAt?: true
@@ -77,7 +73,6 @@ export type StaffMinAggregateInputType = {
 export type StaffMaxAggregateInputType = {
   id?: true
   userId?: true
-  roleId?: true
   active?: true
   superStaff?: true
   createdAt?: true
@@ -89,7 +84,6 @@ export type StaffMaxAggregateInputType = {
 export type StaffCountAggregateInputType = {
   id?: true
   userId?: true
-  roleId?: true
   active?: true
   superStaff?: true
   createdAt?: true
@@ -174,7 +168,6 @@ export type StaffGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type StaffGroupByOutputType = {
   id: string
   userId: string
-  roleId: string
   active: boolean
   superStaff: boolean
   createdAt: Date
@@ -207,7 +200,6 @@ export type StaffWhereInput = {
   NOT?: Prisma.StaffWhereInput | Prisma.StaffWhereInput[]
   id?: Prisma.UuidFilter<"Staff"> | string
   userId?: Prisma.UuidFilter<"Staff"> | string
-  roleId?: Prisma.UuidFilter<"Staff"> | string
   active?: Prisma.BoolFilter<"Staff"> | boolean
   superStaff?: Prisma.BoolFilter<"Staff"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
@@ -215,14 +207,12 @@ export type StaffWhereInput = {
   createdBy?: Prisma.StringFilter<"Staff"> | string
   updatedBy?: Prisma.StringNullableFilter<"Staff"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
   branches?: Prisma.BranchListRelationFilter
 }
 
 export type StaffOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   active?: Prisma.SortOrder
   superStaff?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -230,7 +220,6 @@ export type StaffOrderByWithRelationInput = {
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  role?: Prisma.RoleOrderByWithRelationInput
   branches?: Prisma.BranchOrderByRelationAggregateInput
 }
 
@@ -240,7 +229,6 @@ export type StaffWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.StaffWhereInput | Prisma.StaffWhereInput[]
   OR?: Prisma.StaffWhereInput[]
   NOT?: Prisma.StaffWhereInput | Prisma.StaffWhereInput[]
-  roleId?: Prisma.UuidFilter<"Staff"> | string
   active?: Prisma.BoolFilter<"Staff"> | boolean
   superStaff?: Prisma.BoolFilter<"Staff"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
@@ -248,14 +236,12 @@ export type StaffWhereUniqueInput = Prisma.AtLeast<{
   createdBy?: Prisma.StringFilter<"Staff"> | string
   updatedBy?: Prisma.StringNullableFilter<"Staff"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
   branches?: Prisma.BranchListRelationFilter
 }, "id" | "userId">
 
 export type StaffOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   active?: Prisma.SortOrder
   superStaff?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -273,7 +259,6 @@ export type StaffScalarWhereWithAggregatesInput = {
   NOT?: Prisma.StaffScalarWhereWithAggregatesInput | Prisma.StaffScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Staff"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"Staff"> | string
-  roleId?: Prisma.UuidWithAggregatesFilter<"Staff"> | string
   active?: Prisma.BoolWithAggregatesFilter<"Staff"> | boolean
   superStaff?: Prisma.BoolWithAggregatesFilter<"Staff"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Staff"> | Date | string
@@ -291,14 +276,12 @@ export type StaffCreateInput = {
   createdBy: string
   updatedBy?: string | null
   user: Prisma.UserCreateNestedOneWithoutStaffInput
-  role: Prisma.RoleCreateNestedOneWithoutStaffInput
   branches?: Prisma.BranchCreateNestedManyWithoutStaffsInput
 }
 
 export type StaffUncheckedCreateInput = {
   id?: string
   userId: string
-  roleId: string
   active?: boolean
   superStaff?: boolean
   createdAt?: Date | string
@@ -317,14 +300,12 @@ export type StaffUpdateInput = {
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
-  role?: Prisma.RoleUpdateOneRequiredWithoutStaffNestedInput
   branches?: Prisma.BranchUpdateManyWithoutStaffsNestedInput
 }
 
 export type StaffUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   superStaff?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -337,7 +318,6 @@ export type StaffUncheckedUpdateInput = {
 export type StaffCreateManyInput = {
   id?: string
   userId: string
-  roleId: string
   active?: boolean
   superStaff?: boolean
   createdAt?: Date | string
@@ -359,7 +339,6 @@ export type StaffUpdateManyMutationInput = {
 export type StaffUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   superStaff?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -386,7 +365,6 @@ export type StaffOrderByRelationAggregateInput = {
 export type StaffCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   active?: Prisma.SortOrder
   superStaff?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -398,7 +376,6 @@ export type StaffCountOrderByAggregateInput = {
 export type StaffMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   active?: Prisma.SortOrder
   superStaff?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -410,7 +387,6 @@ export type StaffMaxOrderByAggregateInput = {
 export type StaffMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
   active?: Prisma.SortOrder
   superStaff?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -489,48 +465,6 @@ export type StaffUncheckedUpdateManyWithoutBranchesNestedInput = {
   deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
 }
 
-export type StaffCreateNestedManyWithoutRoleInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutRoleInput, Prisma.StaffUncheckedCreateWithoutRoleInput> | Prisma.StaffCreateWithoutRoleInput[] | Prisma.StaffUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutRoleInput | Prisma.StaffCreateOrConnectWithoutRoleInput[]
-  createMany?: Prisma.StaffCreateManyRoleInputEnvelope
-  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-}
-
-export type StaffUncheckedCreateNestedManyWithoutRoleInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutRoleInput, Prisma.StaffUncheckedCreateWithoutRoleInput> | Prisma.StaffCreateWithoutRoleInput[] | Prisma.StaffUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutRoleInput | Prisma.StaffCreateOrConnectWithoutRoleInput[]
-  createMany?: Prisma.StaffCreateManyRoleInputEnvelope
-  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-}
-
-export type StaffUpdateManyWithoutRoleNestedInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutRoleInput, Prisma.StaffUncheckedCreateWithoutRoleInput> | Prisma.StaffCreateWithoutRoleInput[] | Prisma.StaffUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutRoleInput | Prisma.StaffCreateOrConnectWithoutRoleInput[]
-  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutRoleInput | Prisma.StaffUpsertWithWhereUniqueWithoutRoleInput[]
-  createMany?: Prisma.StaffCreateManyRoleInputEnvelope
-  set?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  disconnect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  delete?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  update?: Prisma.StaffUpdateWithWhereUniqueWithoutRoleInput | Prisma.StaffUpdateWithWhereUniqueWithoutRoleInput[]
-  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutRoleInput | Prisma.StaffUpdateManyWithWhereWithoutRoleInput[]
-  deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
-}
-
-export type StaffUncheckedUpdateManyWithoutRoleNestedInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutRoleInput, Prisma.StaffUncheckedCreateWithoutRoleInput> | Prisma.StaffCreateWithoutRoleInput[] | Prisma.StaffUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutRoleInput | Prisma.StaffCreateOrConnectWithoutRoleInput[]
-  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutRoleInput | Prisma.StaffUpsertWithWhereUniqueWithoutRoleInput[]
-  createMany?: Prisma.StaffCreateManyRoleInputEnvelope
-  set?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  disconnect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  delete?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  update?: Prisma.StaffUpdateWithWhereUniqueWithoutRoleInput | Prisma.StaffUpdateWithWhereUniqueWithoutRoleInput[]
-  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutRoleInput | Prisma.StaffUpdateManyWithWhereWithoutRoleInput[]
-  deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
-}
-
 export type StaffCreateWithoutUserInput = {
   id?: string
   active?: boolean
@@ -539,13 +473,11 @@ export type StaffCreateWithoutUserInput = {
   updatedAt?: Date | string
   createdBy: string
   updatedBy?: string | null
-  role: Prisma.RoleCreateNestedOneWithoutStaffInput
   branches?: Prisma.BranchCreateNestedManyWithoutStaffsInput
 }
 
 export type StaffUncheckedCreateWithoutUserInput = {
   id?: string
-  roleId: string
   active?: boolean
   superStaff?: boolean
   createdAt?: Date | string
@@ -579,13 +511,11 @@ export type StaffUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  role?: Prisma.RoleUpdateOneRequiredWithoutStaffNestedInput
   branches?: Prisma.BranchUpdateManyWithoutStaffsNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   superStaff?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -604,13 +534,11 @@ export type StaffCreateWithoutBranchesInput = {
   createdBy: string
   updatedBy?: string | null
   user: Prisma.UserCreateNestedOneWithoutStaffInput
-  role: Prisma.RoleCreateNestedOneWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutBranchesInput = {
   id?: string
   userId: string
-  roleId: string
   active?: boolean
   superStaff?: boolean
   createdAt?: Date | string
@@ -646,63 +574,12 @@ export type StaffScalarWhereInput = {
   NOT?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
   id?: Prisma.UuidFilter<"Staff"> | string
   userId?: Prisma.UuidFilter<"Staff"> | string
-  roleId?: Prisma.UuidFilter<"Staff"> | string
   active?: Prisma.BoolFilter<"Staff"> | boolean
   superStaff?: Prisma.BoolFilter<"Staff"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
   createdBy?: Prisma.StringFilter<"Staff"> | string
   updatedBy?: Prisma.StringNullableFilter<"Staff"> | string | null
-}
-
-export type StaffCreateWithoutRoleInput = {
-  id?: string
-  active?: boolean
-  superStaff?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  createdBy: string
-  updatedBy?: string | null
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
-  branches?: Prisma.BranchCreateNestedManyWithoutStaffsInput
-}
-
-export type StaffUncheckedCreateWithoutRoleInput = {
-  id?: string
-  userId: string
-  active?: boolean
-  superStaff?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  createdBy: string
-  updatedBy?: string | null
-  branches?: Prisma.BranchUncheckedCreateNestedManyWithoutStaffsInput
-}
-
-export type StaffCreateOrConnectWithoutRoleInput = {
-  where: Prisma.StaffWhereUniqueInput
-  create: Prisma.XOR<Prisma.StaffCreateWithoutRoleInput, Prisma.StaffUncheckedCreateWithoutRoleInput>
-}
-
-export type StaffCreateManyRoleInputEnvelope = {
-  data: Prisma.StaffCreateManyRoleInput | Prisma.StaffCreateManyRoleInput[]
-  skipDuplicates?: boolean
-}
-
-export type StaffUpsertWithWhereUniqueWithoutRoleInput = {
-  where: Prisma.StaffWhereUniqueInput
-  update: Prisma.XOR<Prisma.StaffUpdateWithoutRoleInput, Prisma.StaffUncheckedUpdateWithoutRoleInput>
-  create: Prisma.XOR<Prisma.StaffCreateWithoutRoleInput, Prisma.StaffUncheckedCreateWithoutRoleInput>
-}
-
-export type StaffUpdateWithWhereUniqueWithoutRoleInput = {
-  where: Prisma.StaffWhereUniqueInput
-  data: Prisma.XOR<Prisma.StaffUpdateWithoutRoleInput, Prisma.StaffUncheckedUpdateWithoutRoleInput>
-}
-
-export type StaffUpdateManyWithWhereWithoutRoleInput = {
-  where: Prisma.StaffScalarWhereInput
-  data: Prisma.XOR<Prisma.StaffUpdateManyMutationInput, Prisma.StaffUncheckedUpdateManyWithoutRoleInput>
 }
 
 export type StaffUpdateWithoutBranchesInput = {
@@ -714,13 +591,11 @@ export type StaffUpdateWithoutBranchesInput = {
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
-  role?: Prisma.RoleUpdateOneRequiredWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutBranchesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   superStaff?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -730,53 +605,6 @@ export type StaffUncheckedUpdateWithoutBranchesInput = {
 }
 
 export type StaffUncheckedUpdateManyWithoutBranchesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  roleId?: Prisma.StringFieldUpdateOperationsInput | string
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  superStaff?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
-  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
-export type StaffCreateManyRoleInput = {
-  id?: string
-  userId: string
-  active?: boolean
-  superStaff?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  createdBy: string
-  updatedBy?: string | null
-}
-
-export type StaffUpdateWithoutRoleInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  superStaff?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
-  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
-  branches?: Prisma.BranchUpdateManyWithoutStaffsNestedInput
-}
-
-export type StaffUncheckedUpdateWithoutRoleInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  superStaff?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
-  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  branches?: Prisma.BranchUncheckedUpdateManyWithoutStaffsNestedInput
-}
-
-export type StaffUncheckedUpdateManyWithoutRoleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -821,7 +649,6 @@ export type StaffCountOutputTypeCountBranchesArgs<ExtArgs extends runtime.Types.
 export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  roleId?: boolean
   active?: boolean
   superStaff?: boolean
   createdAt?: boolean
@@ -829,7 +656,6 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdBy?: boolean
   updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
   branches?: boolean | Prisma.Staff$branchesArgs<ExtArgs>
   _count?: boolean | Prisma.StaffCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
@@ -837,7 +663,6 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  roleId?: boolean
   active?: boolean
   superStaff?: boolean
   createdAt?: boolean
@@ -845,13 +670,11 @@ export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdBy?: boolean
   updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
 export type StaffSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  roleId?: boolean
   active?: boolean
   superStaff?: boolean
   createdAt?: boolean
@@ -859,13 +682,11 @@ export type StaffSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdBy?: boolean
   updatedBy?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
 export type StaffSelectScalar = {
   id?: boolean
   userId?: boolean
-  roleId?: boolean
   active?: boolean
   superStaff?: boolean
   createdAt?: boolean
@@ -874,33 +695,28 @@ export type StaffSelectScalar = {
   updatedBy?: boolean
 }
 
-export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "roleId" | "active" | "superStaff" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["staff"]>
+export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "active" | "superStaff" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["staff"]>
 export type StaffInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
   branches?: boolean | Prisma.Staff$branchesArgs<ExtArgs>
   _count?: boolean | Prisma.StaffCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StaffIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }
 export type StaffIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }
 
 export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Staff"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    role: Prisma.$RolePayload<ExtArgs>
     branches: Prisma.$BranchPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    roleId: string
     active: boolean
     superStaff: boolean
     createdAt: Date
@@ -1302,7 +1118,6 @@ readonly fields: StaffFieldRefs;
 export interface Prisma__StaffClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  role<T extends Prisma.RoleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RoleDefaultArgs<ExtArgs>>): Prisma.Prisma__RoleClient<runtime.Types.Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   branches<T extends Prisma.Staff$branchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$branchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BranchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1335,7 +1150,6 @@ export interface Prisma__StaffClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface StaffFieldRefs {
   readonly id: Prisma.FieldRef<"Staff", 'String'>
   readonly userId: Prisma.FieldRef<"Staff", 'String'>
-  readonly roleId: Prisma.FieldRef<"Staff", 'String'>
   readonly active: Prisma.FieldRef<"Staff", 'Boolean'>
   readonly superStaff: Prisma.FieldRef<"Staff", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Staff", 'DateTime'>
