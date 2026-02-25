@@ -31,9 +31,9 @@ export class StaffService {
         ...userDto,
         password: hashedPassword,
         createdBy: email,
+        roleId: roleId,
         staff: {
           create: {
-            roleId: roleId,
             createdBy: email,
             branches: {
               connect: brancheIds.map(id => ({ id })),
@@ -118,11 +118,11 @@ export class StaffService {
           },
         },
         data: {
+          roleId,
           staff: {
             update: {
               where: { userId: id },
               data: {
-                roleId,
                 branches: {
                   set: brancheIds?.map(id => ({ id })) ?? [],
                 },

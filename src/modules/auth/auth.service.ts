@@ -29,44 +29,51 @@ export class AuthService {
     const { userAgent, ipAddress } = requestInfo;
 
     try {
-      const staff = await this.prisma.staff.findFirst({
+      const user = await this.prisma.user.findFirst({
         where: {
-          user: { email },
+          email,
         },
         select: {
-          user: {
-            select: {
-              password: true,
-              id: true,
-              name: true,
-              lastName: true,
-              email: true,
-              emailValidated: true,
-            },
-          },
+          password: true,
+          id: true,
+          name: true,
+          lastName: true,
+          email: true,
+          emailValidated: true,
           role: {
             select: RoleSelect,
           },
-          branches: {
-            select: BranchSelect,
+          staff: {
+            select: {
+              branches: {
+                select: BranchSelect,
+              },
+            },
+          },
+          teacher: {
+            select: {
+              branches: {
+                select: BranchSelect,
+              },
+            },
           },
         },
       });
 
 
-      if (!staff || !staff.user) {
+      if (!user) {
         throw new NotFoundException('Las credenciales no son válidas, por favor verifica tu correo y contraseña');
       }
-      if (!staff.user.emailValidated) {
-        throw new UnauthorizedException({ idUser: staff.user.id, key: 'validar correo', email: staff.user.email });
+      if (!user.emailValidated) {
+        throw new UnauthorizedException({ idUser: user.id, key: 'validar correo', email: user.email });
       }
 
-      const isPasswordValid = bcrypt.compareSync(password, staff.user.password);
+      const isPasswordValid = bcrypt.compareSync(password, user.password);
       if (!isPasswordValid) {
         throw new UnauthorizedException('Las credenciales no son válidas, por favor verifica tu correo y contraseña');
       }
 
-      const { user, role, branches } = staff;
+      const { role, staff, teacher } = user;
 
       const tokenPayload = {
         id: user.id,
@@ -94,7 +101,7 @@ export class AuthService {
         token,
         refreshToken,
         role,
-        branches,
+        branches: staff?.branches ?? teacher?.branches
       };
 
     } catch (error) {

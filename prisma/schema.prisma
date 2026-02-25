@@ -16,6 +16,7 @@ datasource db {
 
 model User {
   id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roleId         String?        @map("role_id") @db.Uuid
   addressId      String?        @map("address_id") @db.Uuid
   numberDocument String?        @unique @map("number_document")
   typeDocument   TypeDocument   @default(DNI) @map("type_document")
@@ -32,6 +33,7 @@ model User {
   updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at")
   createdBy      String         @map("created_by")
   updatedBy      String?        @map("updated_by")
+  role           Role?          @relation(fields: [roleId], references: [id])
   staff          Staff?
   student        Student?
   teacher        Teacher?
@@ -66,7 +68,6 @@ model Branch {
 model Staff {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId     String   @unique @map("user_id") @db.Uuid
-  roleId     String   @map("role_id") @db.Uuid
   active     Boolean  @default(true)
   superStaff Boolean  @default(false) @map("super_staff")
   createdAt  DateTime @default(now()) @map("created_at")
@@ -74,7 +75,6 @@ model Staff {
   createdBy  String   @map("created_by")
   updatedBy  String?  @map("updated_by")
   user       User     @relation(fields: [userId], references: [id])
-  role       Role     @relation(fields: [roleId], references: [id])
   branches   Branch[]
 
   @@map("staffs")
@@ -136,7 +136,7 @@ model Role {
   createdBy   String       @map("created_by")
   updatedBy   String?      @map("updated_by")
   permissions Permission[]
-  staff       Staff[]
+  users       User[]
 
   @@map("roles")
 }

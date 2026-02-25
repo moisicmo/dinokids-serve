@@ -1,4 +1,5 @@
 import { AddressSelect } from "./address.select";
+import { RoleSelect } from "@/modules/role/entities/role.entity";
 
 export const UserSelect = {
   id: true,
@@ -11,5 +12,8 @@ export const UserSelect = {
   numberCard: true,
   address: {
     select: AddressSelect,
+  },
+  role: {
+    select: RoleSelect,
   },
 };

@@ -26,7 +26,11 @@ export class TeacherService {
 
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(userDto.email, salt);
-
+    const teacherRole = await this.prisma.role.findFirst({
+      where: {
+        name: "Profesor"
+      }
+    });
     return await this.prisma.user.create({
       data: {
         password: hashedPassword,
@@ -39,6 +43,9 @@ export class TeacherService {
             createdBy: email,
           }
         },
+        role: teacherRole
+          ? { connect: { id: teacherRole.id } }
+          : undefined,
         teacher: {
           create: {
             major,

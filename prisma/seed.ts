@@ -20,7 +20,7 @@ async function main() {
     // 1. CREAR TODOS LOS PERMISOS DEL SISTEMA
     // ============================================
     console.log("📋 Creando permisos del sistema...");
-    
+
     const actions: TypeAction[] = [
       TypeAction.manage,
       TypeAction.create,
@@ -36,7 +36,7 @@ async function main() {
 
     // Crear todos los permisos (acción × módulo) en paralelo
     const upsertPromises: Promise<Permission>[] = [];
-    
+
     for (const subject of subjects) {
       for (const action of actions) {
         upsertPromises.push(
@@ -44,10 +44,10 @@ async function main() {
             where: {
               action_subject: { action, subject },
             },
-            update: { 
+            update: {
               active: true,
               updatedAt: new Date(),
-              updatedBy: SUPER_ADMIN_EMAIL 
+              updatedBy: SUPER_ADMIN_EMAIL
             },
             create: {
               action,
@@ -126,6 +126,58 @@ async function main() {
     console.log(`✅ Rol creado: "${superAdminRole.name}"`);
 
     // ============================================
+    // 3.2 CREAR ROL "PROFESOR"
+    // ============================================
+    console.log("\n🎭 Creando rol Profesor...");
+
+    const teacherPermissionMatrix = [
+      { action: TypeAction.create, subject: TypeSubject.assignmentSchedule },
+      { action: TypeAction.update, subject: TypeSubject.assignmentSchedule },
+      { action: TypeAction.create, subject: TypeSubject.sessionTracking },
+      { action: TypeAction.update, subject: TypeSubject.sessionTracking },
+      { action: TypeAction.create, subject: TypeSubject.evaluationPlanning },
+      { action: TypeAction.update, subject: TypeSubject.evaluationPlanning },
+      { action: TypeAction.create, subject: TypeSubject.weeklyPlanning },
+      { action: TypeAction.update, subject: TypeSubject.weeklyPlanning },
+      { action: TypeAction.manage, subject: TypeSubject.attendance },
+      { action: TypeAction.update, subject: TypeSubject.attendance },
+      { action: TypeAction.create, subject: TypeSubject.attendance },
+      { action: TypeAction.create, subject: TypeSubject.student },
+      { action: TypeAction.update, subject: TypeSubject.student },
+      { action: TypeAction.read, subject: TypeSubject.student },
+    ];
+
+    const teacherPermissions = await prisma.permission.findMany({
+      where: {
+        OR: teacherPermissionMatrix,
+      },
+      select: { id: true },
+    });
+
+    await prisma.role.upsert({
+      where: { name: 'Profesor' },
+      update: {
+        active: true,
+        // Actualizar permisos si el rol ya existe
+        permissions: {
+          set: teacherPermissions.map((p) => ({ id: p.id })),
+        },
+        updatedAt: new Date(),
+        updatedBy: SUPER_ADMIN_EMAIL,
+      },
+      create: {
+        name: 'Profesor',
+        active: true,
+        createdBy: SUPER_ADMIN_EMAIL,
+        permissions: {
+          connect: teacherPermissions.map((p) => ({ id: p.id })),
+        },
+      },
+    });
+
+    console.log(`✅ Rol creado: "${superAdminRole.name}"`);
+
+    // ============================================
     // 4. CREAR DIRECCIÓN PARA SUCURSAL
     // ============================================
     console.log("\n📍 Creando dirección para sucursal...");
@@ -182,10 +234,16 @@ async function main() {
     // ============================================
     console.log("\n👔 Asignando Super Admin como staff...");
 
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        roleId: superAdminRole.id,
+      }
+    });
+    
     await prisma.staff.upsert({
       where: { userId: user.id },
       update: {
-        roleId: superAdminRole.id,
         active: true,
         superStaff: true,
         branches: {
@@ -197,7 +255,6 @@ async function main() {
       },
       create: {
         userId: user.id,
-        roleId: superAdminRole.id,
         active: true,
         superStaff: true,
         branches: {
@@ -261,7 +318,11 @@ async function main() {
 // ============================================
 async function createDemoData(branchId: string, createdBy: string) {
   const salt = bcrypt.genSaltSync(10);
-  
+
+  const teacherRole = await prisma.role.findFirst({
+    where: { name: "Profesor"}
+  })
+
   try {
     // Crear profesor demo
     const addressTeacher = await prisma.address.create({
@@ -280,6 +341,7 @@ async function createDemoData(branchId: string, createdBy: string) {
         lastName: 'Pérez',
         email: 'juan.perez@demo.com',
         phone: ['+591 76543210'],
+        roleId: teacherRole?.id,
         password: bcrypt.hashSync('Demo123*', salt),
         addressId: addressTeacher.id,
         updatedAt: new Date(),
@@ -292,6 +354,7 @@ async function createDemoData(branchId: string, createdBy: string) {
         lastName: 'Pérez',
         email: 'juan.perez@demo.com',
         phone: ['+591 76543210'],
+        roleId: teacherRole?.id,
         password: bcrypt.hashSync('Demo123*', salt),
         addressId: addressTeacher.id,
         createdBy: createdBy,
