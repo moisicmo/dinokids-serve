@@ -11,13 +11,13 @@ export class DebtService {
     private readonly prisma: PrismaService,
   ) { }
 
-  async findAll( paginationDto: PaginationDto ) {
+  async findAll(paginationDto: PaginationDto, whereCustom?: Prisma.DebtsWhereInput) {
     try {
       const { page = 1, limit = 10, keys = '' } = paginationDto;
 
       // 🔹 Armar el filtro final para Prisma
       const whereClause: Prisma.DebtsWhereInput = {
-        ...(keys ? {} : {}),
+        ...whereCustom,
       };
 
       const totalPages = await this.prisma.debts.count({ where: whereClause });

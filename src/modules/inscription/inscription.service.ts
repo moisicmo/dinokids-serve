@@ -6,9 +6,8 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { PdfService } from '@/common/pdf/pdf.service';
 import { GoogledriveService } from '@/common/googledrive/googledrive.service';
-import { Prisma } from '@/generated/prisma/client';
+import { DayOfWeek, Prisma } from '@/generated/prisma/client';
 import { addDays } from 'date-fns';
-import { DayOfWeek } from '@/generated/prisma/client';
 
 @Injectable()
 export class InscriptionService {
@@ -391,69 +390,160 @@ export class InscriptionService {
   }
 
   async update(email: string, id: string, updateInscriptionDto: UpdateInscriptionDto) {
-    const { assignmentRooms, ...inscriptionData } = updateInscriptionDto;
+    const { assignmentRooms, inscriptionPrice, monthPrice, ...inscriptionData } = updateInscriptionDto;
 
-    // 1. Validar que exista
+    // 1. Validate exists
     await this.findOne(id);
 
-    const result = await this.prisma.$transaction(async (prisma) => {
+    let newInscriptionPrice: number | undefined;
+    let newMonthPrice: number | undefined;
 
-      // 2. Actualizar la inscripción principal
-      const updatedInscription = await prisma.inscription.update({
+    await this.prisma.$transaction(async (tx) => {
+      // 2. Update main inscription fields
+      await tx.inscription.update({
         where: { id },
         data: inscriptionData,
-        select: InscriptionSelect,
       });
 
-      // 3. Eliminar relaciones anteriores (según el caso)
-      await prisma.assignmentSchedule.deleteMany({
-        where: {
-          assignmentRoom: {
-            inscriptionId: id,
-          },
-        },
-      });
-
-      await prisma.assignmentRoom.deleteMany({
-        where: {
-          inscriptionId: id,
-        },
-      });
-
-      // 4. Insertar nuevas asignaciones si existen
-      if (assignmentRooms && assignmentRooms.length > 0) {
-        for (const assignmentRoomDto of assignmentRooms) {
-
-          const { assignmentSchedules, ...roomData } = assignmentRoomDto;
-
-          // 4.1 Crear la sala asignada
-          const assignmentRoom = await prisma.assignmentRoom.create({
+      // 3. Update active price
+      if (inscriptionPrice !== undefined || monthPrice !== undefined) {
+        const activePrice = await tx.price.findFirst({
+          where: { inscriptionId: id, active: true },
+        });
+        if (activePrice) {
+          newInscriptionPrice = inscriptionPrice ?? activePrice.inscriptionPrice;
+          newMonthPrice = monthPrice ?? activePrice.monthPrice;
+          await tx.price.update({
+            where: { id: activePrice.id },
             data: {
-              inscriptionId: id,
-              createdBy: email,
-              ...roomData,
+              inscriptionPrice: newInscriptionPrice,
+              monthPrice: newMonthPrice,
+              updatedBy: email,
             },
           });
-
-          // 4.2 Crear los horarios si existen
-          // if (assignmentSchedules && assignmentSchedules.length > 0) {
-          //   for (const scheduleDto of assignmentSchedules) {
-          //     await prisma.assignmentSchedule.create({
-          //       data: {
-          //         assignmentRoomId: assignmentRoom.id,
-          //         ...scheduleDto,
-          //       },
-          //     });
-          //   }
-          // }
         }
       }
 
-      // 5. Retornar la inscripción actualizada
-      return updatedInscription;
+      // 4. Delete sessions → schedules → rooms
+      const existingRooms = await tx.assignmentRoom.findMany({
+        where: { inscriptionId: id },
+        select: { id: true },
+      });
+      const roomIds = existingRooms.map((r) => r.id);
+
+      if (roomIds.length > 0) {
+        await tx.session.deleteMany({
+          where: { assignmentSchedule: { assignmentRoomId: { in: roomIds } } },
+        });
+        await tx.assignmentSchedule.deleteMany({
+          where: { assignmentRoomId: { in: roomIds } },
+        });
+        await tx.assignmentRoom.deleteMany({
+          where: { inscriptionId: id },
+        });
+      }
+
+      // 5. Recreate rooms, schedules and sessions
+      for (const assignmentRoomDto of assignmentRooms ?? []) {
+        const { assignmentSchedules, ...roomData } = assignmentRoomDto;
+
+        const assignmentRoom = await tx.assignmentRoom.create({
+          data: {
+            inscriptionId: id,
+            createdBy: email,
+            ...roomData,
+          },
+        });
+
+        const room = await tx.room.findUnique({
+          where: { id: roomData.roomId },
+          include: { specialty: { include: { branchSpecialties: true } } },
+        });
+
+        const numberSessions = room?.specialty.branchSpecialties[0]?.numberSessions ?? 1;
+
+        for (const scheduleDto of assignmentSchedules ?? []) {
+          const assignmentSchedule = await tx.assignmentSchedule.create({
+            data: {
+              assignmentRoomId: assignmentRoom.id,
+              scheduleId: scheduleDto.schedule.id,
+              day: scheduleDto.day,
+              createdBy: email,
+            },
+          });
+
+          const startDate = new Date(roomData.start);
+          const sessionsToCreate: { date: Date; assignmentScheduleId: string }[] = [];
+          let currentDate = new Date(startDate);
+
+          while (sessionsToCreate.length < numberSessions) {
+            const currentDay = currentDate.getDay();
+            const mappedDay = mapDayOfWeek(scheduleDto.day);
+            if (currentDay === mappedDay) {
+              sessionsToCreate.push({
+                date: new Date(currentDate),
+                assignmentScheduleId: assignmentSchedule.id,
+              });
+            }
+            currentDate = addDays(currentDate, 1);
+          }
+
+          await tx.session.createMany({
+            data: sessionsToCreate.map((s) => ({
+              assignmentScheduleId: s.assignmentScheduleId,
+              date: s.date,
+              createdBy: email,
+            })),
+          });
+        }
+      }
+
+      // 6. Re-adjust debts based on new prices
+      if (newInscriptionPrice !== undefined || newMonthPrice !== undefined) {
+        const debts = await tx.debts.findMany({
+          where: { inscriptionId: id },
+          include: { payments: true },
+        });
+
+        for (const debt of debts) {
+          const newAmount =
+            debt.type === 'INSCRIPTION'
+              ? (newInscriptionPrice ?? debt.totalAmount)
+              : (newMonthPrice ?? debt.totalAmount);
+          const paidAmount = debt.totalAmount - debt.remainingBalance;
+          const newRemainingBalance = Math.max(0, newAmount - paidAmount);
+
+          await tx.debts.update({
+            where: { id: debt.id },
+            data: {
+              totalAmount: newAmount,
+              remainingBalance: newRemainingBalance,
+              updatedBy: email,
+            },
+          });
+        }
+      }
     });
 
-    return result;
+    // 7. Regenerate PDF and re-upload to Google Drive
+    const finalInscription = await this.findOne(id);
+    const pdfBuffer = await this.pdfService.generateInscription(finalInscription);
+    const { webViewLink } = await this.googledriveService.uploadFile(
+      `ins${finalInscription.id}.pdf`,
+      pdfBuffer,
+      'application/pdf',
+      'inscripciones',
+    );
+
+    await this.prisma.inscription.update({
+      where: { id: finalInscription.id },
+      data: { url: webViewLink },
+    });
+
+    return {
+      ...finalInscription,
+      pdfBase64: pdfBuffer.toString('base64'),
+    };
   }
 
 
