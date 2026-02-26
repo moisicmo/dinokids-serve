@@ -101,14 +101,14 @@ export class StudentService {
         active: true,
         ...(keys
           ? {
-            user: {
-              OR: [
-                { name: { contains: keys, mode: Prisma.QueryMode.insensitive } },
-                { lastName: { contains: keys, mode: Prisma.QueryMode.insensitive } },
-                { email: { contains: keys, mode: Prisma.QueryMode.insensitive } },
-                { numberDocument: { contains: keys, mode: Prisma.QueryMode.insensitive } },
-              ],
-            },
+            OR: [
+              { user: { name: { contains: keys, mode: Prisma.QueryMode.insensitive } } },
+              { user: { lastName: { contains: keys, mode: Prisma.QueryMode.insensitive } } },
+              { user: { email: { contains: keys, mode: Prisma.QueryMode.insensitive } } },
+              { user: { numberDocument: { contains: keys, mode: Prisma.QueryMode.insensitive } } },
+              { code: { contains: keys, mode: Prisma.QueryMode.insensitive } },
+              { school: { name: { contains: keys, mode: Prisma.QueryMode.insensitive } } },
+            ],
           }
           : {}),
       };

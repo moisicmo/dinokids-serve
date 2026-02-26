@@ -26,6 +26,15 @@ export class CreateBookingDto {
   })
   name: string;
 
+  @IsArray()
+  @IsString({ each: true })
+  @ApiProperty({
+    type: [String],
+    example: ['70123456', '78912345'],
+    description: 'Teléfonos del cliente',
+  })
+  phone: string[];
+
   @IsNumber()
   @ApiProperty({
     example: 100,

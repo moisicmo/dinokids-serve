@@ -9,5 +9,6 @@ export const BookingEntity = {
   days: true,
   dni: true,
   name: true,
+  phone: true,
   amount: true,
 };

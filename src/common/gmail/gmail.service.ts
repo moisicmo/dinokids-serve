@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import * as MailComposer from 'nodemailer/lib/mail-composer';
+import MailComposer from 'nodemailer/lib/mail-composer';
 import * as fs from 'fs';
 import * as path from 'path';
 import { envs } from '@/config';

@@ -20,6 +20,15 @@ class CreateScheduleDtoWithId extends CreateScheduleDto {
 
 export class CreateAssignmentScheduleDto {
 
+  @IsOptional()
+  @IsUUID()
+  @ApiProperty({
+    example: '36e5bd5b-6fb4-4eaf-80a0-54699ec3987b',
+    description: 'ID del assignmentSchedule (opcional, usado en edición)',
+    required: false,
+  })
+  id?: string;
+
   @Type(() => CreateScheduleDtoWithId)
   @ValidateNested()
   @ApiProperty({

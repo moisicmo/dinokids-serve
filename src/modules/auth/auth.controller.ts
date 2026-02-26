@@ -1,9 +1,13 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { Public, RequestInfo } from '@/decorator';
+import { CurrentUser, Public, RequestInfo } from '@/decorator';
 import { CreateRefreshDto } from './dto/create-refresh.dto';
 import { ValidatePinDto } from './dto/validate-pin.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import type { JwtPayload } from './entities/jwt-payload.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -27,11 +31,26 @@ export class AuthController {
     return this.authService.sendPinEmail(idUser);
   }
 
-
   @Public()
   @Post('validatePin')
   validationPin(@Body() validatePinDto: ValidatePinDto) {
     return this.authService.validationPin(validatePinDto);
   }
-  
+
+  @Public()
+  @Post('forgot-password')
+  forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(dto);
+  }
+
+  @Patch('profile')
+  updateProfile(@CurrentUser() currentUser: JwtPayload, @Body() dto: UpdateProfileDto) {
+    return this.authService.updateProfile(currentUser.id, dto);
+  }
+
+  @Patch('password')
+  updatePassword(@CurrentUser() currentUser: JwtPayload, @Body() dto: UpdatePasswordDto) {
+    return this.authService.updatePassword(currentUser.id, dto);
+  }
+
 }

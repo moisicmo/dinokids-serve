@@ -359,6 +359,7 @@ model Booking {
   days        Int          @db.Integer
   dni         String       @db.VarChar
   name        String       @db.VarChar
+  phone       Json
   amount      Float        @default(0.00)
   active      Boolean      @default(true)
   createdAt   DateTime     @default(now()) @map("created_at")

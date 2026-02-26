@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { BookingEntity } from './entities/booking.entity';
@@ -144,18 +144,69 @@ export class BookingService {
     }
   }
 
-  async update(id: string, updateBookingDto: UpdateBookingDto) {
-    await this.inscriptionService.findOne(id);
+  async update(email: string, id: string, updateBookingDto: UpdateBookingDto) {
+    const booking = await this.prisma.booking.findUnique({ where: { id } });
+    if (!booking) throw new NotFoundException(`Booking with id #${id} not found`);
 
-    return this.prisma.booking.update({
-      where: { id },
-      data: updateBookingDto,
-      select: BookingEntity,
+    const { assignmentRooms, ...bookingData } = updateBookingDto;
+
+    return this.prisma.$transaction(async (prisma) => {
+      // 1. Actualizar datos del booking
+      const updatedBooking = await prisma.booking.update({
+        where: { id },
+        data: bookingData,
+        select: BookingEntity,
+      });
+
+      // 2. Buscar la inscripción asociada al booking
+      const inscription = await prisma.inscription.findUnique({
+        where: { bookingId: id },
+      });
+
+      if (inscription && assignmentRooms) {
+        // 3. Eliminar relaciones anteriores
+        await prisma.assignmentSchedule.deleteMany({
+          where: { assignmentRoom: { inscriptionId: inscription.id } },
+        });
+
+        await prisma.assignmentRoom.deleteMany({
+          where: { inscriptionId: inscription.id },
+        });
+
+        // 4. Recrear asignaciones
+        for (const assignmentRoomDto of assignmentRooms) {
+          const { assignmentSchedules, ...roomData } = assignmentRoomDto;
+
+          const assignmentRoom = await prisma.assignmentRoom.create({
+            data: {
+              inscriptionId: inscription.id,
+              createdBy: email,
+              ...roomData,
+            },
+          });
+
+          if (assignmentSchedules && assignmentSchedules.length > 0) {
+            for (const scheduleDto of assignmentSchedules) {
+              await prisma.assignmentSchedule.create({
+                data: {
+                  assignmentRoomId: assignmentRoom.id,
+                  scheduleId: scheduleDto.schedule.id,
+                  day: scheduleDto.day,
+                  createdBy: email,
+                },
+              });
+            }
+          }
+        }
+      }
+
+      return updatedBooking;
     });
   }
 
   async remove(id: string) {
-    await this.inscriptionService.findOne(id);
+    const booking = await this.prisma.booking.findUnique({ where: { id } });
+    if (!booking) throw new NotFoundException(`Booking with id #${id} not found`);
 
     return this.prisma.booking.update({
       where: { id },

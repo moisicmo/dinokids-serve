@@ -2845,6 +2845,7 @@ export const BookingScalarFieldEnum = {
   days: 'days',
   dni: 'dni',
   name: 'name',
+  phone: 'phone',
   amount: 'amount',
   active: 'active',
   createdAt: 'createdAt',

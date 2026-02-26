@@ -67,6 +67,7 @@ export type BookingCountAggregateOutputType = {
   days: number
   dni: number
   name: number
+  phone: number
   amount: number
   active: number
   createdAt: number
@@ -118,6 +119,7 @@ export type BookingCountAggregateInputType = {
   days?: true
   dni?: true
   name?: true
+  phone?: true
   amount?: true
   active?: true
   createdAt?: true
@@ -218,6 +220,7 @@ export type BookingGroupByOutputType = {
   days: number
   dni: string
   name: string
+  phone: runtime.JsonValue
   amount: number
   active: boolean
   createdAt: Date
@@ -254,6 +257,7 @@ export type BookingWhereInput = {
   days?: Prisma.IntFilter<"Booking"> | number
   dni?: Prisma.StringFilter<"Booking"> | string
   name?: Prisma.StringFilter<"Booking"> | string
+  phone?: Prisma.JsonFilter<"Booking">
   amount?: Prisma.FloatFilter<"Booking"> | number
   active?: Prisma.BoolFilter<"Booking"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
@@ -268,6 +272,7 @@ export type BookingOrderByWithRelationInput = {
   days?: Prisma.SortOrder
   dni?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -285,6 +290,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   days?: Prisma.IntFilter<"Booking"> | number
   dni?: Prisma.StringFilter<"Booking"> | string
   name?: Prisma.StringFilter<"Booking"> | string
+  phone?: Prisma.JsonFilter<"Booking">
   amount?: Prisma.FloatFilter<"Booking"> | number
   active?: Prisma.BoolFilter<"Booking"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
@@ -299,6 +305,7 @@ export type BookingOrderByWithAggregationInput = {
   days?: Prisma.SortOrder
   dni?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -320,6 +327,7 @@ export type BookingScalarWhereWithAggregatesInput = {
   days?: Prisma.IntWithAggregatesFilter<"Booking"> | number
   dni?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   name?: Prisma.StringWithAggregatesFilter<"Booking"> | string
+  phone?: Prisma.JsonWithAggregatesFilter<"Booking">
   amount?: Prisma.FloatWithAggregatesFilter<"Booking"> | number
   active?: Prisma.BoolWithAggregatesFilter<"Booking"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
@@ -333,6 +341,7 @@ export type BookingCreateInput = {
   days: number
   dni: string
   name: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: number
   active?: boolean
   createdAt?: Date | string
@@ -347,6 +356,7 @@ export type BookingUncheckedCreateInput = {
   days: number
   dni: string
   name: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: number
   active?: boolean
   createdAt?: Date | string
@@ -361,6 +371,7 @@ export type BookingUpdateInput = {
   days?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -375,6 +386,7 @@ export type BookingUncheckedUpdateInput = {
   days?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -389,6 +401,7 @@ export type BookingCreateManyInput = {
   days: number
   dni: string
   name: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: number
   active?: boolean
   createdAt?: Date | string
@@ -402,6 +415,7 @@ export type BookingUpdateManyMutationInput = {
   days?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -415,6 +429,7 @@ export type BookingUncheckedUpdateManyInput = {
   days?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -433,6 +448,7 @@ export type BookingCountOrderByAggregateInput = {
   days?: Prisma.SortOrder
   dni?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -498,6 +514,7 @@ export type BookingCreateWithoutInscriptionInput = {
   days: number
   dni: string
   name: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: number
   active?: boolean
   createdAt?: Date | string
@@ -511,6 +528,7 @@ export type BookingUncheckedCreateWithoutInscriptionInput = {
   days: number
   dni: string
   name: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: number
   active?: boolean
   createdAt?: Date | string
@@ -540,6 +558,7 @@ export type BookingUpdateWithoutInscriptionInput = {
   days?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -553,6 +572,7 @@ export type BookingUncheckedUpdateWithoutInscriptionInput = {
   days?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -568,6 +588,7 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   days?: boolean
   dni?: boolean
   name?: boolean
+  phone?: boolean
   amount?: boolean
   active?: boolean
   createdAt?: boolean
@@ -582,6 +603,7 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   days?: boolean
   dni?: boolean
   name?: boolean
+  phone?: boolean
   amount?: boolean
   active?: boolean
   createdAt?: boolean
@@ -595,6 +617,7 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   days?: boolean
   dni?: boolean
   name?: boolean
+  phone?: boolean
   amount?: boolean
   active?: boolean
   createdAt?: boolean
@@ -608,6 +631,7 @@ export type BookingSelectScalar = {
   days?: boolean
   dni?: boolean
   name?: boolean
+  phone?: boolean
   amount?: boolean
   active?: boolean
   createdAt?: boolean
@@ -616,7 +640,7 @@ export type BookingSelectScalar = {
   updatedBy?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "days" | "dni" | "name" | "amount" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "days" | "dni" | "name" | "phone" | "amount" | "active" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   inscription?: boolean | Prisma.Booking$inscriptionArgs<ExtArgs>
 }
@@ -633,6 +657,7 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     days: number
     dni: string
     name: string
+    phone: runtime.JsonValue
     amount: number
     active: boolean
     createdAt: Date
@@ -1067,6 +1092,7 @@ export interface BookingFieldRefs {
   readonly days: Prisma.FieldRef<"Booking", 'Int'>
   readonly dni: Prisma.FieldRef<"Booking", 'String'>
   readonly name: Prisma.FieldRef<"Booking", 'String'>
+  readonly phone: Prisma.FieldRef<"Booking", 'Json'>
   readonly amount: Prisma.FieldRef<"Booking", 'Float'>
   readonly active: Prisma.FieldRef<"Booking", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Booking", 'DateTime'>

@@ -11,6 +11,7 @@ import { CreateRefreshDto } from './dto/create-refresh.dto';
 import { randomUUID } from 'crypto';
 import { GmailService } from '@/common/gmail/gmail.service';
 import { ValidatePinDto } from './dto/validate-pin.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -135,6 +136,25 @@ export class AuthService {
     }
   }
 
+  async forgotPassword(dto: ForgotPasswordDto) {
+    try {
+      const user = await this.prisma.user.findFirst({
+        where: { email: dto.email },
+        select: { id: true, email: true },
+      });
+
+      if (!user) throw new NotFoundException('No existe una cuenta con ese correo');
+
+      await this.sendPinEmail(user.id);
+
+      return { idUser: user.id, email: user.email };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      console.error('forgotPassword error:', error);
+      throw new InternalServerErrorException('No se pudo procesar la solicitud');
+    }
+  }
+
   async sendPinEmail(idUser: string) {
     try {
       const user = await this.prisma.user.findUnique({
@@ -187,6 +207,47 @@ export class AuthService {
     } catch (error) {
       console.error('sendPinEmail error:', error);
       throw new BadRequestException('No se pudo enviar el PIN');
+    }
+  }
+
+  async updateProfile(userId: string, dto: { name: string; lastName: string; email?: string }) {
+    try {
+      const updated = await this.prisma.user.update({
+        where: { id: userId },
+        data: { name: dto.name, lastName: dto.lastName, email: dto.email },
+        select: { id: true, name: true, lastName: true, email: true },
+      });
+      return updated;
+    } catch (error) {
+      console.error('updateProfile error:', error);
+      throw new InternalServerErrorException('No se pudo actualizar el perfil');
+    }
+  }
+
+  async updatePassword(userId: string, dto: { currentPassword: string; newPassword: string }) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id: userId },
+        select: { password: true },
+      });
+
+      if (!user) throw new NotFoundException('Usuario no encontrado');
+
+      const isValid = bcrypt.compareSync(dto.currentPassword, user.password);
+      if (!isValid) throw new BadRequestException('La contraseña actual no es correcta');
+
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(dto.newPassword, salt);
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { password: hashedPassword },
+      });
+
+      return { success: true, message: 'Contraseña actualizada correctamente' };
+    } catch (error) {
+      if (error instanceof BadRequestException || error instanceof NotFoundException) throw error;
+      console.error('updatePassword error:', error);
+      throw new InternalServerErrorException('No se pudo actualizar la contraseña');
     }
   }
 

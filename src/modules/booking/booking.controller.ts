@@ -26,8 +26,8 @@ export class BookingController {
 
   @Patch(':id')
   @checkAbilities({ action: TypeAction.update, subject: TypeSubject.booking })
-  update(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {
-    return this.bookingService.update(id, updateBookingDto);
+  update(@CurrentUser() user: JwtPayload, @Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {
+    return this.bookingService.update(user.email, id, updateBookingDto);
   }
 
   @Delete(':id')
