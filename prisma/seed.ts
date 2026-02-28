@@ -154,7 +154,7 @@ async function main() {
       select: { id: true },
     });
 
-    await prisma.role.upsert({
+    const teacherRole = await prisma.role.upsert({
       where: { name: 'Profesor' },
       update: {
         active: true,
@@ -175,7 +175,89 @@ async function main() {
       },
     });
 
-    console.log(`✅ Rol creado: "${superAdminRole.name}"`);
+    console.log(`✅ Rol creado: "${teacherRole.name}"`);
+
+    // ============================================
+    // 3.3 CREAR ROL "ASESOR COMERCIAL"
+    // ============================================
+    console.log("\n🎭 Creando rol Asesor Comercial...");
+
+    const commercialAdvisorPermissionMatrix = [
+      { action: TypeAction.create, subject: TypeSubject.evaluationInit },
+    ];
+
+    const commercialAdvisorPermissions = await prisma.permission.findMany({
+      where: {
+        OR: commercialAdvisorPermissionMatrix,
+      },
+      select: { id: true },
+    });
+
+    const commercialAdvisorRole = await prisma.role.upsert({
+      where: { name: 'Asesor Comercial' },
+      update: {
+        active: true,
+        // Actualizar permisos si el rol ya existe
+        permissions: {
+          set: commercialAdvisorPermissions.map((p) => ({ id: p.id })),
+        },
+        updatedAt: new Date(),
+        updatedBy: SUPER_ADMIN_EMAIL,
+      },
+      create: {
+        name: 'Asesor Comercial',
+        active: true,
+        createdBy: SUPER_ADMIN_EMAIL,
+        permissions: {
+          connect: commercialAdvisorPermissions.map((p) => ({ id: p.id })),
+        },
+      },
+    });
+
+    console.log(`✅ Rol creado: "${commercialAdvisorRole.name}"`);
+
+    // ============================================
+    // 3.4 CREAR ROL "EVALUADOR"
+    // ============================================
+    console.log("\n🎭 Creando rol Evaluador...");
+
+    const evaluatorPermissionMatrix = [
+      { action: TypeAction.create, subject: TypeSubject.evaluationCondoctual },
+      { action: TypeAction.create, subject: TypeSubject.evaluationKinder },
+      { action: TypeAction.create, subject: TypeSubject.evaluation123Primaria },
+      { action: TypeAction.create, subject: TypeSubject.evaluation456Primaria },
+      { action: TypeAction.create, subject: TypeSubject.evaluation123Secundaria },
+    ];
+
+    const evaluatorPermissions = await prisma.permission.findMany({
+      where: {
+        OR: evaluatorPermissionMatrix,
+      },
+      select: { id: true },
+    });
+
+    const evaluatorRole = await prisma.role.upsert({
+      where: { name: 'Evaluador' },
+      update: {
+        active: true,
+        // Actualizar permisos si el rol ya existe
+        permissions: {
+          set: evaluatorPermissions.map((p) => ({ id: p.id })),
+        },
+        updatedAt: new Date(),
+        updatedBy: SUPER_ADMIN_EMAIL,
+      },
+      create: {
+        name: 'Evaluador',
+        active: true,
+        createdBy: SUPER_ADMIN_EMAIL,
+        permissions: {
+          connect: evaluatorPermissions.map((p) => ({ id: p.id })),
+        },
+      },
+    });
+
+    console.log(`✅ Rol creado: "${evaluatorRole.name}"`);
 
     // ============================================
     // 4. CREAR DIRECCIÓN PARA SUCURSAL
@@ -323,6 +405,18 @@ async function createDemoData(branchId: string, createdBy: string) {
     where: { name: "Profesor"}
   })
 
+  const commercialAdvisorRole = await prisma.role.findFirst({
+    where: { name: "Asesor Comercial"}
+  })
+
+  const evaluatorRole = await prisma.role.findFirst({
+    where: { name: "Evaluador"}
+  })
+
+  const mainBranch = await prisma.branch.findFirst({
+      where: { name: 'Casa Matriz' }
+  });
+
   try {
     // Crear profesor demo
     const addressTeacher = await prisma.address.create({
@@ -385,6 +479,128 @@ async function createDemoData(branchId: string, createdBy: string) {
         },
         createdBy: createdBy,
       },
+    });
+
+    // Crear asesor comercial demo
+    const addressCommercialAdvisor = await prisma.address.create({
+      data: {
+        city: 'Cochabamba',
+        zone: 'Miraflores',
+        detail: 'Av. Busch #567',
+        createdBy: createdBy,
+      }
+    });
+
+    const commercialAdvisorUser = await prisma.user.upsert({
+      where: { numberDocument: '47814321' },
+      update: {
+        name: 'AsesorName',
+        lastName: 'Pérez',
+        email: 'moiseso2@sintesis.com.bo',
+        emailValidated: true,
+        phone: ['+591 76541210'],
+        roleId: commercialAdvisorRole?.id,
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        addressId: addressCommercialAdvisor.id,
+        updatedAt: new Date(),
+        updatedBy: createdBy,
+      },
+      create: {
+        numberDocument: '47814321',
+        typeDocument: TypeDocument.DNI,
+        name: 'AsesorName',
+        lastName: 'Pérez',
+        email: 'moiseso2@sintesis.com.bo',
+        phone: ['+591 76541210'],
+        roleId: commercialAdvisorRole?.id,
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        addressId: addressCommercialAdvisor.id,
+        createdBy: createdBy,
+      },
+    });
+
+    await prisma.staff.upsert({
+      where: { userId: commercialAdvisorUser.id },
+      update: {
+        active: true,
+        superStaff: false,
+        branches: {
+          set: [], // Limpiar sucursales existentes
+          connect: [{ id: mainBranch?.id }]
+        },
+        updatedAt: new Date(),
+        updatedBy: SUPER_ADMIN_EMAIL,
+      },
+      create: {
+        userId: commercialAdvisorUser.id,
+        active: true,
+        superStaff: false,
+        branches: {
+          connect: [{ id: mainBranch?.id }]
+        },
+        createdBy: SUPER_ADMIN_EMAIL,
+      }
+    });
+
+    // Crear evaluador demo
+    const addressEvaluator = await prisma.address.create({
+      data: {
+        city: 'Oruro',
+        zone: 'Miraflores',
+        detail: 'Av. Busch #567',
+        createdBy: createdBy,
+      }
+    });
+
+    const evaluatorUser = await prisma.user.upsert({
+      where: { numberDocument: '99814321' },
+      update: {
+        name: 'Eva',
+        lastName: 'Pérez',
+        email: 'moiseso3@sintesis.com.bo',
+        emailValidated: true,
+        phone: ['+591 76548710'],
+        roleId: evaluatorRole?.id,
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        addressId: addressEvaluator.id,
+        updatedAt: new Date(),
+        updatedBy: createdBy,
+      },
+      create: {
+        numberDocument: '99814321',
+        typeDocument: TypeDocument.DNI,
+        name: 'Eva',
+        lastName: 'Pérez',
+        email: 'moiseso3@sintesis.com.bo',
+        phone: ['+591 76548710'],
+        roleId: evaluatorRole?.id,
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        addressId: addressEvaluator.id,
+        createdBy: createdBy,
+      },
+    });
+
+    await prisma.staff.upsert({
+      where: { userId: evaluatorUser.id },
+      update: {
+        active: true,
+        superStaff: false,
+        branches: {
+          set: [], // Limpiar sucursales existentes
+          connect: [{ id: mainBranch?.id }]
+        },
+        updatedAt: new Date(),
+        updatedBy: SUPER_ADMIN_EMAIL,
+      },
+      create: {
+        userId: evaluatorUser.id,
+        active: true,
+        superStaff: false,
+        branches: {
+          connect: [{ id: mainBranch?.id }]
+        },
+        createdBy: SUPER_ADMIN_EMAIL,
+      }
     });
 
     // Crear tutor demo

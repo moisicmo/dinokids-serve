@@ -29,6 +29,7 @@ import { PdfModule } from './common/pdf/pdf.module';
 import { XlsxModule } from './common/xlsx/xlsx.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
 import { CorrespondenceModule } from './modules/correspondence/correspondence.module';
+import { UserModule } from './modules/user/user.module';
 @Module({
   imports: [
     PrismaModule,
@@ -57,6 +58,7 @@ import { CorrespondenceModule } from './modules/correspondence/correspondence.mo
     ReportModule,
     AttendanceModule,
     CorrespondenceModule,
+    UserModule,
   ],
   providers: [
     PrismaService,
