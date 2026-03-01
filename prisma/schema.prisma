@@ -38,9 +38,11 @@ model User {
   student        Student?
   teacher        Teacher?
   tutor          Tutor?
-  authSessions   AuthSession[]
-  accessRecords  AccessRecord[]
-  address        Address?       @relation(fields: [addressId], references: [id])
+  authSessions           AuthSession[]
+  accessRecords          AccessRecord[]
+  address                Address?                @relation(fields: [addressId], references: [id])
+  receivedTransmissions  DocumentTransmission[]  @relation("ReceiverTransmissions")
+  sentTransmissions      DocumentTransmission[]  @relation("SenderTransmissions")
 
   @@map("users")
 }
@@ -498,6 +500,8 @@ model DocumentTransmission {
   createdBy  String             @map("created_by")
   updatedBy  String?            @map("updated_by")
   document   Document           @relation(fields: [documentId], references: [id])
+  receiver   User               @relation("ReceiverTransmissions", fields: [receiverId], references: [id])
+  sender     User               @relation("SenderTransmissions", fields: [senderId], references: [id])
 
   @@map("documentTransmissions")
 }

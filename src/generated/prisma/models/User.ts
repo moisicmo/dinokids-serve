@@ -290,6 +290,8 @@ export type UserWhereInput = {
   authSessions?: Prisma.AuthSessionListRelationFilter
   accessRecords?: Prisma.AccessRecordListRelationFilter
   address?: Prisma.XOR<Prisma.AddressNullableScalarRelationFilter, Prisma.AddressWhereInput> | null
+  receivedTransmissions?: Prisma.DocumentTransmissionListRelationFilter
+  sentTransmissions?: Prisma.DocumentTransmissionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -319,6 +321,8 @@ export type UserOrderByWithRelationInput = {
   authSessions?: Prisma.AuthSessionOrderByRelationAggregateInput
   accessRecords?: Prisma.AccessRecordOrderByRelationAggregateInput
   address?: Prisma.AddressOrderByWithRelationInput
+  receivedTransmissions?: Prisma.DocumentTransmissionOrderByRelationAggregateInput
+  sentTransmissions?: Prisma.DocumentTransmissionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -351,6 +355,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   authSessions?: Prisma.AuthSessionListRelationFilter
   accessRecords?: Prisma.AccessRecordListRelationFilter
   address?: Prisma.XOR<Prisma.AddressNullableScalarRelationFilter, Prisma.AddressWhereInput> | null
+  receivedTransmissions?: Prisma.DocumentTransmissionListRelationFilter
+  sentTransmissions?: Prisma.DocumentTransmissionListRelationFilter
 }, "id" | "numberDocument" | "numberCard" | "codeValidation">
 
 export type UserOrderByWithAggregationInput = {
@@ -426,6 +432,8 @@ export type UserCreateInput = {
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
   address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -453,6 +461,8 @@ export type UserUncheckedCreateInput = {
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserUpdateInput = {
@@ -480,6 +490,8 @@ export type UserUpdateInput = {
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
   address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -507,6 +519,8 @@ export type UserUncheckedUpdateInput = {
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -834,6 +848,34 @@ export type UserUpdateOneRequiredWithoutAccessRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccessRecordsInput, Prisma.UserUpdateWithoutAccessRecordsInput>, Prisma.UserUncheckedUpdateWithoutAccessRecordsInput>
 }
 
+export type UserCreateNestedOneWithoutReceivedTransmissionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedTransmissionsInput, Prisma.UserUncheckedCreateWithoutReceivedTransmissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedTransmissionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSentTransmissionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentTransmissionsInput, Prisma.UserUncheckedCreateWithoutSentTransmissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentTransmissionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutReceivedTransmissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReceivedTransmissionsInput, Prisma.UserUncheckedCreateWithoutReceivedTransmissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReceivedTransmissionsInput
+  upsert?: Prisma.UserUpsertWithoutReceivedTransmissionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReceivedTransmissionsInput, Prisma.UserUpdateWithoutReceivedTransmissionsInput>, Prisma.UserUncheckedUpdateWithoutReceivedTransmissionsInput>
+}
+
+export type UserUpdateOneRequiredWithoutSentTransmissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentTransmissionsInput, Prisma.UserUncheckedCreateWithoutSentTransmissionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentTransmissionsInput
+  upsert?: Prisma.UserUpsertWithoutSentTransmissionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentTransmissionsInput, Prisma.UserUpdateWithoutSentTransmissionsInput>, Prisma.UserUncheckedUpdateWithoutSentTransmissionsInput>
+}
+
 export type UserCreateWithoutStaffInput = {
   id?: string
   numberDocument?: string | null
@@ -858,6 +900,8 @@ export type UserCreateWithoutStaffInput = {
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
   address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutStaffInput = {
@@ -884,6 +928,8 @@ export type UserUncheckedCreateWithoutStaffInput = {
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutStaffInput = {
@@ -926,6 +972,8 @@ export type UserUpdateWithoutStaffInput = {
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
   address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStaffInput = {
@@ -952,6 +1000,8 @@ export type UserUncheckedUpdateWithoutStaffInput = {
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutAddressInput = {
@@ -978,6 +1028,8 @@ export type UserCreateWithoutAddressInput = {
   tutor?: Prisma.TutorCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutAddressInput = {
@@ -1004,6 +1056,8 @@ export type UserUncheckedCreateWithoutAddressInput = {
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutAddressInput = {
@@ -1080,6 +1134,8 @@ export type UserCreateWithoutAuthSessionsInput = {
   tutor?: Prisma.TutorCreateNestedOneWithoutUserInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
   address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutAuthSessionsInput = {
@@ -1106,6 +1162,8 @@ export type UserUncheckedCreateWithoutAuthSessionsInput = {
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutAuthSessionsInput = {
@@ -1148,6 +1206,8 @@ export type UserUpdateWithoutAuthSessionsInput = {
   tutor?: Prisma.TutorUpdateOneWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
   address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuthSessionsInput = {
@@ -1174,6 +1234,8 @@ export type UserUncheckedUpdateWithoutAuthSessionsInput = {
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutRoleInput = {
@@ -1200,6 +1262,8 @@ export type UserCreateWithoutRoleInput = {
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
   address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutRoleInput = {
@@ -1226,6 +1290,8 @@ export type UserUncheckedCreateWithoutRoleInput = {
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutRoleInput = {
@@ -1278,6 +1344,8 @@ export type UserCreateWithoutStudentInput = {
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
   address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutStudentInput = {
@@ -1304,6 +1372,8 @@ export type UserUncheckedCreateWithoutStudentInput = {
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutStudentInput = {
@@ -1346,6 +1416,8 @@ export type UserUpdateWithoutStudentInput = {
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
   address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStudentInput = {
@@ -1372,6 +1444,8 @@ export type UserUncheckedUpdateWithoutStudentInput = {
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutTutorInput = {
@@ -1398,6 +1472,8 @@ export type UserCreateWithoutTutorInput = {
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
   address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutTutorInput = {
@@ -1424,6 +1500,8 @@ export type UserUncheckedCreateWithoutTutorInput = {
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutTutorInput = {
@@ -1466,6 +1544,8 @@ export type UserUpdateWithoutTutorInput = {
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
   address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTutorInput = {
@@ -1492,6 +1572,8 @@ export type UserUncheckedUpdateWithoutTutorInput = {
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutTeacherInput = {
@@ -1518,6 +1600,8 @@ export type UserCreateWithoutTeacherInput = {
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
   address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutTeacherInput = {
@@ -1544,6 +1628,8 @@ export type UserUncheckedCreateWithoutTeacherInput = {
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutTeacherInput = {
@@ -1586,6 +1672,8 @@ export type UserUpdateWithoutTeacherInput = {
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
   address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeacherInput = {
@@ -1612,6 +1700,8 @@ export type UserUncheckedUpdateWithoutTeacherInput = {
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserCreateWithoutAccessRecordsInput = {
@@ -1638,6 +1728,8 @@ export type UserCreateWithoutAccessRecordsInput = {
   tutor?: Prisma.TutorCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
   address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
 }
 
 export type UserUncheckedCreateWithoutAccessRecordsInput = {
@@ -1664,6 +1756,8 @@ export type UserUncheckedCreateWithoutAccessRecordsInput = {
   teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
   tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
   authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
 }
 
 export type UserCreateOrConnectWithoutAccessRecordsInput = {
@@ -1706,6 +1800,8 @@ export type UserUpdateWithoutAccessRecordsInput = {
   tutor?: Prisma.TutorUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
   address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccessRecordsInput = {
@@ -1732,6 +1828,264 @@ export type UserUncheckedUpdateWithoutAccessRecordsInput = {
   teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserCreateWithoutReceivedTransmissionsInput = {
+  id?: string
+  numberDocument?: string | null
+  typeDocument?: $Enums.TypeDocument
+  numberCard?: string | null
+  name: string
+  lastName: string
+  email?: string | null
+  emailValidated?: boolean
+  image?: string | null
+  password: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  codeValidation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  student?: Prisma.StudentCreateNestedOneWithoutUserInput
+  teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
+  tutor?: Prisma.TutorCreateNestedOneWithoutUserInput
+  authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
+  accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
+  address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  sentTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutSenderInput
+}
+
+export type UserUncheckedCreateWithoutReceivedTransmissionsInput = {
+  id?: string
+  roleId?: string | null
+  addressId?: string | null
+  numberDocument?: string | null
+  typeDocument?: $Enums.TypeDocument
+  numberCard?: string | null
+  name: string
+  lastName: string
+  email?: string | null
+  emailValidated?: boolean
+  image?: string | null
+  password: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  codeValidation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
+  teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
+  tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
+  authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
+  accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput
+}
+
+export type UserCreateOrConnectWithoutReceivedTransmissionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReceivedTransmissionsInput, Prisma.UserUncheckedCreateWithoutReceivedTransmissionsInput>
+}
+
+export type UserCreateWithoutSentTransmissionsInput = {
+  id?: string
+  numberDocument?: string | null
+  typeDocument?: $Enums.TypeDocument
+  numberCard?: string | null
+  name: string
+  lastName: string
+  email?: string | null
+  emailValidated?: boolean
+  image?: string | null
+  password: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  codeValidation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
+  role?: Prisma.RoleCreateNestedOneWithoutUsersInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  student?: Prisma.StudentCreateNestedOneWithoutUserInput
+  teacher?: Prisma.TeacherCreateNestedOneWithoutUserInput
+  tutor?: Prisma.TutorCreateNestedOneWithoutUserInput
+  authSessions?: Prisma.AuthSessionCreateNestedManyWithoutUserInput
+  accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutUserInput
+  address?: Prisma.AddressCreateNestedOneWithoutUsersInput
+  receivedTransmissions?: Prisma.DocumentTransmissionCreateNestedManyWithoutReceiverInput
+}
+
+export type UserUncheckedCreateWithoutSentTransmissionsInput = {
+  id?: string
+  roleId?: string | null
+  addressId?: string | null
+  numberDocument?: string | null
+  typeDocument?: $Enums.TypeDocument
+  numberCard?: string | null
+  name: string
+  lastName: string
+  email?: string | null
+  emailValidated?: boolean
+  image?: string | null
+  password: string
+  phone: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  codeValidation?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  student?: Prisma.StudentUncheckedCreateNestedOneWithoutUserInput
+  teacher?: Prisma.TeacherUncheckedCreateNestedOneWithoutUserInput
+  tutor?: Prisma.TutorUncheckedCreateNestedOneWithoutUserInput
+  authSessions?: Prisma.AuthSessionUncheckedCreateNestedManyWithoutUserInput
+  accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutUserInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput
+}
+
+export type UserCreateOrConnectWithoutSentTransmissionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentTransmissionsInput, Prisma.UserUncheckedCreateWithoutSentTransmissionsInput>
+}
+
+export type UserUpsertWithoutReceivedTransmissionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReceivedTransmissionsInput, Prisma.UserUncheckedUpdateWithoutReceivedTransmissionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReceivedTransmissionsInput, Prisma.UserUncheckedCreateWithoutReceivedTransmissionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReceivedTransmissionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReceivedTransmissionsInput, Prisma.UserUncheckedUpdateWithoutReceivedTransmissionsInput>
+}
+
+export type UserUpdateWithoutReceivedTransmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
+  numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  student?: Prisma.StudentUpdateOneWithoutUserNestedInput
+  teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
+  tutor?: Prisma.TutorUpdateOneWithoutUserNestedInput
+  authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
+  accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
+  address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReceivedTransmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
+  numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
+  teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
+  tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
+  authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+  accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
+}
+
+export type UserUpsertWithoutSentTransmissionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentTransmissionsInput, Prisma.UserUncheckedUpdateWithoutSentTransmissionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentTransmissionsInput, Prisma.UserUncheckedCreateWithoutSentTransmissionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentTransmissionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentTransmissionsInput, Prisma.UserUncheckedUpdateWithoutSentTransmissionsInput>
+}
+
+export type UserUpdateWithoutSentTransmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
+  numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.RoleUpdateOneWithoutUsersNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  student?: Prisma.StudentUpdateOneWithoutUserNestedInput
+  teacher?: Prisma.TeacherUpdateOneWithoutUserNestedInput
+  tutor?: Prisma.TutorUpdateOneWithoutUserNestedInput
+  authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
+  accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
+  address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentTransmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
+  numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailValidated?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  codeValidation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  student?: Prisma.StudentUncheckedUpdateOneWithoutUserNestedInput
+  teacher?: Prisma.TeacherUncheckedUpdateOneWithoutUserNestedInput
+  tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
+  authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+  accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
 }
 
 export type UserCreateManyAddressInput = {
@@ -1778,6 +2132,8 @@ export type UserUpdateWithoutAddressInput = {
   tutor?: Prisma.TutorUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAddressInput = {
@@ -1804,6 +2160,8 @@ export type UserUncheckedUpdateWithoutAddressInput = {
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutAddressInput = {
@@ -1870,6 +2228,8 @@ export type UserUpdateWithoutRoleInput = {
   authSessions?: Prisma.AuthSessionUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutUserNestedInput
   address?: Prisma.AddressUpdateOneWithoutUsersNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRoleInput = {
@@ -1896,6 +2256,8 @@ export type UserUncheckedUpdateWithoutRoleInput = {
   tutor?: Prisma.TutorUncheckedUpdateOneWithoutUserNestedInput
   authSessions?: Prisma.AuthSessionUncheckedUpdateManyWithoutUserNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutUserNestedInput
+  receivedTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput
+  sentTransmissions?: Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutRoleInput = {
@@ -1926,11 +2288,15 @@ export type UserUncheckedUpdateManyWithoutRoleInput = {
 export type UserCountOutputType = {
   authSessions: number
   accessRecords: number
+  receivedTransmissions: number
+  sentTransmissions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   authSessions?: boolean | UserCountOutputTypeCountAuthSessionsArgs
   accessRecords?: boolean | UserCountOutputTypeCountAccessRecordsArgs
+  receivedTransmissions?: boolean | UserCountOutputTypeCountReceivedTransmissionsArgs
+  sentTransmissions?: boolean | UserCountOutputTypeCountSentTransmissionsArgs
 }
 
 /**
@@ -1955,6 +2321,20 @@ export type UserCountOutputTypeCountAuthSessionsArgs<ExtArgs extends runtime.Typ
  */
 export type UserCountOutputTypeCountAccessRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AccessRecordWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReceivedTransmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentTransmissionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSentTransmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentTransmissionWhereInput
 }
 
 
@@ -1985,6 +2365,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   authSessions?: boolean | Prisma.User$authSessionsArgs<ExtArgs>
   accessRecords?: boolean | Prisma.User$accessRecordsArgs<ExtArgs>
   address?: boolean | Prisma.User$addressArgs<ExtArgs>
+  receivedTransmissions?: boolean | Prisma.User$receivedTransmissionsArgs<ExtArgs>
+  sentTransmissions?: boolean | Prisma.User$sentTransmissionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2065,6 +2447,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   authSessions?: boolean | Prisma.User$authSessionsArgs<ExtArgs>
   accessRecords?: boolean | Prisma.User$accessRecordsArgs<ExtArgs>
   address?: boolean | Prisma.User$addressArgs<ExtArgs>
+  receivedTransmissions?: boolean | Prisma.User$receivedTransmissionsArgs<ExtArgs>
+  sentTransmissions?: boolean | Prisma.User$sentTransmissionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2087,6 +2471,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     authSessions: Prisma.$AuthSessionPayload<ExtArgs>[]
     accessRecords: Prisma.$AccessRecordPayload<ExtArgs>[]
     address: Prisma.$AddressPayload<ExtArgs> | null
+    receivedTransmissions: Prisma.$DocumentTransmissionPayload<ExtArgs>[]
+    sentTransmissions: Prisma.$DocumentTransmissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2509,6 +2895,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   authSessions<T extends Prisma.User$authSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$authSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuthSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accessRecords<T extends Prisma.User$accessRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accessRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccessRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   address<T extends Prisma.User$addressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$addressArgs<ExtArgs>>): Prisma.Prisma__AddressClient<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  receivedTransmissions<T extends Prisma.User$receivedTransmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$receivedTransmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentTransmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sentTransmissions<T extends Prisma.User$sentTransmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentTransmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentTransmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3111,6 +3499,54 @@ export type User$addressArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   include?: Prisma.AddressInclude<ExtArgs> | null
   where?: Prisma.AddressWhereInput
+}
+
+/**
+ * User.receivedTransmissions
+ */
+export type User$receivedTransmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentTransmission
+   */
+  select?: Prisma.DocumentTransmissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentTransmission
+   */
+  omit?: Prisma.DocumentTransmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentTransmissionInclude<ExtArgs> | null
+  where?: Prisma.DocumentTransmissionWhereInput
+  orderBy?: Prisma.DocumentTransmissionOrderByWithRelationInput | Prisma.DocumentTransmissionOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentTransmissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentTransmissionScalarFieldEnum | Prisma.DocumentTransmissionScalarFieldEnum[]
+}
+
+/**
+ * User.sentTransmissions
+ */
+export type User$sentTransmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentTransmission
+   */
+  select?: Prisma.DocumentTransmissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentTransmission
+   */
+  omit?: Prisma.DocumentTransmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentTransmissionInclude<ExtArgs> | null
+  where?: Prisma.DocumentTransmissionWhereInput
+  orderBy?: Prisma.DocumentTransmissionOrderByWithRelationInput | Prisma.DocumentTransmissionOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentTransmissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentTransmissionScalarFieldEnum | Prisma.DocumentTransmissionScalarFieldEnum[]
 }
 
 /**

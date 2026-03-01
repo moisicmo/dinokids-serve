@@ -231,6 +231,8 @@ export type DocumentTransmissionWhereInput = {
   createdBy?: Prisma.StringFilter<"DocumentTransmission"> | string
   updatedBy?: Prisma.StringNullableFilter<"DocumentTransmission"> | string | null
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
+  receiver?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  sender?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type DocumentTransmissionOrderByWithRelationInput = {
@@ -246,6 +248,8 @@ export type DocumentTransmissionOrderByWithRelationInput = {
   createdBy?: Prisma.SortOrder
   updatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   document?: Prisma.DocumentOrderByWithRelationInput
+  receiver?: Prisma.UserOrderByWithRelationInput
+  sender?: Prisma.UserOrderByWithRelationInput
 }
 
 export type DocumentTransmissionWhereUniqueInput = Prisma.AtLeast<{
@@ -264,6 +268,8 @@ export type DocumentTransmissionWhereUniqueInput = Prisma.AtLeast<{
   createdBy?: Prisma.StringFilter<"DocumentTransmission"> | string
   updatedBy?: Prisma.StringNullableFilter<"DocumentTransmission"> | string | null
   document?: Prisma.XOR<Prisma.DocumentScalarRelationFilter, Prisma.DocumentWhereInput>
+  receiver?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  sender?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type DocumentTransmissionOrderByWithAggregationInput = {
@@ -302,8 +308,6 @@ export type DocumentTransmissionScalarWhereWithAggregatesInput = {
 
 export type DocumentTransmissionCreateInput = {
   id?: string
-  senderId: string
-  receiverId: string
   status?: $Enums.TransmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -312,6 +316,8 @@ export type DocumentTransmissionCreateInput = {
   createdBy: string
   updatedBy?: string | null
   document: Prisma.DocumentCreateNestedOneWithoutTransmissionsInput
+  receiver: Prisma.UserCreateNestedOneWithoutReceivedTransmissionsInput
+  sender: Prisma.UserCreateNestedOneWithoutSentTransmissionsInput
 }
 
 export type DocumentTransmissionUncheckedCreateInput = {
@@ -330,8 +336,6 @@ export type DocumentTransmissionUncheckedCreateInput = {
 
 export type DocumentTransmissionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  senderId?: Prisma.StringFieldUpdateOperationsInput | string
-  receiverId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -340,6 +344,8 @@ export type DocumentTransmissionUpdateInput = {
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   document?: Prisma.DocumentUpdateOneRequiredWithoutTransmissionsNestedInput
+  receiver?: Prisma.UserUpdateOneRequiredWithoutReceivedTransmissionsNestedInput
+  sender?: Prisma.UserUpdateOneRequiredWithoutSentTransmissionsNestedInput
 }
 
 export type DocumentTransmissionUncheckedUpdateInput = {
@@ -372,8 +378,6 @@ export type DocumentTransmissionCreateManyInput = {
 
 export type DocumentTransmissionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  senderId?: Prisma.StringFieldUpdateOperationsInput | string
-  receiverId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -449,6 +453,90 @@ export type DocumentTransmissionMinOrderByAggregateInput = {
   updatedBy?: Prisma.SortOrder
 }
 
+export type DocumentTransmissionCreateNestedManyWithoutReceiverInput = {
+  create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutReceiverInput, Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput> | Prisma.DocumentTransmissionCreateWithoutReceiverInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutReceiverInput | Prisma.DocumentTransmissionCreateOrConnectWithoutReceiverInput[]
+  createMany?: Prisma.DocumentTransmissionCreateManyReceiverInputEnvelope
+  connect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+}
+
+export type DocumentTransmissionCreateNestedManyWithoutSenderInput = {
+  create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutSenderInput, Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput> | Prisma.DocumentTransmissionCreateWithoutSenderInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput[]
+  connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutSenderInput | Prisma.DocumentTransmissionCreateOrConnectWithoutSenderInput[]
+  createMany?: Prisma.DocumentTransmissionCreateManySenderInputEnvelope
+  connect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+}
+
+export type DocumentTransmissionUncheckedCreateNestedManyWithoutReceiverInput = {
+  create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutReceiverInput, Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput> | Prisma.DocumentTransmissionCreateWithoutReceiverInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutReceiverInput | Prisma.DocumentTransmissionCreateOrConnectWithoutReceiverInput[]
+  createMany?: Prisma.DocumentTransmissionCreateManyReceiverInputEnvelope
+  connect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+}
+
+export type DocumentTransmissionUncheckedCreateNestedManyWithoutSenderInput = {
+  create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutSenderInput, Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput> | Prisma.DocumentTransmissionCreateWithoutSenderInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput[]
+  connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutSenderInput | Prisma.DocumentTransmissionCreateOrConnectWithoutSenderInput[]
+  createMany?: Prisma.DocumentTransmissionCreateManySenderInputEnvelope
+  connect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+}
+
+export type DocumentTransmissionUpdateManyWithoutReceiverNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutReceiverInput, Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput> | Prisma.DocumentTransmissionCreateWithoutReceiverInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutReceiverInput | Prisma.DocumentTransmissionCreateOrConnectWithoutReceiverInput[]
+  upsert?: Prisma.DocumentTransmissionUpsertWithWhereUniqueWithoutReceiverInput | Prisma.DocumentTransmissionUpsertWithWhereUniqueWithoutReceiverInput[]
+  createMany?: Prisma.DocumentTransmissionCreateManyReceiverInputEnvelope
+  set?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  disconnect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  delete?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  connect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  update?: Prisma.DocumentTransmissionUpdateWithWhereUniqueWithoutReceiverInput | Prisma.DocumentTransmissionUpdateWithWhereUniqueWithoutReceiverInput[]
+  updateMany?: Prisma.DocumentTransmissionUpdateManyWithWhereWithoutReceiverInput | Prisma.DocumentTransmissionUpdateManyWithWhereWithoutReceiverInput[]
+  deleteMany?: Prisma.DocumentTransmissionScalarWhereInput | Prisma.DocumentTransmissionScalarWhereInput[]
+}
+
+export type DocumentTransmissionUpdateManyWithoutSenderNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutSenderInput, Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput> | Prisma.DocumentTransmissionCreateWithoutSenderInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput[]
+  connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutSenderInput | Prisma.DocumentTransmissionCreateOrConnectWithoutSenderInput[]
+  upsert?: Prisma.DocumentTransmissionUpsertWithWhereUniqueWithoutSenderInput | Prisma.DocumentTransmissionUpsertWithWhereUniqueWithoutSenderInput[]
+  createMany?: Prisma.DocumentTransmissionCreateManySenderInputEnvelope
+  set?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  disconnect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  delete?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  connect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  update?: Prisma.DocumentTransmissionUpdateWithWhereUniqueWithoutSenderInput | Prisma.DocumentTransmissionUpdateWithWhereUniqueWithoutSenderInput[]
+  updateMany?: Prisma.DocumentTransmissionUpdateManyWithWhereWithoutSenderInput | Prisma.DocumentTransmissionUpdateManyWithWhereWithoutSenderInput[]
+  deleteMany?: Prisma.DocumentTransmissionScalarWhereInput | Prisma.DocumentTransmissionScalarWhereInput[]
+}
+
+export type DocumentTransmissionUncheckedUpdateManyWithoutReceiverNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutReceiverInput, Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput> | Prisma.DocumentTransmissionCreateWithoutReceiverInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput[]
+  connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutReceiverInput | Prisma.DocumentTransmissionCreateOrConnectWithoutReceiverInput[]
+  upsert?: Prisma.DocumentTransmissionUpsertWithWhereUniqueWithoutReceiverInput | Prisma.DocumentTransmissionUpsertWithWhereUniqueWithoutReceiverInput[]
+  createMany?: Prisma.DocumentTransmissionCreateManyReceiverInputEnvelope
+  set?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  disconnect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  delete?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  connect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  update?: Prisma.DocumentTransmissionUpdateWithWhereUniqueWithoutReceiverInput | Prisma.DocumentTransmissionUpdateWithWhereUniqueWithoutReceiverInput[]
+  updateMany?: Prisma.DocumentTransmissionUpdateManyWithWhereWithoutReceiverInput | Prisma.DocumentTransmissionUpdateManyWithWhereWithoutReceiverInput[]
+  deleteMany?: Prisma.DocumentTransmissionScalarWhereInput | Prisma.DocumentTransmissionScalarWhereInput[]
+}
+
+export type DocumentTransmissionUncheckedUpdateManyWithoutSenderNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutSenderInput, Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput> | Prisma.DocumentTransmissionCreateWithoutSenderInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput[]
+  connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutSenderInput | Prisma.DocumentTransmissionCreateOrConnectWithoutSenderInput[]
+  upsert?: Prisma.DocumentTransmissionUpsertWithWhereUniqueWithoutSenderInput | Prisma.DocumentTransmissionUpsertWithWhereUniqueWithoutSenderInput[]
+  createMany?: Prisma.DocumentTransmissionCreateManySenderInputEnvelope
+  set?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  disconnect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  delete?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  connect?: Prisma.DocumentTransmissionWhereUniqueInput | Prisma.DocumentTransmissionWhereUniqueInput[]
+  update?: Prisma.DocumentTransmissionUpdateWithWhereUniqueWithoutSenderInput | Prisma.DocumentTransmissionUpdateWithWhereUniqueWithoutSenderInput[]
+  updateMany?: Prisma.DocumentTransmissionUpdateManyWithWhereWithoutSenderInput | Prisma.DocumentTransmissionUpdateManyWithWhereWithoutSenderInput[]
+  deleteMany?: Prisma.DocumentTransmissionScalarWhereInput | Prisma.DocumentTransmissionScalarWhereInput[]
+}
+
 export type DocumentTransmissionCreateNestedManyWithoutDocumentInput = {
   create?: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutDocumentInput, Prisma.DocumentTransmissionUncheckedCreateWithoutDocumentInput> | Prisma.DocumentTransmissionCreateWithoutDocumentInput[] | Prisma.DocumentTransmissionUncheckedCreateWithoutDocumentInput[]
   connectOrCreate?: Prisma.DocumentTransmissionCreateOrConnectWithoutDocumentInput | Prisma.DocumentTransmissionCreateOrConnectWithoutDocumentInput[]
@@ -495,9 +583,58 @@ export type EnumTransmissionStatusFieldUpdateOperationsInput = {
   set?: $Enums.TransmissionStatus
 }
 
-export type DocumentTransmissionCreateWithoutDocumentInput = {
+export type DocumentTransmissionCreateWithoutReceiverInput = {
   id?: string
+  status?: $Enums.TransmissionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  readAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdBy: string
+  updatedBy?: string | null
+  document: Prisma.DocumentCreateNestedOneWithoutTransmissionsInput
+  sender: Prisma.UserCreateNestedOneWithoutSentTransmissionsInput
+}
+
+export type DocumentTransmissionUncheckedCreateWithoutReceiverInput = {
+  id?: string
+  documentId: string
   senderId: string
+  status?: $Enums.TransmissionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  readAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdBy: string
+  updatedBy?: string | null
+}
+
+export type DocumentTransmissionCreateOrConnectWithoutReceiverInput = {
+  where: Prisma.DocumentTransmissionWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutReceiverInput, Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput>
+}
+
+export type DocumentTransmissionCreateManyReceiverInputEnvelope = {
+  data: Prisma.DocumentTransmissionCreateManyReceiverInput | Prisma.DocumentTransmissionCreateManyReceiverInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentTransmissionCreateWithoutSenderInput = {
+  id?: string
+  status?: $Enums.TransmissionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  readAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdBy: string
+  updatedBy?: string | null
+  document: Prisma.DocumentCreateNestedOneWithoutTransmissionsInput
+  receiver: Prisma.UserCreateNestedOneWithoutReceivedTransmissionsInput
+}
+
+export type DocumentTransmissionUncheckedCreateWithoutSenderInput = {
+  id?: string
+  documentId: string
   receiverId: string
   status?: $Enums.TransmissionStatus
   createdAt?: Date | string
@@ -506,6 +643,78 @@ export type DocumentTransmissionCreateWithoutDocumentInput = {
   archivedAt?: Date | string | null
   createdBy: string
   updatedBy?: string | null
+}
+
+export type DocumentTransmissionCreateOrConnectWithoutSenderInput = {
+  where: Prisma.DocumentTransmissionWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutSenderInput, Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput>
+}
+
+export type DocumentTransmissionCreateManySenderInputEnvelope = {
+  data: Prisma.DocumentTransmissionCreateManySenderInput | Prisma.DocumentTransmissionCreateManySenderInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentTransmissionUpsertWithWhereUniqueWithoutReceiverInput = {
+  where: Prisma.DocumentTransmissionWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentTransmissionUpdateWithoutReceiverInput, Prisma.DocumentTransmissionUncheckedUpdateWithoutReceiverInput>
+  create: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutReceiverInput, Prisma.DocumentTransmissionUncheckedCreateWithoutReceiverInput>
+}
+
+export type DocumentTransmissionUpdateWithWhereUniqueWithoutReceiverInput = {
+  where: Prisma.DocumentTransmissionWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentTransmissionUpdateWithoutReceiverInput, Prisma.DocumentTransmissionUncheckedUpdateWithoutReceiverInput>
+}
+
+export type DocumentTransmissionUpdateManyWithWhereWithoutReceiverInput = {
+  where: Prisma.DocumentTransmissionScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentTransmissionUpdateManyMutationInput, Prisma.DocumentTransmissionUncheckedUpdateManyWithoutReceiverInput>
+}
+
+export type DocumentTransmissionScalarWhereInput = {
+  AND?: Prisma.DocumentTransmissionScalarWhereInput | Prisma.DocumentTransmissionScalarWhereInput[]
+  OR?: Prisma.DocumentTransmissionScalarWhereInput[]
+  NOT?: Prisma.DocumentTransmissionScalarWhereInput | Prisma.DocumentTransmissionScalarWhereInput[]
+  id?: Prisma.UuidFilter<"DocumentTransmission"> | string
+  documentId?: Prisma.UuidFilter<"DocumentTransmission"> | string
+  senderId?: Prisma.UuidFilter<"DocumentTransmission"> | string
+  receiverId?: Prisma.UuidFilter<"DocumentTransmission"> | string
+  status?: Prisma.EnumTransmissionStatusFilter<"DocumentTransmission"> | $Enums.TransmissionStatus
+  createdAt?: Prisma.DateTimeFilter<"DocumentTransmission"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"DocumentTransmission"> | Date | string
+  readAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
+  createdBy?: Prisma.StringFilter<"DocumentTransmission"> | string
+  updatedBy?: Prisma.StringNullableFilter<"DocumentTransmission"> | string | null
+}
+
+export type DocumentTransmissionUpsertWithWhereUniqueWithoutSenderInput = {
+  where: Prisma.DocumentTransmissionWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentTransmissionUpdateWithoutSenderInput, Prisma.DocumentTransmissionUncheckedUpdateWithoutSenderInput>
+  create: Prisma.XOR<Prisma.DocumentTransmissionCreateWithoutSenderInput, Prisma.DocumentTransmissionUncheckedCreateWithoutSenderInput>
+}
+
+export type DocumentTransmissionUpdateWithWhereUniqueWithoutSenderInput = {
+  where: Prisma.DocumentTransmissionWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentTransmissionUpdateWithoutSenderInput, Prisma.DocumentTransmissionUncheckedUpdateWithoutSenderInput>
+}
+
+export type DocumentTransmissionUpdateManyWithWhereWithoutSenderInput = {
+  where: Prisma.DocumentTransmissionScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentTransmissionUpdateManyMutationInput, Prisma.DocumentTransmissionUncheckedUpdateManyWithoutSenderInput>
+}
+
+export type DocumentTransmissionCreateWithoutDocumentInput = {
+  id?: string
+  status?: $Enums.TransmissionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  readAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdBy: string
+  updatedBy?: string | null
+  receiver: Prisma.UserCreateNestedOneWithoutReceivedTransmissionsInput
+  sender: Prisma.UserCreateNestedOneWithoutSentTransmissionsInput
 }
 
 export type DocumentTransmissionUncheckedCreateWithoutDocumentInput = {
@@ -547,21 +756,108 @@ export type DocumentTransmissionUpdateManyWithWhereWithoutDocumentInput = {
   data: Prisma.XOR<Prisma.DocumentTransmissionUpdateManyMutationInput, Prisma.DocumentTransmissionUncheckedUpdateManyWithoutDocumentInput>
 }
 
-export type DocumentTransmissionScalarWhereInput = {
-  AND?: Prisma.DocumentTransmissionScalarWhereInput | Prisma.DocumentTransmissionScalarWhereInput[]
-  OR?: Prisma.DocumentTransmissionScalarWhereInput[]
-  NOT?: Prisma.DocumentTransmissionScalarWhereInput | Prisma.DocumentTransmissionScalarWhereInput[]
-  id?: Prisma.UuidFilter<"DocumentTransmission"> | string
-  documentId?: Prisma.UuidFilter<"DocumentTransmission"> | string
-  senderId?: Prisma.UuidFilter<"DocumentTransmission"> | string
-  receiverId?: Prisma.UuidFilter<"DocumentTransmission"> | string
-  status?: Prisma.EnumTransmissionStatusFilter<"DocumentTransmission"> | $Enums.TransmissionStatus
-  createdAt?: Prisma.DateTimeFilter<"DocumentTransmission"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"DocumentTransmission"> | Date | string
-  readAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
-  archivedAt?: Prisma.DateTimeNullableFilter<"DocumentTransmission"> | Date | string | null
-  createdBy?: Prisma.StringFilter<"DocumentTransmission"> | string
-  updatedBy?: Prisma.StringNullableFilter<"DocumentTransmission"> | string | null
+export type DocumentTransmissionCreateManyReceiverInput = {
+  id?: string
+  documentId: string
+  senderId: string
+  status?: $Enums.TransmissionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  readAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdBy: string
+  updatedBy?: string | null
+}
+
+export type DocumentTransmissionCreateManySenderInput = {
+  id?: string
+  documentId: string
+  receiverId: string
+  status?: $Enums.TransmissionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  readAt?: Date | string | null
+  archivedAt?: Date | string | null
+  createdBy: string
+  updatedBy?: string | null
+}
+
+export type DocumentTransmissionUpdateWithoutReceiverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  document?: Prisma.DocumentUpdateOneRequiredWithoutTransmissionsNestedInput
+  sender?: Prisma.UserUpdateOneRequiredWithoutSentTransmissionsNestedInput
+}
+
+export type DocumentTransmissionUncheckedUpdateWithoutReceiverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  senderId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type DocumentTransmissionUncheckedUpdateManyWithoutReceiverInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  senderId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type DocumentTransmissionUpdateWithoutSenderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  document?: Prisma.DocumentUpdateOneRequiredWithoutTransmissionsNestedInput
+  receiver?: Prisma.UserUpdateOneRequiredWithoutReceivedTransmissionsNestedInput
+}
+
+export type DocumentTransmissionUncheckedUpdateWithoutSenderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type DocumentTransmissionUncheckedUpdateManyWithoutSenderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  receiverId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type DocumentTransmissionCreateManyDocumentInput = {
@@ -579,8 +875,6 @@ export type DocumentTransmissionCreateManyDocumentInput = {
 
 export type DocumentTransmissionUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  senderId?: Prisma.StringFieldUpdateOperationsInput | string
-  receiverId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransmissionStatusFieldUpdateOperationsInput | $Enums.TransmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -588,6 +882,8 @@ export type DocumentTransmissionUpdateWithoutDocumentInput = {
   archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
   updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  receiver?: Prisma.UserUpdateOneRequiredWithoutReceivedTransmissionsNestedInput
+  sender?: Prisma.UserUpdateOneRequiredWithoutSentTransmissionsNestedInput
 }
 
 export type DocumentTransmissionUncheckedUpdateWithoutDocumentInput = {
@@ -631,6 +927,8 @@ export type DocumentTransmissionSelect<ExtArgs extends runtime.Types.Extensions.
   createdBy?: boolean
   updatedBy?: boolean
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentTransmission"]>
 
 export type DocumentTransmissionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -646,6 +944,8 @@ export type DocumentTransmissionSelectCreateManyAndReturn<ExtArgs extends runtim
   createdBy?: boolean
   updatedBy?: boolean
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentTransmission"]>
 
 export type DocumentTransmissionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -661,6 +961,8 @@ export type DocumentTransmissionSelectUpdateManyAndReturn<ExtArgs extends runtim
   createdBy?: boolean
   updatedBy?: boolean
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentTransmission"]>
 
 export type DocumentTransmissionSelectScalar = {
@@ -680,18 +982,26 @@ export type DocumentTransmissionSelectScalar = {
 export type DocumentTransmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "documentId" | "senderId" | "receiverId" | "status" | "createdAt" | "updatedAt" | "readAt" | "archivedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["documentTransmission"]>
 export type DocumentTransmissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type DocumentTransmissionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type DocumentTransmissionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   document?: boolean | Prisma.DocumentDefaultArgs<ExtArgs>
+  receiver?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  sender?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $DocumentTransmissionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DocumentTransmission"
   objects: {
     document: Prisma.$DocumentPayload<ExtArgs>
+    receiver: Prisma.$UserPayload<ExtArgs>
+    sender: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1100,6 +1410,8 @@ readonly fields: DocumentTransmissionFieldRefs;
 export interface Prisma__DocumentTransmissionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   document<T extends Prisma.DocumentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentClient<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  receiver<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  sender<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

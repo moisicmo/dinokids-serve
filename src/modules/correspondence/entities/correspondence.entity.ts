@@ -22,13 +22,26 @@ export const DocumentTransmissionSelect = {
 
 export const SentTransmissionSelect = {
   id: true,
-  receiverId: true,
   status: true,
   createdAt: true,
-  document: { select: { type: true } },
+  receiver: { select: { name: true, lastName: true, role: { select: { name: true } } } },
+  document: { select: { type: true, childInfo: true, studentUserId: true } },
 };
 
 export type SentTransmissionType = Prisma.DocumentTransmissionGetPayload<{
   select: typeof SentTransmissionSelect;
+}>;
+
+export const AdminSentTransmissionSelect = {
+  id: true,
+  status: true,
+  createdAt: true,
+  sender: { select: { name: true, lastName: true, role: { select: { name: true } } } },
+  receiver: { select: { name: true, lastName: true, role: { select: { name: true } } } },
+  document: { select: { type: true, childInfo: true, studentUserId: true } },
+};
+
+export type AdminSentTransmissionType = Prisma.DocumentTransmissionGetPayload<{
+  select: typeof AdminSentTransmissionSelect;
 }>;
 

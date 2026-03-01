@@ -29,6 +29,12 @@ export class CorrespondenceController {
     return this.correspondenceService.findSent(user, paginationDto);
   }
 
+  @Get('sent/all')
+  @checkAbilities({ action: TypeAction.read, subject: TypeSubject.sentCorrespondenceAll })
+  findAllSent(@Query() paginationDto: PaginationDto) {
+    return this.correspondenceService.findAllSent(paginationDto);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.correspondenceService.findOne(+id);
