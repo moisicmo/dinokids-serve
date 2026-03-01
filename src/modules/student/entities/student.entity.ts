@@ -11,6 +11,7 @@ export const StudentSelect = {
   birthdate: true,
   gender: true,
   school: true,
+  branch: { select: { id: true, name: true } },
   grade: true,
   educationLevel: true,
   sessionTrackings: true,

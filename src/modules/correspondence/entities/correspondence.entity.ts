@@ -7,6 +7,8 @@ export const DocumentSelect = {
   id: true,
   type: true,
   data: true,
+  childInfo: true,
+  studentUserId: true,
 };
 
 
@@ -17,4 +19,16 @@ export const DocumentTransmissionSelect = {
   status: true,
   document: { select: DocumentSelect }
 };
+
+export const SentTransmissionSelect = {
+  id: true,
+  receiverId: true,
+  status: true,
+  createdAt: true,
+  document: { select: { type: true } },
+};
+
+export type SentTransmissionType = Prisma.DocumentTransmissionGetPayload<{
+  select: typeof SentTransmissionSelect;
+}>;
 

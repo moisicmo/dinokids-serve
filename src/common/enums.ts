@@ -31,4 +31,5 @@ export enum TypeSubject {
   evaluation123Primaria = 'evaluacion 1ro 2do 3ro primaria',
   evaluation456Primaria = 'evaluacion 4to 5to 6to primaria',
   evaluation123Secundaria = 'evaluacion 1ro 2do 3ro secundaria',
+  reportByStudent = 'reportes por estudiante',
 }

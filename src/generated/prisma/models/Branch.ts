@@ -215,6 +215,7 @@ export type BranchWhereInput = {
   teachers?: Prisma.TeacherListRelationFilter
   branchSpecialties?: Prisma.BranchSpecialtyListRelationFilter
   accessRecords?: Prisma.AccessRecordListRelationFilter
+  students?: Prisma.StudentListRelationFilter
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
 }
 
@@ -233,6 +234,7 @@ export type BranchOrderByWithRelationInput = {
   teachers?: Prisma.TeacherOrderByRelationAggregateInput
   branchSpecialties?: Prisma.BranchSpecialtyOrderByRelationAggregateInput
   accessRecords?: Prisma.AccessRecordOrderByRelationAggregateInput
+  students?: Prisma.StudentOrderByRelationAggregateInput
   address?: Prisma.AddressOrderByWithRelationInput
 }
 
@@ -254,6 +256,7 @@ export type BranchWhereUniqueInput = Prisma.AtLeast<{
   teachers?: Prisma.TeacherListRelationFilter
   branchSpecialties?: Prisma.BranchSpecialtyListRelationFilter
   accessRecords?: Prisma.AccessRecordListRelationFilter
+  students?: Prisma.StudentListRelationFilter
   address?: Prisma.XOR<Prisma.AddressScalarRelationFilter, Prisma.AddressWhereInput>
 }, "id" | "name">
 
@@ -301,6 +304,7 @@ export type BranchCreateInput = {
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentCreateNestedManyWithoutBranchInput
   address: Prisma.AddressCreateNestedOneWithoutBranchesInput
 }
 
@@ -319,6 +323,7 @@ export type BranchUncheckedCreateInput = {
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUpdateInput = {
@@ -335,6 +340,7 @@ export type BranchUpdateInput = {
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUpdateManyWithoutBranchNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutBranchesNestedInput
 }
 
@@ -353,6 +359,7 @@ export type BranchUncheckedUpdateInput = {
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchCreateManyInput = {
@@ -440,6 +447,11 @@ export type BranchListRelationFilter = {
 
 export type BranchOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type BranchNullableScalarRelationFilter = {
+  is?: Prisma.BranchWhereInput | null
+  isNot?: Prisma.BranchWhereInput | null
 }
 
 export type BranchScalarRelationFilter = {
@@ -536,6 +548,22 @@ export type BranchUncheckedUpdateManyWithoutAddressNestedInput = {
   deleteMany?: Prisma.BranchScalarWhereInput | Prisma.BranchScalarWhereInput[]
 }
 
+export type BranchCreateNestedOneWithoutStudentsInput = {
+  create?: Prisma.XOR<Prisma.BranchCreateWithoutStudentsInput, Prisma.BranchUncheckedCreateWithoutStudentsInput>
+  connectOrCreate?: Prisma.BranchCreateOrConnectWithoutStudentsInput
+  connect?: Prisma.BranchWhereUniqueInput
+}
+
+export type BranchUpdateOneWithoutStudentsNestedInput = {
+  create?: Prisma.XOR<Prisma.BranchCreateWithoutStudentsInput, Prisma.BranchUncheckedCreateWithoutStudentsInput>
+  connectOrCreate?: Prisma.BranchCreateOrConnectWithoutStudentsInput
+  upsert?: Prisma.BranchUpsertWithoutStudentsInput
+  disconnect?: Prisma.BranchWhereInput | boolean
+  delete?: Prisma.BranchWhereInput | boolean
+  connect?: Prisma.BranchWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BranchUpdateToOneWithWhereWithoutStudentsInput, Prisma.BranchUpdateWithoutStudentsInput>, Prisma.BranchUncheckedUpdateWithoutStudentsInput>
+}
+
 export type BranchCreateNestedManyWithoutTeachersInput = {
   create?: Prisma.XOR<Prisma.BranchCreateWithoutTeachersInput, Prisma.BranchUncheckedCreateWithoutTeachersInput> | Prisma.BranchCreateWithoutTeachersInput[] | Prisma.BranchUncheckedCreateWithoutTeachersInput[]
   connectOrCreate?: Prisma.BranchCreateOrConnectWithoutTeachersInput | Prisma.BranchCreateOrConnectWithoutTeachersInput[]
@@ -629,6 +657,7 @@ export type BranchCreateWithoutStaffsInput = {
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentCreateNestedManyWithoutBranchInput
   address: Prisma.AddressCreateNestedOneWithoutBranchesInput
 }
 
@@ -646,6 +675,7 @@ export type BranchUncheckedCreateWithoutStaffsInput = {
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutStaffsInput = {
@@ -698,6 +728,7 @@ export type BranchCreateWithoutAddressInput = {
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentCreateNestedManyWithoutBranchInput
 }
 
 export type BranchUncheckedCreateWithoutAddressInput = {
@@ -714,6 +745,7 @@ export type BranchUncheckedCreateWithoutAddressInput = {
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutAddressInput = {
@@ -742,6 +774,90 @@ export type BranchUpdateManyWithWhereWithoutAddressInput = {
   data: Prisma.XOR<Prisma.BranchUpdateManyMutationInput, Prisma.BranchUncheckedUpdateManyWithoutAddressInput>
 }
 
+export type BranchCreateWithoutStudentsInput = {
+  id?: string
+  name: string
+  phone?: Prisma.BranchCreatephoneInput | string[]
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
+  rooms?: Prisma.RoomCreateNestedManyWithoutBranchInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
+  teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
+  branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
+  accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutBranchInput
+  address: Prisma.AddressCreateNestedOneWithoutBranchesInput
+}
+
+export type BranchUncheckedCreateWithoutStudentsInput = {
+  id?: string
+  addressId: string
+  name: string
+  phone?: Prisma.BranchCreatephoneInput | string[]
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy: string
+  updatedBy?: string | null
+  rooms?: Prisma.RoomUncheckedCreateNestedManyWithoutBranchInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
+  teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
+  branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
+  accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutBranchInput
+}
+
+export type BranchCreateOrConnectWithoutStudentsInput = {
+  where: Prisma.BranchWhereUniqueInput
+  create: Prisma.XOR<Prisma.BranchCreateWithoutStudentsInput, Prisma.BranchUncheckedCreateWithoutStudentsInput>
+}
+
+export type BranchUpsertWithoutStudentsInput = {
+  update: Prisma.XOR<Prisma.BranchUpdateWithoutStudentsInput, Prisma.BranchUncheckedUpdateWithoutStudentsInput>
+  create: Prisma.XOR<Prisma.BranchCreateWithoutStudentsInput, Prisma.BranchUncheckedCreateWithoutStudentsInput>
+  where?: Prisma.BranchWhereInput
+}
+
+export type BranchUpdateToOneWithWhereWithoutStudentsInput = {
+  where?: Prisma.BranchWhereInput
+  data: Prisma.XOR<Prisma.BranchUpdateWithoutStudentsInput, Prisma.BranchUncheckedUpdateWithoutStudentsInput>
+}
+
+export type BranchUpdateWithoutStudentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.BranchUpdatephoneInput | string[]
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rooms?: Prisma.RoomUpdateManyWithoutBranchNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
+  teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
+  branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
+  accessRecords?: Prisma.AccessRecordUpdateManyWithoutBranchNestedInput
+  address?: Prisma.AddressUpdateOneRequiredWithoutBranchesNestedInput
+}
+
+export type BranchUncheckedUpdateWithoutStudentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  addressId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.BranchUpdatephoneInput | string[]
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rooms?: Prisma.RoomUncheckedUpdateManyWithoutBranchNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
+  teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
+  branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
+  accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutBranchNestedInput
+}
+
 export type BranchCreateWithoutTeachersInput = {
   id?: string
   name: string
@@ -755,6 +871,7 @@ export type BranchCreateWithoutTeachersInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentCreateNestedManyWithoutBranchInput
   address: Prisma.AddressCreateNestedOneWithoutBranchesInput
 }
 
@@ -772,6 +889,7 @@ export type BranchUncheckedCreateWithoutTeachersInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutTeachersInput = {
@@ -808,6 +926,7 @@ export type BranchCreateWithoutBranchSpecialtiesInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentCreateNestedManyWithoutBranchInput
   address: Prisma.AddressCreateNestedOneWithoutBranchesInput
 }
 
@@ -825,6 +944,7 @@ export type BranchUncheckedCreateWithoutBranchSpecialtiesInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutBranchSpecialtiesInput = {
@@ -856,6 +976,7 @@ export type BranchUpdateWithoutBranchSpecialtiesInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUpdateManyWithoutBranchNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutBranchesNestedInput
 }
 
@@ -873,6 +994,7 @@ export type BranchUncheckedUpdateWithoutBranchSpecialtiesInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchCreateWithoutRoomsInput = {
@@ -888,6 +1010,7 @@ export type BranchCreateWithoutRoomsInput = {
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentCreateNestedManyWithoutBranchInput
   address: Prisma.AddressCreateNestedOneWithoutBranchesInput
 }
 
@@ -905,6 +1028,7 @@ export type BranchUncheckedCreateWithoutRoomsInput = {
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
   accessRecords?: Prisma.AccessRecordUncheckedCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutRoomsInput = {
@@ -936,6 +1060,7 @@ export type BranchUpdateWithoutRoomsInput = {
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUpdateManyWithoutBranchNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutBranchesNestedInput
 }
 
@@ -953,6 +1078,7 @@ export type BranchUncheckedUpdateWithoutRoomsInput = {
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchCreateWithoutAccessRecordsInput = {
@@ -968,6 +1094,7 @@ export type BranchCreateWithoutAccessRecordsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentCreateNestedManyWithoutBranchInput
   address: Prisma.AddressCreateNestedOneWithoutBranchesInput
 }
 
@@ -985,6 +1112,7 @@ export type BranchUncheckedCreateWithoutAccessRecordsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBranchesInput
   teachers?: Prisma.TeacherUncheckedCreateNestedManyWithoutBranchesInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedCreateNestedManyWithoutBranchInput
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutBranchInput
 }
 
 export type BranchCreateOrConnectWithoutAccessRecordsInput = {
@@ -1016,6 +1144,7 @@ export type BranchUpdateWithoutAccessRecordsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUpdateManyWithoutBranchNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutBranchesNestedInput
 }
 
@@ -1033,6 +1162,7 @@ export type BranchUncheckedUpdateWithoutAccessRecordsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUpdateWithoutStaffsInput = {
@@ -1048,6 +1178,7 @@ export type BranchUpdateWithoutStaffsInput = {
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUpdateManyWithoutBranchNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutBranchesNestedInput
 }
 
@@ -1065,6 +1196,7 @@ export type BranchUncheckedUpdateWithoutStaffsInput = {
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateManyWithoutStaffsInput = {
@@ -1104,6 +1236,7 @@ export type BranchUpdateWithoutAddressInput = {
   teachers?: Prisma.TeacherUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateWithoutAddressInput = {
@@ -1120,6 +1253,7 @@ export type BranchUncheckedUpdateWithoutAddressInput = {
   teachers?: Prisma.TeacherUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateManyWithoutAddressInput = {
@@ -1146,6 +1280,7 @@ export type BranchUpdateWithoutTeachersInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUpdateManyWithoutBranchNestedInput
   address?: Prisma.AddressUpdateOneRequiredWithoutBranchesNestedInput
 }
 
@@ -1163,6 +1298,7 @@ export type BranchUncheckedUpdateWithoutTeachersInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBranchesNestedInput
   branchSpecialties?: Prisma.BranchSpecialtyUncheckedUpdateManyWithoutBranchNestedInput
   accessRecords?: Prisma.AccessRecordUncheckedUpdateManyWithoutBranchNestedInput
+  students?: Prisma.StudentUncheckedUpdateManyWithoutBranchNestedInput
 }
 
 export type BranchUncheckedUpdateManyWithoutTeachersInput = {
@@ -1188,6 +1324,7 @@ export type BranchCountOutputType = {
   teachers: number
   branchSpecialties: number
   accessRecords: number
+  students: number
 }
 
 export type BranchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1196,6 +1333,7 @@ export type BranchCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   teachers?: boolean | BranchCountOutputTypeCountTeachersArgs
   branchSpecialties?: boolean | BranchCountOutputTypeCountBranchSpecialtiesArgs
   accessRecords?: boolean | BranchCountOutputTypeCountAccessRecordsArgs
+  students?: boolean | BranchCountOutputTypeCountStudentsArgs
 }
 
 /**
@@ -1243,6 +1381,13 @@ export type BranchCountOutputTypeCountAccessRecordsArgs<ExtArgs extends runtime.
   where?: Prisma.AccessRecordWhereInput
 }
 
+/**
+ * BranchCountOutputType without action
+ */
+export type BranchCountOutputTypeCountStudentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentWhereInput
+}
+
 
 export type BranchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1259,6 +1404,7 @@ export type BranchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   teachers?: boolean | Prisma.Branch$teachersArgs<ExtArgs>
   branchSpecialties?: boolean | Prisma.Branch$branchSpecialtiesArgs<ExtArgs>
   accessRecords?: boolean | Prisma.Branch$accessRecordsArgs<ExtArgs>
+  students?: boolean | Prisma.Branch$studentsArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.BranchCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["branch"]>
@@ -1308,6 +1454,7 @@ export type BranchInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   teachers?: boolean | Prisma.Branch$teachersArgs<ExtArgs>
   branchSpecialties?: boolean | Prisma.Branch$branchSpecialtiesArgs<ExtArgs>
   accessRecords?: boolean | Prisma.Branch$accessRecordsArgs<ExtArgs>
+  students?: boolean | Prisma.Branch$studentsArgs<ExtArgs>
   address?: boolean | Prisma.AddressDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.BranchCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1326,6 +1473,7 @@ export type $BranchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     teachers: Prisma.$TeacherPayload<ExtArgs>[]
     branchSpecialties: Prisma.$BranchSpecialtyPayload<ExtArgs>[]
     accessRecords: Prisma.$AccessRecordPayload<ExtArgs>[]
+    students: Prisma.$StudentPayload<ExtArgs>[]
     address: Prisma.$AddressPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1737,6 +1885,7 @@ export interface Prisma__BranchClient<T, Null = never, ExtArgs extends runtime.T
   teachers<T extends Prisma.Branch$teachersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Branch$teachersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   branchSpecialties<T extends Prisma.Branch$branchSpecialtiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Branch$branchSpecialtiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BranchSpecialtyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accessRecords<T extends Prisma.Branch$accessRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Branch$accessRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccessRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  students<T extends Prisma.Branch$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Branch$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   address<T extends Prisma.AddressDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AddressDefaultArgs<ExtArgs>>): Prisma.Prisma__AddressClient<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2289,6 +2438,30 @@ export type Branch$accessRecordsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.AccessRecordScalarFieldEnum | Prisma.AccessRecordScalarFieldEnum[]
+}
+
+/**
+ * Branch.students
+ */
+export type Branch$studentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Student
+   */
+  select?: Prisma.StudentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Student
+   */
+  omit?: Prisma.StudentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentInclude<ExtArgs> | null
+  where?: Prisma.StudentWhereInput
+  orderBy?: Prisma.StudentOrderByWithRelationInput | Prisma.StudentOrderByWithRelationInput[]
+  cursor?: Prisma.StudentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentScalarFieldEnum | Prisma.StudentScalarFieldEnum[]
 }
 
 /**

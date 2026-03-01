@@ -27,6 +27,7 @@ export type AggregateDocument = {
 export type DocumentMinAggregateOutputType = {
   id: string | null
   type: string | null
+  studentUserId: string | null
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
@@ -36,6 +37,7 @@ export type DocumentMinAggregateOutputType = {
 export type DocumentMaxAggregateOutputType = {
   id: string | null
   type: string | null
+  studentUserId: string | null
   createdAt: Date | null
   updatedAt: Date | null
   createdBy: string | null
@@ -46,6 +48,8 @@ export type DocumentCountAggregateOutputType = {
   id: number
   type: number
   data: number
+  childInfo: number
+  studentUserId: number
   createdAt: number
   updatedAt: number
   createdBy: number
@@ -57,6 +61,7 @@ export type DocumentCountAggregateOutputType = {
 export type DocumentMinAggregateInputType = {
   id?: true
   type?: true
+  studentUserId?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
@@ -66,6 +71,7 @@ export type DocumentMinAggregateInputType = {
 export type DocumentMaxAggregateInputType = {
   id?: true
   type?: true
+  studentUserId?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
@@ -76,6 +82,8 @@ export type DocumentCountAggregateInputType = {
   id?: true
   type?: true
   data?: true
+  childInfo?: true
+  studentUserId?: true
   createdAt?: true
   updatedAt?: true
   createdBy?: true
@@ -159,6 +167,8 @@ export type DocumentGroupByOutputType = {
   id: string
   type: string
   data: runtime.JsonValue
+  childInfo: runtime.JsonValue | null
+  studentUserId: string | null
   createdAt: Date
   updatedAt: Date
   createdBy: string
@@ -190,6 +200,8 @@ export type DocumentWhereInput = {
   id?: Prisma.UuidFilter<"Document"> | string
   type?: Prisma.StringFilter<"Document"> | string
   data?: Prisma.JsonFilter<"Document">
+  childInfo?: Prisma.JsonNullableFilter<"Document">
+  studentUserId?: Prisma.UuidNullableFilter<"Document"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   createdBy?: Prisma.StringFilter<"Document"> | string
@@ -201,6 +213,8 @@ export type DocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   data?: Prisma.SortOrder
+  childInfo?: Prisma.SortOrderInput | Prisma.SortOrder
+  studentUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -215,6 +229,8 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   type?: Prisma.StringFilter<"Document"> | string
   data?: Prisma.JsonFilter<"Document">
+  childInfo?: Prisma.JsonNullableFilter<"Document">
+  studentUserId?: Prisma.UuidNullableFilter<"Document"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   createdBy?: Prisma.StringFilter<"Document"> | string
@@ -226,6 +242,8 @@ export type DocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   data?: Prisma.SortOrder
+  childInfo?: Prisma.SortOrderInput | Prisma.SortOrder
+  studentUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -242,6 +260,8 @@ export type DocumentScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"Document"> | string
   type?: Prisma.StringWithAggregatesFilter<"Document"> | string
   data?: Prisma.JsonWithAggregatesFilter<"Document">
+  childInfo?: Prisma.JsonNullableWithAggregatesFilter<"Document">
+  studentUserId?: Prisma.UuidNullableWithAggregatesFilter<"Document"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Document"> | Date | string
   createdBy?: Prisma.StringWithAggregatesFilter<"Document"> | string
@@ -252,6 +272,8 @@ export type DocumentCreateInput = {
   id?: string
   type: string
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
@@ -263,6 +285,8 @@ export type DocumentUncheckedCreateInput = {
   id?: string
   type: string
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
@@ -274,6 +298,8 @@ export type DocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
@@ -285,6 +311,8 @@ export type DocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
@@ -296,6 +324,8 @@ export type DocumentCreateManyInput = {
   id?: string
   type: string
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
@@ -306,6 +336,8 @@ export type DocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
@@ -316,6 +348,8 @@ export type DocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
@@ -326,6 +360,8 @@ export type DocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
   data?: Prisma.SortOrder
+  childInfo?: Prisma.SortOrder
+  studentUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -335,6 +371,7 @@ export type DocumentCountOrderByAggregateInput = {
 export type DocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  studentUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -344,6 +381,7 @@ export type DocumentMaxOrderByAggregateInput = {
 export type DocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  studentUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   createdBy?: Prisma.SortOrder
@@ -373,6 +411,8 @@ export type DocumentCreateWithoutTransmissionsInput = {
   id?: string
   type: string
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
@@ -383,6 +423,8 @@ export type DocumentUncheckedCreateWithoutTransmissionsInput = {
   id?: string
   type: string
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy: string
@@ -409,6 +451,8 @@ export type DocumentUpdateWithoutTransmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
@@ -419,6 +463,8 @@ export type DocumentUncheckedUpdateWithoutTransmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  childInfo?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  studentUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.StringFieldUpdateOperationsInput | string
@@ -460,6 +506,8 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   id?: boolean
   type?: boolean
   data?: boolean
+  childInfo?: boolean
+  studentUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
@@ -472,6 +520,8 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   type?: boolean
   data?: boolean
+  childInfo?: boolean
+  studentUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
@@ -482,6 +532,8 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   type?: boolean
   data?: boolean
+  childInfo?: boolean
+  studentUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
@@ -492,13 +544,15 @@ export type DocumentSelectScalar = {
   id?: boolean
   type?: boolean
   data?: boolean
+  childInfo?: boolean
+  studentUserId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   createdBy?: boolean
   updatedBy?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "data" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "data" | "childInfo" | "studentUserId" | "createdAt" | "updatedAt" | "createdBy" | "updatedBy", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transmissions?: boolean | Prisma.Document$transmissionsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
@@ -515,6 +569,8 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     id: string
     type: string
     data: runtime.JsonValue
+    childInfo: runtime.JsonValue | null
+    studentUserId: string | null
     createdAt: Date
     updatedAt: Date
     createdBy: string
@@ -946,6 +1002,8 @@ export interface DocumentFieldRefs {
   readonly id: Prisma.FieldRef<"Document", 'String'>
   readonly type: Prisma.FieldRef<"Document", 'String'>
   readonly data: Prisma.FieldRef<"Document", 'Json'>
+  readonly childInfo: Prisma.FieldRef<"Document", 'Json'>
+  readonly studentUserId: Prisma.FieldRef<"Document", 'String'>
   readonly createdAt: Prisma.FieldRef<"Document", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Document", 'DateTime'>
   readonly createdBy: Prisma.FieldRef<"Document", 'String'>

@@ -23,6 +23,12 @@ export class CorrespondenceController {
     return this.correspondenceService.findAll(user,paginationDto);
   }
 
+  @Get('sent')
+  @checkAbilities({ action: TypeAction.create, subject: TypeSubject.correspondence })
+  findSent(@CurrentUser() user: JwtPayload, @Query() paginationDto: PaginationDto) {
+    return this.correspondenceService.findSent(user, paginationDto);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.correspondenceService.findOne(+id);

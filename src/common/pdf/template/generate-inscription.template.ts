@@ -59,7 +59,7 @@ export function buildInscriptionTemplate(
           alignment: 'justify',
         },
         { text: `Nombre del niño(a): ${inscription.student?.user.name} ${inscription.student?.user.lastName}` },
-        { text: `Fecha de nacimiento: ${format(new Date(inscription.student!.birthdate), 'dd-MMMM-yyyy', { locale: es })}` },
+        { text: `Fecha de nacimiento: ${format(new Date(inscription.student?.birthdate?? new Date()), 'dd-MMMM-yyyy', { locale: es })}` },
         { text: `Nombre del padre/madre/tutor: ${inscription.student?.tutors![0].user.name} ${inscription.student?.tutors![0].user.lastName}` },
         { text: `Cédula de identidad: ${inscription.student?.user.numberDocument}` },
         { text: `Domicilio: ${inscription.student?.tutors[0].user?.address?.city} ${inscription.student?.tutors[0].user?.address?.zone} ${inscription.student?.tutors[0].user?.address?.detail}` },

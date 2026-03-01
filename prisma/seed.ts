@@ -131,6 +131,7 @@ async function main() {
     console.log("\n🎭 Creando rol Profesor...");
 
     const teacherPermissionMatrix = [
+      { action: TypeAction.manage, subject: TypeSubject.correspondence },
       { action: TypeAction.create, subject: TypeSubject.assignmentSchedule },
       { action: TypeAction.update, subject: TypeSubject.assignmentSchedule },
       { action: TypeAction.create, subject: TypeSubject.sessionTracking },
@@ -145,6 +146,8 @@ async function main() {
       { action: TypeAction.create, subject: TypeSubject.student },
       { action: TypeAction.update, subject: TypeSubject.student },
       { action: TypeAction.read, subject: TypeSubject.student },
+      { action: TypeAction.read, subject: TypeSubject.correspondence },
+      { action: TypeAction.create, subject: TypeSubject.reportByStudent },
     ];
 
     const teacherPermissions = await prisma.permission.findMany({
@@ -183,7 +186,10 @@ async function main() {
     console.log("\n🎭 Creando rol Asesor Comercial...");
 
     const commercialAdvisorPermissionMatrix = [
+      { action: TypeAction.manage, subject: TypeSubject.correspondence },
       { action: TypeAction.create, subject: TypeSubject.evaluationInit },
+      { action: TypeAction.read, subject: TypeSubject.user },
+      { action: TypeAction.create, subject: TypeSubject.correspondence },
     ];
 
     const commercialAdvisorPermissions = await prisma.permission.findMany({
@@ -222,11 +228,15 @@ async function main() {
     console.log("\n🎭 Creando rol Evaluador...");
 
     const evaluatorPermissionMatrix = [
+      { action: TypeAction.manage, subject: TypeSubject.correspondence },
       { action: TypeAction.create, subject: TypeSubject.evaluationCondoctual },
       { action: TypeAction.create, subject: TypeSubject.evaluationKinder },
       { action: TypeAction.create, subject: TypeSubject.evaluation123Primaria },
       { action: TypeAction.create, subject: TypeSubject.evaluation456Primaria },
       { action: TypeAction.create, subject: TypeSubject.evaluation123Secundaria },
+      { action: TypeAction.read, subject: TypeSubject.user },
+      { action: TypeAction.read, subject: TypeSubject.correspondence },
+      { action: TypeAction.create, subject: TypeSubject.correspondence },
     ];
 
     const evaluatorPermissions = await prisma.permission.findMany({

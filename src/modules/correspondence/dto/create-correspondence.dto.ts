@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsArray } from 'class-validator';
+import { IsString, IsArray, IsOptional } from 'class-validator';
 
 export class CreateCorrespondenceDto {
   @IsString()
@@ -17,6 +17,15 @@ export class CreateCorrespondenceDto {
   })
   data: any[];
 
+  @IsOptional()
+  @IsArray()
+  @ApiProperty({
+    description: 'Datos personales del niño (Datos Personales)',
+    type: 'array',
+    example: [],
+    required: false,
+  })
+  childInfo?: any[];
 
   @IsString()
   @ApiProperty({

@@ -146,9 +146,10 @@ CREATE TABLE "students" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "user_id" UUID NOT NULL,
     "school_id" UUID,
+    "branch_id" UUID,
     "code" TEXT NOT NULL,
-    "birthdate" TIMESTAMP(3) NOT NULL,
-    "gender" "Gender" NOT NULL,
+    "birthdate" TIMESTAMP(3),
+    "gender" "Gender",
     "grade" INTEGER,
     "education_level" "EducationLevel",
     "active" BOOLEAN NOT NULL DEFAULT true,
@@ -443,6 +444,8 @@ CREATE TABLE "documents" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "type" TEXT NOT NULL,
     "data" JSONB NOT NULL,
+    "child_info" JSONB,
+    "student_user_id" UUID,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_by" TEXT NOT NULL,
@@ -589,6 +592,9 @@ ALTER TABLE "students" ADD CONSTRAINT "students_user_id_fkey" FOREIGN KEY ("user
 
 -- AddForeignKey
 ALTER TABLE "students" ADD CONSTRAINT "students_school_id_fkey" FOREIGN KEY ("school_id") REFERENCES "schools"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "students" ADD CONSTRAINT "students_branch_id_fkey" FOREIGN KEY ("branch_id") REFERENCES "branches"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tutors" ADD CONSTRAINT "tutors_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

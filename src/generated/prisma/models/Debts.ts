@@ -542,10 +542,6 @@ export type EnumTypeDebtFieldUpdateOperationsInput = {
   set?: $Enums.TypeDebt
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type DebtsCreateNestedOneWithoutPaymentsInput = {
   create?: Prisma.XOR<Prisma.DebtsCreateWithoutPaymentsInput, Prisma.DebtsUncheckedCreateWithoutPaymentsInput>
   connectOrCreate?: Prisma.DebtsCreateOrConnectWithoutPaymentsInput

@@ -60,6 +60,7 @@ model Branch {
   teachers          Teacher[]
   branchSpecialties BranchSpecialty[]
   accessRecords     AccessRecord[]
+  students          Student[]
   address           Address           @relation(fields: [addressId], references: [id])
 
   @@map("branches")
@@ -145,9 +146,10 @@ model Student {
   id                  String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId              String          @unique @map("user_id") @db.Uuid
   schoolId            String?         @map("school_id") @db.Uuid
+  branchId            String?         @map("branch_id") @db.Uuid
   code                String          @unique
-  birthdate           DateTime
-  gender              Gender
+  birthdate           DateTime?
+  gender              Gender?
   grade               Int?            @db.Integer
   educationLevel      EducationLevel? @map("education_level")
   active              Boolean         @default(true)
@@ -162,6 +164,7 @@ model Student {
   inscriptions        Inscription[]
   tutors              Tutor[]
   school              School?         @relation(fields: [schoolId], references: [id])
+  branch              Branch?         @relation(fields: [branchId], references: [id])
 
   @@map("students")
 }
@@ -471,6 +474,8 @@ model Document {
   id            String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type          String
   data          Json
+  childInfo     Json?                  @map("child_info")
+  studentUserId String?                @map("student_user_id") @db.Uuid
   createdAt     DateTime               @default(now()) @map("created_at")
   updatedAt     DateTime               @default(now()) @updatedAt @map("updated_at")
   createdBy     String                 @map("created_by")

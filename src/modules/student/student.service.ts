@@ -14,7 +14,7 @@ export class StudentService {
 
   async create(email: string, createStudentDto: CreateStudentDto) {
     try {
-      const { birthdate, gender, school, grade, educationLevel, tutorIds, sessionTrackings, weeklyPlannings, evaluationPlannings, ...userDto } = createStudentDto;
+      const { birthdate, gender, school, branchId, grade, educationLevel, tutorIds, sessionTrackings, weeklyPlannings, evaluationPlannings, ...userDto } = createStudentDto;
 
       if (userDto.numberDocument) {
         const userExists = await this.prisma.user.findUnique({
@@ -65,6 +65,11 @@ export class StudentService {
               ...(schoolRecord && {
                 school: {
                   connect: { id: schoolRecord.id },
+                },
+              }),
+              ...(branchId && {
+                branch: {
+                  connect: { id: branchId },
                 },
               }),
 
@@ -155,6 +160,7 @@ export class StudentService {
       birthdate,
       gender,
       school,
+      branchId,
       grade,
       educationLevel,
       tutorIds,
@@ -227,6 +233,12 @@ export class StudentService {
                       disconnect: true,
                     },
                   })),
+
+              ...(branchId !== undefined && (
+                branchId
+                  ? { branch: { connect: { id: branchId } } }
+                  : { branch: { disconnect: true } }
+              )),
 
               sessionTrackings,
               weeklyPlannings,
