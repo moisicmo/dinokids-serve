@@ -10,5 +10,10 @@ export class DashboardController {
   findAll(@RequestInfo() requestInfo: RequestInfo) {
     return this.dashboardService.findAll(requestInfo.branchSelect);
   }
+
+  @Get('all')
+  findAllBranches() {
+    return this.dashboardService.findAllBranches();
+  }
 }
 
