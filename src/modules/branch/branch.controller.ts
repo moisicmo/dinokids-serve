@@ -23,6 +23,11 @@ export class BranchController {
     return this.branchService.findAll(paginationDto, requestInfo.branchSelect, user.id);
   }
 
+  @Get('all')
+  findAllForNav() {
+    return this.branchService.findAllForNav();
+  }
+
   @Get(':id')
   @checkAbilities({ action: TypeAction.read, subject: TypeSubject.branch })
   findOne(@Param('id') id: string) {

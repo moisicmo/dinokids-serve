@@ -95,6 +95,14 @@ export class BranchService {
 
 
 
+  async findAllForNav() {
+    return this.prisma.branch.findMany({
+      where: { active: true },
+      select: { id: true, name: true },
+      orderBy: { name: 'asc' },
+    });
+  }
+
   async findOne(id: string) {
     const branch = await this.prisma.branch.findUnique({
       where: { id },
