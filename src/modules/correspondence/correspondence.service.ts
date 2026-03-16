@@ -302,8 +302,16 @@ export class CorrespondenceService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} correspondence`;
+  async findOne(id: string, userId: string): Promise<DocumentTransmissionType> {
+    const transmission = await this.prisma.documentTransmission.findFirst({
+      where: {
+        id,
+        OR: [{ senderId: userId }, { receiverId: userId }],
+      },
+      select: DocumentTransmissionSelect,
+    });
+    if (!transmission) throw new NotFoundException(`Correspondencia ${id} no encontrada`);
+    return transmission;
   }
 
   // ── Draft (Informe borrador) ──────────────────────────────────────────────

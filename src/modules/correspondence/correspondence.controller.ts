@@ -36,8 +36,9 @@ export class CorrespondenceController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.correspondenceService.findOne(+id);
+  @checkAbilities({ action: TypeAction.read, subject: TypeSubject.correspondence })
+  findOne(@CurrentUser() user: JwtPayload, @Param('id') id: string) {
+    return this.correspondenceService.findOne(id, user.id);
   }
 
 }
