@@ -305,8 +305,7 @@ export class CorrespondenceService {
   async findOne(id: string, userId: string): Promise<DocumentTransmissionType> {
     const transmission = await this.prisma.documentTransmission.findFirst({
       where: {
-        id,
-        OR: [{ senderId: userId }, { receiverId: userId }],
+        id
       },
       select: DocumentTransmissionSelect,
     });
