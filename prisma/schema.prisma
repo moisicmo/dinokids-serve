@@ -472,6 +472,21 @@ model AccessRecord {
   @@map("access_records")
 }
 
+model PdfTemplate {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @db.VarChar
+  type        String   @db.VarChar
+  htmlContent String   @db.Text
+  isDefault   Boolean  @default(false) @map("is_default")
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  createdBy   String   @map("created_by")
+  updatedBy   String?  @map("updated_by")
+
+  @@map("pdf_templates")
+}
+
 model Document {
   id            String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type          String

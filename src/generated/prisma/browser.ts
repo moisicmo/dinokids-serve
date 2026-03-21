@@ -148,6 +148,11 @@ export type Session = Prisma.SessionModel
  */
 export type AccessRecord = Prisma.AccessRecordModel
 /**
+ * Model PdfTemplate
+ * 
+ */
+export type PdfTemplate = Prisma.PdfTemplateModel
+/**
  * Model Document
  * 
  */

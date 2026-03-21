@@ -6,6 +6,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { PdfService } from '@/common/pdf/pdf.service';
 import { GoogledriveService } from '@/common/googledrive/googledrive.service';
+import { PdfTemplateService } from '@/modules/pdf-template/pdf-template.service';
 import { DayOfWeek, Prisma } from '@/generated/prisma/client';
 import { addDays } from 'date-fns';
 
@@ -16,7 +17,15 @@ export class InscriptionService {
     private readonly prisma: PrismaService,
     private readonly pdfService: PdfService,
     private readonly googledriveService: GoogledriveService,
+    private readonly pdfTemplateService: PdfTemplateService,
   ) { }
+
+  /** Generates inscription PDF using custom template if available, otherwise uses hardcoded template */
+  private async generateInscriptionPdf(inscription: InscriptionType): Promise<Buffer> {
+    const fromTemplate = await this.pdfTemplateService.generateForInscription(inscription);
+    if (fromTemplate) return fromTemplate;
+    return this.pdfService.generateInscription(inscription);
+  }
 
   async create(email: string, createInscriptionDto: CreateInscriptionDto) {
     try {
@@ -111,17 +120,17 @@ export class InscriptionService {
 
       // 7️⃣ Generar PDF y actualizar URL
       const finalInscription = await this.findOne(result.id);
-      const pdfBuffer = await this.pdfService.generateInscription(finalInscription);
-      // const { webViewLink } = await this.googledriveService.uploadFile(
-      //   `ins${finalInscription.id}.pdf`,
-      //   pdfBuffer,
-      //   'application/pdf',
-      //   'inscripciones',
-      // );
+      const pdfBuffer = await this.generateInscriptionPdf(finalInscription);
+      const { webViewLink } = await this.googledriveService.uploadFile(
+        `ins${finalInscription.id}.pdf`,
+        pdfBuffer,
+        'application/pdf',
+        'inscripciones',
+      );
 
       await this.prisma.inscription.update({
         where: { id: finalInscription.id },
-        data: { url: "webViewLink" },
+        data: { url: webViewLink },
       });
 
       return {
@@ -527,7 +536,7 @@ export class InscriptionService {
 
     // 7. Regenerate PDF and re-upload to Google Drive
     const finalInscription = await this.findOne(id);
-    const pdfBuffer = await this.pdfService.generateInscription(finalInscription);
+    const pdfBuffer = await this.generateInscriptionPdf(finalInscription);
     const { webViewLink } = await this.googledriveService.uploadFile(
       `ins${finalInscription.id}.pdf`,
       pdfBuffer,

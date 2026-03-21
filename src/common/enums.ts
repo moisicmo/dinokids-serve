@@ -33,4 +33,5 @@ export enum TypeSubject {
   evaluation123Secundaria = 'evaluacion 1ro 2do 3ro secundaria',
   reportByStudent = 'reportes por estudiante',
   sentCorrespondenceAll = 'historial global de envios',
+  pdfTemplate = 'plantillas pdf',
 }

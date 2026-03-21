@@ -440,6 +440,22 @@ CREATE TABLE "access_records" (
 );
 
 -- CreateTable
+CREATE TABLE "pdf_templates" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "name" VARCHAR NOT NULL,
+    "type" VARCHAR NOT NULL,
+    "htmlContent" TEXT NOT NULL,
+    "is_default" BOOLEAN NOT NULL DEFAULT false,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_by" TEXT NOT NULL,
+    "updated_by" TEXT,
+
+    CONSTRAINT "pdf_templates_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "documents" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "type" TEXT NOT NULL,

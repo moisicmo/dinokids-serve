@@ -410,6 +410,7 @@ export const ModelName = {
   Refund: 'Refund',
   Session: 'Session',
   AccessRecord: 'AccessRecord',
+  PdfTemplate: 'PdfTemplate',
   Document: 'Document',
   DocumentTransmission: 'DocumentTransmission'
 } as const
@@ -427,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "branch" | "staff" | "address" | "authSession" | "permission" | "role" | "student" | "school" | "tutor" | "teacher" | "specialty" | "branchSpecialty" | "room" | "assignmentRoom" | "schedule" | "assignmentSchedule" | "price" | "inscription" | "booking" | "debts" | "payment" | "invoice" | "refund" | "session" | "accessRecord" | "document" | "documentTransmission"
+    modelProps: "user" | "branch" | "staff" | "address" | "authSession" | "permission" | "role" | "student" | "school" | "tutor" | "teacher" | "specialty" | "branchSpecialty" | "room" | "assignmentRoom" | "schedule" | "assignmentSchedule" | "price" | "inscription" | "booking" | "debts" | "payment" | "invoice" | "refund" | "session" | "accessRecord" | "pdfTemplate" | "document" | "documentTransmission"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2355,6 +2356,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PdfTemplate: {
+      payload: Prisma.$PdfTemplatePayload<ExtArgs>
+      fields: Prisma.PdfTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PdfTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PdfTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.PdfTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PdfTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.PdfTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.PdfTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.PdfTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PdfTemplateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>[]
+        }
+        delete: {
+          args: Prisma.PdfTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>
+        }
+        update: {
+          args: Prisma.PdfTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.PdfTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PdfTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PdfTemplateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>[]
+        }
+        upsert: {
+          args: Prisma.PdfTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PdfTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.PdfTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePdfTemplate>
+        }
+        groupBy: {
+          args: Prisma.PdfTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PdfTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PdfTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
     Document: {
       payload: Prisma.$DocumentPayload<ExtArgs>
       fields: Prisma.DocumentFieldRefs
@@ -2950,6 +3025,22 @@ export const AccessRecordScalarFieldEnum = {
 export type AccessRecordScalarFieldEnum = (typeof AccessRecordScalarFieldEnum)[keyof typeof AccessRecordScalarFieldEnum]
 
 
+export const PdfTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  htmlContent: 'htmlContent',
+  isDefault: 'isDefault',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
+} as const
+
+export type PdfTemplateScalarFieldEnum = (typeof PdfTemplateScalarFieldEnum)[keyof typeof PdfTemplateScalarFieldEnum]
+
+
 export const DocumentScalarFieldEnum = {
   id: 'id',
   type: 'type',
@@ -3387,6 +3478,7 @@ export type GlobalOmitConfig = {
   refund?: Prisma.RefundOmit
   session?: Prisma.SessionOmit
   accessRecord?: Prisma.AccessRecordOmit
+  pdfTemplate?: Prisma.PdfTemplateOmit
   document?: Prisma.DocumentOmit
   documentTransmission?: Prisma.DocumentTransmissionOmit
 }

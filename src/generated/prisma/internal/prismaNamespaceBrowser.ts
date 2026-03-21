@@ -77,6 +77,7 @@ export const ModelName = {
   Refund: 'Refund',
   Session: 'Session',
   AccessRecord: 'AccessRecord',
+  PdfTemplate: 'PdfTemplate',
   Document: 'Document',
   DocumentTransmission: 'DocumentTransmission'
 } as const
@@ -503,6 +504,22 @@ export const AccessRecordScalarFieldEnum = {
 } as const
 
 export type AccessRecordScalarFieldEnum = (typeof AccessRecordScalarFieldEnum)[keyof typeof AccessRecordScalarFieldEnum]
+
+
+export const PdfTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  htmlContent: 'htmlContent',
+  isDefault: 'isDefault',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy',
+  updatedBy: 'updatedBy'
+} as const
+
+export type PdfTemplateScalarFieldEnum = (typeof PdfTemplateScalarFieldEnum)[keyof typeof PdfTemplateScalarFieldEnum]
 
 
 export const DocumentScalarFieldEnum = {
