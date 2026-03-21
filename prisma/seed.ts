@@ -71,17 +71,9 @@ async function main() {
     console.log("\n👑 Creando usuario Super Admin...");
 
     const salt = bcrypt.genSaltSync(10);
-    const user = await prisma.user.upsert({
-      where: { numberDocument: '123456789' },
-      update: {
-        // Actualizar solo algunos campos si el usuario ya existe
-        email: SUPER_ADMIN_EMAIL,
-        emailValidated: true,
-        password: bcrypt.hashSync(SUPER_ADMIN_PASSWORD, salt),
-        updatedAt: new Date(),
-        updatedBy: SUPER_ADMIN_EMAIL,
-      },
-      create: {
+    const user = await upsertUserByDocument(
+      '123456789',
+      {
         numberDocument: '123456789',
         typeDocument: TypeDocument.DNI,
         name: 'Moises',
@@ -92,7 +84,13 @@ async function main() {
         phone: ['+591 12345678'],
         createdBy: SUPER_ADMIN_EMAIL,
       },
-    });
+      {
+        emailValidated: true,
+        password: bcrypt.hashSync(SUPER_ADMIN_PASSWORD, salt),
+        updatedAt: new Date(),
+        updatedBy: SUPER_ADMIN_EMAIL,
+      },
+    );
 
     console.log(`✅ Usuario Super Admin creado: ${user.email}`);
 
@@ -421,6 +419,14 @@ async function main() {
 // ============================================
 // FUNCIÓN PARA DATOS DEMO (DESARROLLO)
 // ============================================
+async function upsertUserByDocument(numberDocument: string, createData: object, updateData: object) {
+  const existing = await prisma.user.findUnique({ where: { numberDocument } });
+  if (existing) {
+    return prisma.user.update({ where: { id: existing.id }, data: updateData });
+  }
+  return prisma.user.create({ data: createData as any });
+}
+
 async function createDemoData(branchId: string, createdBy: string) {
   const salt = bcrypt.genSaltSync(10);
 
@@ -451,21 +457,9 @@ async function createDemoData(branchId: string, createdBy: string) {
       }
     });
 
-    const teacherUser = await prisma.user.upsert({
-      where: { numberDocument: '87654321' },
-      update: {
-        name: 'Juan',
-        lastName: 'Pérez',
-        email: 'moiseso@sintesis.com.bo',
-        phone: ['+591 76543210'],
-        roleId: teacherRole?.id,
-        password: bcrypt.hashSync('Muyseguro123*', salt),
-        addressId: addressTeacher.id,
-        emailValidated: true,
-        updatedAt: new Date(),
-        updatedBy: createdBy,
-      },
-      create: {
+    const teacherUser = await upsertUserByDocument(
+      '87654321',
+      {
         numberDocument: '87654321',
         typeDocument: TypeDocument.DNI,
         name: 'Juan',
@@ -478,7 +472,18 @@ async function createDemoData(branchId: string, createdBy: string) {
         addressId: addressTeacher.id,
         createdBy: createdBy,
       },
-    });
+      {
+        name: 'Juan',
+        lastName: 'Pérez',
+        phone: ['+591 76543210'],
+        roleId: teacherRole?.id,
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        addressId: addressTeacher.id,
+        emailValidated: true,
+        updatedAt: new Date(),
+        updatedBy: createdBy,
+      },
+    );
 
     await prisma.teacher.upsert({
       where: { userId: teacherUser.id },
@@ -516,21 +521,9 @@ async function createDemoData(branchId: string, createdBy: string) {
       }
     });
 
-    const commercialAdvisorUser = await prisma.user.upsert({
-      where: { numberDocument: '47814321' },
-      update: {
-        name: 'AsesorName',
-        lastName: 'Pérez',
-        email: 'moiseso2@sintesis.com.bo',
-        emailValidated: true,
-        phone: ['+591 76541210'],
-        roleId: commercialAdvisorRole?.id,
-        password: bcrypt.hashSync('Muyseguro123*', salt),
-        addressId: addressCommercialAdvisor.id,
-        updatedAt: new Date(),
-        updatedBy: createdBy,
-      },
-      create: {
+    const commercialAdvisorUser = await upsertUserByDocument(
+      '47814321',
+      {
         numberDocument: '47814321',
         typeDocument: TypeDocument.DNI,
         name: 'AsesorName',
@@ -543,7 +536,18 @@ async function createDemoData(branchId: string, createdBy: string) {
         addressId: addressCommercialAdvisor.id,
         createdBy: createdBy,
       },
-    });
+      {
+        name: 'AsesorName',
+        lastName: 'Pérez',
+        emailValidated: true,
+        phone: ['+591 76541210'],
+        roleId: commercialAdvisorRole?.id,
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        addressId: addressCommercialAdvisor.id,
+        updatedAt: new Date(),
+        updatedBy: createdBy,
+      },
+    );
 
     await prisma.staff.upsert({
       where: { userId: commercialAdvisorUser.id },
@@ -578,21 +582,9 @@ async function createDemoData(branchId: string, createdBy: string) {
       }
     });
 
-    const evaluatorUser = await prisma.user.upsert({
-      where: { numberDocument: '99814321' },
-      update: {
-        name: 'Eva',
-        lastName: 'Pérez',
-        email: 'moiseso3@sintesis.com.bo',
-        emailValidated: true,
-        phone: ['+591 76548710'],
-        roleId: evaluatorRole?.id,
-        password: bcrypt.hashSync('Muyseguro123*', salt),
-        addressId: addressEvaluator.id,
-        updatedAt: new Date(),
-        updatedBy: createdBy,
-      },
-      create: {
+    const evaluatorUser = await upsertUserByDocument(
+      '99814321',
+      {
         numberDocument: '99814321',
         typeDocument: TypeDocument.DNI,
         name: 'Eva',
@@ -605,7 +597,18 @@ async function createDemoData(branchId: string, createdBy: string) {
         emailValidated: true,
         createdBy: createdBy,
       },
-    });
+      {
+        name: 'Eva',
+        lastName: 'Pérez',
+        emailValidated: true,
+        phone: ['+591 76548710'],
+        roleId: evaluatorRole?.id,
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        addressId: addressEvaluator.id,
+        updatedAt: new Date(),
+        updatedBy: createdBy,
+      },
+    );
 
     await prisma.staff.upsert({
       where: { userId: evaluatorUser.id },
@@ -640,19 +643,9 @@ async function createDemoData(branchId: string, createdBy: string) {
       }
     });
 
-    const tutorUser = await prisma.user.upsert({
-      where: { numberDocument: '11223344' },
-      update: {
-        name: 'María',
-        lastName: 'González',
-        email: 'maria.gonzalez@demo.com',
-        phone: ['+591 77788899'],
-        password: bcrypt.hashSync('Muyseguro123*', salt),
-        addressId: addressTutor.id,
-        updatedAt: new Date(),
-        updatedBy: createdBy,
-      },
-      create: {
+    const tutorUser = await upsertUserByDocument(
+      '11223344',
+      {
         numberDocument: '11223344',
         typeDocument: TypeDocument.DNI,
         name: 'María',
@@ -664,7 +657,16 @@ async function createDemoData(branchId: string, createdBy: string) {
         emailValidated: true,
         createdBy: createdBy,
       },
-    });
+      {
+        name: 'María',
+        lastName: 'González',
+        phone: ['+591 77788899'],
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        addressId: addressTutor.id,
+        updatedAt: new Date(),
+        updatedBy: createdBy,
+      },
+    );
 
     const tutor = await prisma.tutor.upsert({
       where: { userId: tutorUser.id },
@@ -694,18 +696,9 @@ async function createDemoData(branchId: string, createdBy: string) {
     });
 
     // Crear estudiante demo
-    const studentUser = await prisma.user.upsert({
-      where: { numberDocument: '99887766' },
-      update: {
-        name: 'Carlos',
-        lastName: 'González',
-        email: 'carlos.gonzalez@demo.com',
-        password: bcrypt.hashSync('Muyseguro123*', salt),
-        phone: [],
-        updatedAt: new Date(),
-        updatedBy: createdBy,
-      },
-      create: {
+    const studentUser = await upsertUserByDocument(
+      '99887766',
+      {
         numberDocument: '99887766',
         typeDocument: TypeDocument.DNI,
         name: 'Carlos',
@@ -716,7 +709,15 @@ async function createDemoData(branchId: string, createdBy: string) {
         phone: [],
         createdBy: createdBy,
       },
-    });
+      {
+        name: 'Carlos',
+        lastName: 'González',
+        password: bcrypt.hashSync('Muyseguro123*', salt),
+        phone: [],
+        updatedAt: new Date(),
+        updatedBy: createdBy,
+      },
+    );
 
     await prisma.student.upsert({
       where: { userId: studentUser.id },

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { UserSelect } from '@/common';
@@ -11,49 +11,98 @@ import { AssignmentSchedulesEntity } from '../inscription/entities/assignment-sc
 import { SessionEntity } from './entities/attendance.entity';
 import { AttendanceStatus } from '@/generated/prisma/enums';
 
+const FullStudentSelect = {
+  ...UserSelect,
+  student: {
+    select: {
+      ...StudentSelect,
+      inscriptions: {
+        select: {
+          ...InscriptionSelect,
+          assignmentRooms: {
+            select: {
+              ...AssignmentRoomEntity,
+              assignmentSchedules: {
+                select: {
+                  ...AssignmentSchedulesEntity,
+                  sessions: { select: SessionEntity },
+                },
+              },
+            },
+          },
+          debts: { select: DebtSelect },
+        },
+      },
+    },
+  },
+};
+
 @Injectable()
 export class AttendanceService {
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(email: string, createAttendanceDto: CreateAttendanceDto) {
-    const { branchId, numberCard } = createAttendanceDto;
+  async search(q: string, branchId: string) {
+    if (!q || q.trim().length < 2) return [];
 
-    // 🔹 Buscar usuario por número de tarjeta
-    const user = await this.prisma.user.findUnique({
-      where: { numberCard },
-      select: {
-        ...UserSelect,
-        student: {
-          select: {
-            ...StudentSelect,
-            inscriptions: {
-              select: {
-                ...InscriptionSelect,
-                assignmentRooms: {
-                  select: {
-                    ...AssignmentRoomEntity,
-                    assignmentSchedules: {
-                      select: {
-                        ...AssignmentSchedulesEntity,
-                        sessions: {
-                          select: SessionEntity
-                        }
-                      }
-                    }
-                  }
-                },
-                debts: {
-                  select: DebtSelect,
-                }
-              },
-            }
-          }
-        }
+    const students = await this.prisma.student.findMany({
+      where: {
+        OR: [
+          { user: { name: { contains: q, mode: 'insensitive' } } },
+          { user: { lastName: { contains: q, mode: 'insensitive' } } },
+          { user: { numberDocument: { contains: q } } },
+          { user: { numberCard: { contains: q } } },
+          { tutors: { some: { user: { numberDocument: { contains: q } } } } },
+        ],
       },
+      select: {
+        userId: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastName: true,
+            numberDocument: true,
+            numberCard: true,
+          },
+        },
+        tutors: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastName: true,
+                numberDocument: true,
+              },
+            },
+          },
+        },
+      },
+      take: 20,
+    });
+
+    return students;
+  }
+
+  async create(email: string, createAttendanceDto: CreateAttendanceDto) {
+    const { branchId, numberCard, userId } = createAttendanceDto;
+
+    if (!numberCard && !userId) {
+      throw new BadRequestException('Debe proporcionar numberCard o userId');
+    }
+
+    // 🔹 Buscar usuario por número de tarjeta o por userId
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: FullStudentSelect,
     });
 
     if (!user) {
-      throw new Error('No se encontró un usuario con ese número de tarjeta');
+      throw new NotFoundException(
+        numberCard
+          ? 'No se encontró un usuario con ese número de tarjeta'
+          : 'No se encontró el usuario',
+      );
     }
 
     const todayStart = startOfDay(new Date());
@@ -100,7 +149,7 @@ export class AttendanceService {
         assignmentSchedule: {
           assignmentRoom: {
             inscription: {
-              studentId: user.id, // estudiante dueño del checkin
+              studentId: user.id,
               active: true,
             },
           },

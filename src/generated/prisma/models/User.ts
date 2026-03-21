@@ -225,7 +225,7 @@ export type UserGroupByOutputType = {
   id: string
   roleId: string | null
   addressId: string | null
-  numberDocument: string | null
+  numberDocument: string
   typeDocument: $Enums.TypeDocument
   numberCard: string | null
   name: string
@@ -267,7 +267,7 @@ export type UserWhereInput = {
   id?: Prisma.UuidFilter<"User"> | string
   roleId?: Prisma.UuidNullableFilter<"User"> | string | null
   addressId?: Prisma.UuidNullableFilter<"User"> | string | null
-  numberDocument?: Prisma.StringNullableFilter<"User"> | string | null
+  numberDocument?: Prisma.StringFilter<"User"> | string
   typeDocument?: Prisma.EnumTypeDocumentFilter<"User"> | $Enums.TypeDocument
   numberCard?: Prisma.StringNullableFilter<"User"> | string | null
   name?: Prisma.StringFilter<"User"> | string
@@ -298,7 +298,7 @@ export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   addressId?: Prisma.SortOrderInput | Prisma.SortOrder
-  numberDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  numberDocument?: Prisma.SortOrder
   typeDocument?: Prisma.SortOrder
   numberCard?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -328,7 +328,6 @@ export type UserOrderByWithRelationInput = {
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   numberDocument?: string
-  numberCard?: string
   codeValidation?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
@@ -336,6 +335,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   roleId?: Prisma.UuidNullableFilter<"User"> | string | null
   addressId?: Prisma.UuidNullableFilter<"User"> | string | null
   typeDocument?: Prisma.EnumTypeDocumentFilter<"User"> | $Enums.TypeDocument
+  numberCard?: Prisma.StringNullableFilter<"User"> | string | null
   name?: Prisma.StringFilter<"User"> | string
   lastName?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringNullableFilter<"User"> | string | null
@@ -357,13 +357,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   address?: Prisma.XOR<Prisma.AddressNullableScalarRelationFilter, Prisma.AddressWhereInput> | null
   receivedTransmissions?: Prisma.DocumentTransmissionListRelationFilter
   sentTransmissions?: Prisma.DocumentTransmissionListRelationFilter
-}, "id" | "numberDocument" | "numberCard" | "codeValidation">
+}, "id" | "numberDocument" | "codeValidation">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   roleId?: Prisma.SortOrderInput | Prisma.SortOrder
   addressId?: Prisma.SortOrderInput | Prisma.SortOrder
-  numberDocument?: Prisma.SortOrderInput | Prisma.SortOrder
+  numberDocument?: Prisma.SortOrder
   typeDocument?: Prisma.SortOrder
   numberCard?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -390,7 +390,7 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"User"> | string
   roleId?: Prisma.UuidNullableWithAggregatesFilter<"User"> | string | null
   addressId?: Prisma.UuidNullableWithAggregatesFilter<"User"> | string | null
-  numberDocument?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  numberDocument?: Prisma.StringWithAggregatesFilter<"User"> | string
   typeDocument?: Prisma.EnumTypeDocumentWithAggregatesFilter<"User"> | $Enums.TypeDocument
   numberCard?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
@@ -409,7 +409,7 @@ export type UserScalarWhereWithAggregatesInput = {
 
 export type UserCreateInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -440,7 +440,7 @@ export type UserUncheckedCreateInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -467,7 +467,7 @@ export type UserUncheckedCreateInput = {
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -498,7 +498,7 @@ export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -527,7 +527,7 @@ export type UserCreateManyInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -546,7 +546,7 @@ export type UserCreateManyInput = {
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -567,7 +567,7 @@ export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -664,12 +664,12 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type EnumTypeDocumentFieldUpdateOperationsInput = {
   set?: $Enums.TypeDocument
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -878,7 +878,7 @@ export type UserUpdateOneRequiredWithoutSentTransmissionsNestedInput = {
 
 export type UserCreateWithoutStaffInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -908,7 +908,7 @@ export type UserUncheckedCreateWithoutStaffInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -950,7 +950,7 @@ export type UserUpdateToOneWithWhereWithoutStaffInput = {
 
 export type UserUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -980,7 +980,7 @@ export type UserUncheckedUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1006,7 +1006,7 @@ export type UserUncheckedUpdateWithoutStaffInput = {
 
 export type UserCreateWithoutAddressInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1035,7 +1035,7 @@ export type UserCreateWithoutAddressInput = {
 export type UserUncheckedCreateWithoutAddressInput = {
   id?: string
   roleId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1093,7 +1093,7 @@ export type UserScalarWhereInput = {
   id?: Prisma.UuidFilter<"User"> | string
   roleId?: Prisma.UuidNullableFilter<"User"> | string | null
   addressId?: Prisma.UuidNullableFilter<"User"> | string | null
-  numberDocument?: Prisma.StringNullableFilter<"User"> | string | null
+  numberDocument?: Prisma.StringFilter<"User"> | string
   typeDocument?: Prisma.EnumTypeDocumentFilter<"User"> | $Enums.TypeDocument
   numberCard?: Prisma.StringNullableFilter<"User"> | string | null
   name?: Prisma.StringFilter<"User"> | string
@@ -1112,7 +1112,7 @@ export type UserScalarWhereInput = {
 
 export type UserCreateWithoutAuthSessionsInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1142,7 +1142,7 @@ export type UserUncheckedCreateWithoutAuthSessionsInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1184,7 +1184,7 @@ export type UserUpdateToOneWithWhereWithoutAuthSessionsInput = {
 
 export type UserUpdateWithoutAuthSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1214,7 +1214,7 @@ export type UserUncheckedUpdateWithoutAuthSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1240,7 +1240,7 @@ export type UserUncheckedUpdateWithoutAuthSessionsInput = {
 
 export type UserCreateWithoutRoleInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1269,7 +1269,7 @@ export type UserCreateWithoutRoleInput = {
 export type UserUncheckedCreateWithoutRoleInput = {
   id?: string
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1322,7 +1322,7 @@ export type UserUpdateManyWithWhereWithoutRoleInput = {
 
 export type UserCreateWithoutStudentInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1352,7 +1352,7 @@ export type UserUncheckedCreateWithoutStudentInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1394,7 +1394,7 @@ export type UserUpdateToOneWithWhereWithoutStudentInput = {
 
 export type UserUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1424,7 +1424,7 @@ export type UserUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1450,7 +1450,7 @@ export type UserUncheckedUpdateWithoutStudentInput = {
 
 export type UserCreateWithoutTutorInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1480,7 +1480,7 @@ export type UserUncheckedCreateWithoutTutorInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1522,7 +1522,7 @@ export type UserUpdateToOneWithWhereWithoutTutorInput = {
 
 export type UserUpdateWithoutTutorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1552,7 +1552,7 @@ export type UserUncheckedUpdateWithoutTutorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1578,7 +1578,7 @@ export type UserUncheckedUpdateWithoutTutorInput = {
 
 export type UserCreateWithoutTeacherInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1608,7 +1608,7 @@ export type UserUncheckedCreateWithoutTeacherInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1650,7 +1650,7 @@ export type UserUpdateToOneWithWhereWithoutTeacherInput = {
 
 export type UserUpdateWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1680,7 +1680,7 @@ export type UserUncheckedUpdateWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1706,7 +1706,7 @@ export type UserUncheckedUpdateWithoutTeacherInput = {
 
 export type UserCreateWithoutAccessRecordsInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1736,7 +1736,7 @@ export type UserUncheckedCreateWithoutAccessRecordsInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1778,7 +1778,7 @@ export type UserUpdateToOneWithWhereWithoutAccessRecordsInput = {
 
 export type UserUpdateWithoutAccessRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1808,7 +1808,7 @@ export type UserUncheckedUpdateWithoutAccessRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1834,7 +1834,7 @@ export type UserUncheckedUpdateWithoutAccessRecordsInput = {
 
 export type UserCreateWithoutReceivedTransmissionsInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1864,7 +1864,7 @@ export type UserUncheckedCreateWithoutReceivedTransmissionsInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1895,7 +1895,7 @@ export type UserCreateOrConnectWithoutReceivedTransmissionsInput = {
 
 export type UserCreateWithoutSentTransmissionsInput = {
   id?: string
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1925,7 +1925,7 @@ export type UserUncheckedCreateWithoutSentTransmissionsInput = {
   id?: string
   roleId?: string | null
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -1967,7 +1967,7 @@ export type UserUpdateToOneWithWhereWithoutReceivedTransmissionsInput = {
 
 export type UserUpdateWithoutReceivedTransmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1997,7 +1997,7 @@ export type UserUncheckedUpdateWithoutReceivedTransmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2034,7 +2034,7 @@ export type UserUpdateToOneWithWhereWithoutSentTransmissionsInput = {
 
 export type UserUpdateWithoutSentTransmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2064,7 +2064,7 @@ export type UserUncheckedUpdateWithoutSentTransmissionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2091,7 +2091,7 @@ export type UserUncheckedUpdateWithoutSentTransmissionsInput = {
 export type UserCreateManyAddressInput = {
   id?: string
   roleId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -2110,7 +2110,7 @@ export type UserCreateManyAddressInput = {
 
 export type UserUpdateWithoutAddressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2139,7 +2139,7 @@ export type UserUpdateWithoutAddressInput = {
 export type UserUncheckedUpdateWithoutAddressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2167,7 +2167,7 @@ export type UserUncheckedUpdateWithoutAddressInput = {
 export type UserUncheckedUpdateManyWithoutAddressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   roleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2187,7 +2187,7 @@ export type UserUncheckedUpdateManyWithoutAddressInput = {
 export type UserCreateManyRoleInput = {
   id?: string
   addressId?: string | null
-  numberDocument?: string | null
+  numberDocument: string
   typeDocument?: $Enums.TypeDocument
   numberCard?: string | null
   name: string
@@ -2206,7 +2206,7 @@ export type UserCreateManyRoleInput = {
 
 export type UserUpdateWithoutRoleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2235,7 +2235,7 @@ export type UserUpdateWithoutRoleInput = {
 export type UserUncheckedUpdateWithoutRoleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2263,7 +2263,7 @@ export type UserUncheckedUpdateWithoutRoleInput = {
 export type UserUncheckedUpdateManyWithoutRoleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   addressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  numberDocument?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numberDocument?: Prisma.StringFieldUpdateOperationsInput | string
   typeDocument?: Prisma.EnumTypeDocumentFieldUpdateOperationsInput | $Enums.TypeDocument
   numberCard?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2478,7 +2478,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     roleId: string | null
     addressId: string | null
-    numberDocument: string | null
+    numberDocument: string
     typeDocument: $Enums.TypeDocument
     numberCard: string | null
     name: string

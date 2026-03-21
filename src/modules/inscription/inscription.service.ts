@@ -112,16 +112,16 @@ export class InscriptionService {
       // 7️⃣ Generar PDF y actualizar URL
       const finalInscription = await this.findOne(result.id);
       const pdfBuffer = await this.pdfService.generateInscription(finalInscription);
-      const { webViewLink } = await this.googledriveService.uploadFile(
-        `ins${finalInscription.id}.pdf`,
-        pdfBuffer,
-        'application/pdf',
-        'inscripciones',
-      );
+      // const { webViewLink } = await this.googledriveService.uploadFile(
+      //   `ins${finalInscription.id}.pdf`,
+      //   pdfBuffer,
+      //   'application/pdf',
+      //   'inscripciones',
+      // );
 
       await this.prisma.inscription.update({
         where: { id: finalInscription.id },
-        data: { url: webViewLink },
+        data: { url: "webViewLink" },
       });
 
       return {

@@ -157,7 +157,7 @@ export class CorrespondenceService {
         lastName,
         phone: [],
         password: tempPassword,
-        ...(studentCi ? { numberDocument: studentCi } : {}),
+        numberDocument: studentCi,
         createdBy,
       },
     });
@@ -211,7 +211,7 @@ export class CorrespondenceService {
           lastName: tutorLastName,
           phone: tutorPhone ? [tutorPhone] : [],
           ...(tutorEmail ? { email: tutorEmail } : {}),
-          ...(tutorCi ? { numberDocument: tutorCi } : {}),
+          numberDocument: tutorCi,
           password: tempPassword,
           createdBy,
         },

@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsUUID } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsOptional, IsString } from "class-validator";
 
 export class CreateAttendanceDto {
 
@@ -11,10 +11,19 @@ export class CreateAttendanceDto {
   branchId: string;
 
   @IsString()
-  @ApiProperty({
+  @IsOptional()
+  @ApiPropertyOptional({
     example: '1234567890',
     description: 'Número de la tarjeta RFID',
   })
-  numberCard: string;
+  numberCard?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional({
+    example: 'uuid-del-usuario',
+    description: 'ID del usuario cuando se confirma desde el listado de búsqueda',
+  })
+  userId?: string;
 
 }

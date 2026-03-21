@@ -36,7 +36,7 @@ CREATE TABLE "users" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "role_id" UUID,
     "address_id" UUID,
-    "number_document" TEXT,
+    "number_document" TEXT NOT NULL,
     "type_document" "TypeDocument" NOT NULL DEFAULT 'DNI',
     "number_card" TEXT,
     "name" VARCHAR NOT NULL,
@@ -505,9 +505,6 @@ CREATE TABLE "_StudentToTutor" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_number_document_key" ON "users"("number_document");
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_number_card_key" ON "users"("number_card");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_code_validation_key" ON "users"("code_validation");
