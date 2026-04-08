@@ -5,7 +5,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto } from '@/common';
 import { DebtService } from '../debt/debt.service';
 import { PdfService } from '@/common/pdf/pdf.service';
-import { GoogledriveService } from '@/common/googledrive/googledrive.service';
+import { LocalStorageService } from '@/common/storage/local-storage.service';
 import { InvoiceService } from '../invoice/invoice.service';
 import { Prisma } from '@/generated/prisma/client';
 
@@ -17,7 +17,7 @@ export class PaymentService {
     private readonly debtService: DebtService,
     private readonly invoiceService: InvoiceService,
     private readonly pdfService: PdfService,
-    private readonly googledriveService: GoogledriveService,
+    private readonly googledriveService: LocalStorageService,
   ) { }
 
   async create(email: string, createPaymentDto: CreateCartDto) {

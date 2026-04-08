@@ -7,7 +7,7 @@ import { PaginationDto, PaginationResult } from '@/common';
 import { InscriptionService } from '../inscription/inscription.service';
 import { InscriptionType } from '../inscription/entities/inscription.entity';
 import { PdfService } from '@/common/pdf/pdf.service';
-import { GoogledriveService } from '@/common/googledrive/googledrive.service';
+import { LocalStorageService } from '@/common/storage/local-storage.service';
 import { InvoiceService } from '../invoice/invoice.service';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class BookingService {
 
     private readonly invoiceService: InvoiceService,
     private readonly pdfService: PdfService,
-    private readonly googledriveService: GoogledriveService,
+    private readonly googledriveService: LocalStorageService,
   ) { }
 
   async create(email: string, createBookingDto: CreateBookingDto) {

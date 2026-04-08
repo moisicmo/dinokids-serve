@@ -1,4 +1,3 @@
-import { google } from 'googleapis';
 import MailComposer from 'nodemailer/lib/mail-composer';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -9,19 +8,7 @@ import { Injectable } from '@nestjs/common';
 export class GmailService {
   private gmailClient;
 
-  constructor() {
-    const oauth2Client = new google.auth.OAuth2(
-      envs.googledriveClientId,
-      envs.googledriveClientSecret,
-      envs.googledriveRedirectUri,
-    );
-
-    oauth2Client.setCredentials({
-      refresh_token: envs.googledriveRefreshToken,
-    });
-
-    this.gmailClient = google.gmail({ version: 'v1', auth: oauth2Client });
-  }
+  constructor() {}
 
   async sendEmail(to: string, subject: string, htmlMessage: string) {
     const assetPath = path.join(process.cwd(), 'dist/assets');

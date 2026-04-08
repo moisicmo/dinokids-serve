@@ -5,8 +5,8 @@ import { InscriptionExtended, InscriptionSelect, InscriptionType } from './entit
 import { PrismaService } from '@/prisma/prisma.service';
 import { PaginationDto, PaginationResult } from '@/common';
 import { PdfService } from '@/common/pdf/pdf.service';
-import { GoogledriveService } from '@/common/googledrive/googledrive.service';
 import { PdfTemplateService } from '@/modules/pdf-template/pdf-template.service';
+import { LocalStorageService } from '@/common/storage/local-storage.service';
 import { DayOfWeek, Prisma } from '@/generated/prisma/client';
 import { addDays } from 'date-fns';
 
@@ -16,8 +16,8 @@ export class InscriptionService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly pdfService: PdfService,
-    private readonly googledriveService: GoogledriveService,
     private readonly pdfTemplateService: PdfTemplateService,
+    private readonly storageService: LocalStorageService,
   ) { }
 
   /** Generates inscription PDF using custom template if available, otherwise uses hardcoded template */
@@ -121,7 +121,7 @@ export class InscriptionService {
       // 7️⃣ Generar PDF y actualizar URL
       const finalInscription = await this.findOne(result.id);
       const pdfBuffer = await this.generateInscriptionPdf(finalInscription);
-      const { webViewLink } = await this.googledriveService.uploadFile(
+      const { webViewLink } = await this.storageService.uploadFile(
         `ins${finalInscription.id}.pdf`,
         pdfBuffer,
         'application/pdf',
@@ -199,7 +199,7 @@ export class InscriptionService {
   //     });
   //     const finalInscription = await this.findOne(result.id);
   //     const pdfBuffer = await this.pdfService.generateInscription(finalInscription);
-  //     const { webViewLink } = await this.googledriveService.uploadFile(`ins${finalInscription.id}.pdf`, pdfBuffer, 'application/pdf', 'inscripciones');
+  //     const { webViewLink } = await this.storageService.uploadFile(`ins${finalInscription.id}.pdf`, pdfBuffer, 'application/pdf', 'inscripciones');
   //     // ver la opcion de sustituir por el this.update
   //     await this.prisma.inscription.update({
   //       where: { id: finalInscription.id },
@@ -367,7 +367,7 @@ export class InscriptionService {
       if (!finalInscription.url) {
         throw new NotFoundException(`No URL found for inscription with id ${id}`);
       }
-      const pdfBase64 = await this.googledriveService.getFileBase64ByUrl(finalInscription.url);
+      const pdfBase64 = await this.storageService.getFileBase64ByUrl(finalInscription.url);
       if (!pdfBase64) {
         throw new InternalServerErrorException('Unable to retrieve PDF content from Google Drive');
       }
@@ -537,7 +537,7 @@ export class InscriptionService {
     // 7. Regenerate PDF and re-upload to Google Drive
     const finalInscription = await this.findOne(id);
     const pdfBuffer = await this.generateInscriptionPdf(finalInscription);
-    const { webViewLink } = await this.googledriveService.uploadFile(
+    const { webViewLink } = await this.storageService.uploadFile(
       `ins${finalInscription.id}.pdf`,
       pdfBuffer,
       'application/pdf',
