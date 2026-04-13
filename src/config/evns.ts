@@ -4,7 +4,8 @@ import * as joi from 'joi';
 interface EnvVars {
   PORT: number;
   JWT_SECRET: string;
-  GOOGLE_SENDER_EMAIL:string;
+  GOOGLE_SENDER_EMAIL: string;
+  GOOGLE_APP_PASSWORD: string;
 }
 
 const envsSchema = joi
@@ -12,6 +13,7 @@ const envsSchema = joi
     PORT: joi.number().required(),
     JWT_SECRET: joi.string().required(),
     GOOGLE_SENDER_EMAIL: joi.string().required(),
+    GOOGLE_APP_PASSWORD: joi.string().required(),
   })
   .unknown(true);
 
@@ -29,4 +31,5 @@ export const envs = {
   port: envVars.PORT,
   jwtSecret: envVars.JWT_SECRET,
   googleSenderEmail: envVars.GOOGLE_SENDER_EMAIL,
+  googleAppPassword: envVars.GOOGLE_APP_PASSWORD,
 };

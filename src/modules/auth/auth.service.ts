@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException, HttpException } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { RequestInfo } from '@/decorator';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -252,38 +252,36 @@ export class AuthService {
   }
 
   async validationPin(validatePinDto: ValidatePinDto) {
+    const { idUser, pin, newPassword } = validatePinDto;
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: idUser },
+      select: { email: true, codeValidation: true },
+    });
+
+    if (!user) throw new NotFoundException('Usuario no encontrado');
+    if (!user.codeValidation) throw new BadRequestException('No hay un código activo. Solicita uno nuevo.');
+
+    const isPinValid = bcrypt.compareSync(pin, user.codeValidation);
+    if (!isPinValid) throw new UnauthorizedException('El PIN es incorrecto. Revisa tu correo e intenta de nuevo.');
+
     try {
-      console.log(validatePinDto);
-      const { idUser, pin, newPassword } = validatePinDto;
-
-      const user = await this.prisma.user.findUnique({
-        where: { id: idUser },
-        select: { email: true, codeValidation: true, },
-      });
-
-      if (!user?.email && !user?.codeValidation) {
-        throw new BadRequestException('El usuario no tiene correo registrado o pin solicitado');
-      }
-
-      const isPinValid = bcrypt.compareSync(pin, user.codeValidation!);
-      if (!isPinValid) {
-        throw new UnauthorizedException('El PIN no coinside, revisa tu correo');
-      }
       const salt = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(newPassword, salt);
       await this.prisma.user.update({
         where: { id: idUser },
         data: {
           emailValidated: true,
+          codeValidation: null,
           password: hashedPassword,
         },
       });
 
-      return { success: true, message: 'Cuenta valida' };
-
+      return { success: true, message: 'Cuenta verificada correctamente' };
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       console.error('validationPin error:', error);
-      throw new BadRequestException('No se pudo validar el PIN');
+      throw new InternalServerErrorException('No se pudo validar el PIN');
     }
   }
 
